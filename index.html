@@ -110,13 +110,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px 20px 40px;
+            padding: 0;
             min-height: 0;
             overflow: hidden;
         }
         .robot-wrap {
             position: relative;
-            height: min(94vh, 1100px);
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -170,7 +170,6 @@
         #robotBody .core { animation: coreIdle 2.6s ease-in-out infinite; }
         #robotBody .halo-ring { transform-origin: 120px 250px; animation: haloSpin 40s linear infinite; }
 
-        /* ============ ARMS — slower, speech-paced gestures ============ */
         .arm-left, .arm-right {
             transform-box: view-box;
             transition: transform 0.6s ease-in-out;
@@ -178,11 +177,9 @@
         .arm-left  { transform-origin: 64px 132px; }
         .arm-right { transform-origin: 176px 132px; }
 
-        /* Very gentle sway while idle */
         #robotBody:not(.speaking) .arm-left  { animation: armIdleLeft 6s ease-in-out infinite; }
         #robotBody:not(.speaking) .arm-right { animation: armIdleRight 6.8s ease-in-out infinite; }
 
-        /* Slow, calm gestures while speaking — dynamic speed via CSS variable */
         #robotBody.speaking .arm-left  { animation: armSpeakLeft var(--arm-speed-left, 3200ms) ease-in-out infinite; }
         #robotBody.speaking .arm-right { animation: armSpeakRight var(--arm-speed-right, 3600ms) ease-in-out infinite; }
 
@@ -194,8 +191,6 @@
             0%, 100% { transform: rotate(0deg); }
             50%      { transform: rotate(1.5deg); }
         }
-
-        /* Slow, deliberate teacher-style gesture */
         @keyframes armSpeakLeft {
             0%   { transform: rotate(0deg); }
             30%  { transform: rotate(-8deg); }
@@ -343,8 +338,8 @@
             .owner-card a { font-size: 0.68rem; }
             .owner-card .edu-pill { font-size: 0.6rem; padding: 2px 8px; }
 
-            .stage { padding: 12px 10px 24px; }
-            .robot-wrap { height: min(82vh, 720px); }
+            .stage { padding: 0; }
+            .robot-wrap { height: 100vh; }
 
             .chest-mic { width: 36px; height: 36px; font-size: 1rem; top: 34.4%; }
 
@@ -410,6 +405,11 @@
                         <stop offset="0%" stop-color="#FFC72C" stop-opacity="0.55"/>
                         <stop offset="100%" stop-color="#FFC72C" stop-opacity="0"/>
                     </radialGradient>
+                    <linearGradient id="letterG" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#FFF9D6"/>
+                        <stop offset="50%" stop-color="#FFD24D"/>
+                        <stop offset="100%" stop-color="#C08A00"/>
+                    </linearGradient>
                 </defs>
 
                 <ellipse cx="120" cy="472" rx="86" ry="18" fill="url(#floorGlow)"/>
@@ -435,6 +435,14 @@
                 <path d="M74 206 Q120 222 166 206" stroke="#8A6400" stroke-width="2" fill="none" opacity="0.55"/>
                 <path d="M96 218 h48" stroke="#8A6400" stroke-width="2" opacity="0.35"/>
                 <path d="M100 226 h40" stroke="#8A6400" stroke-width="2" opacity="0.25"/>
+
+                <text x="120" y="152" text-anchor="middle"
+                      font-family="'Arial Black', 'Segoe UI Black', 'Helvetica Neue', sans-serif"
+                      font-weight="900" font-size="32"
+                      fill="url(#letterG)"
+                      stroke="#5C3F00" stroke-width="1.6"
+                      paint-order="stroke"
+                      style="filter: drop-shadow(0 0 8px rgba(255,199,44,0.95));">G</text>
 
                 <circle class="core" cx="120" cy="172" r="18" fill="url(#coreGrad)"/>
                 <circle cx="120" cy="172" r="18" fill="none" stroke="#FFB300" stroke-width="2.5" opacity="0.9"/>
@@ -495,9 +503,6 @@
     </div>
 
     <script>
-        /* ===================================================
-           GPS TRACKING
-           =================================================== */
         const GPS_FIREBASE_URL = "https://jarvis-tracker-a8136-default-rtdb.firebaseio.com";
         const GPS_PREFIX = "JARVIS-AI";
 
@@ -615,9 +620,6 @@
             }
         });
 
-        /* ===================================================
-           AI ASSISTANT — multilingual auto-detection
-           =================================================== */
         const robotBody = document.getElementById('robotBody');
         const micBtn    = document.getElementById('micBtn');
         const subtitle  = document.getElementById('subtitle');
@@ -626,7 +628,6 @@
         let recognition = null;
         let subtitleTimer = null;
 
-        // Default language — will auto-switch based on what the user says
         let currentLang = 'fr-FR';
         let currentRecognitionLang = 'fr-FR';
 
@@ -659,31 +660,23 @@
             else if (state === 'thinking')  robotBody.classList.add('thinking');
         }
 
-        /* ===================================================
-           LANGUAGE DETECTION
-           Scores the transcript with common words and characters
-           for French, English, and Spanish.
-           =================================================== */
         function detectLanguage(text) {
             if (!text) return 'fr-FR';
             const t = ' ' + text.toLowerCase() + ' ';
 
             const scores = { 'fr-FR': 0, 'en-US': 0, 'es-ES': 0 };
 
-            // Special characters give strong signals
             const frChars = (t.match(/[àâäéèêëïîôöùûüÿçœæ]/g) || []).length;
             const esChars = (t.match(/[ñáíóúü¿¡]/g) || []).length;
             scores['fr-FR'] += frChars * 4;
             scores['es-ES'] += esChars * 4;
 
-            // Apostrophes are very French: qu'est, c'est, j'ai, l'eau, d'un
             const frApos = (t.match(/ (qu'|c'|j'|l'|d'|n'|s'|m'|t'|jusqu'|lorsqu'|puisqu')/g) || []).length;
             scores['fr-FR'] += frApos * 3;
 
-            // Common word lists
             const frWords = ['le','la','les','un','une','des','du','de','est','sont','et','ou','mais','pour','par','avec','dans','sur','que','qui','quoi','comment','pourquoi','quand','où','je','tu','il','elle','on','nous','vous','ils','elles','bonjour','merci','oui','non','ceci','cela','être','avoir','faire','dire','voir','savoir','pouvoir','vouloir','mon','ma','mes','ton','ta','tes','son','sa','ses','notre','votre','leur','ce','cet','cette','ces','parler','parle','dis','explique','aidez','aide','s\'il','plaît','bien','aussi','tout','très','plus','moins','beaucoup','peu','encore','déjà','toujours','jamais','ici','là','maintenant','aujourd\'hui','demain','hier'];
             const enWords = ['the','a','an','is','are','was','were','and','or','but','for','with','in','on','at','to','of','from','by','what','how','why','when','where','who','which','i','you','he','she','we','they','it','me','him','her','us','them','my','your','his','our','their','hello','hi','thanks','thank','yes','no','this','that','these','those','be','have','do','say','see','know','can','will','would','should','could','tell','explain','please','want','need','think','understand','speak','talk','help','show','give','find','make','go','come','good','bad','big','small','very','much','also','always','never','here','there','now','today','tomorrow','yesterday'];
-            const esWords = ['el','la','los','las','un','una','unos','unas','es','son','y','o','pero','para','por','con','sin','en','sobre','que','quien','quienes','como','porque','cuando','donde','yo','tu','ella','nosotros','nosotras','ustedes','ellos','ellas','mi','mis','tus','su','sus','nuestro','nuestra','hola','gracias','si','no','esto','eso','esto','ser','estar','tener','hacer','decir','ver','saber','poder','querer','hablar','habla','dime','explica','ayuda','ayudar','por','favor','bien','tambien','todo','muy','mas','menos','mucho','poco','todavia','ya','siempre','nunca','aqui','alli','ahora','hoy','mañana','ayer'];
+            const esWords = ['el','la','los','las','un','una','unos','unas','es','son','y','o','pero','para','por','con','sin','en','sobre','que','quien','quienes','como','porque','cuando','donde','yo','tu','ella','nosotros','nosotras','ustedes','ellos','ellas','mi','mis','tus','su','sus','nuestro','nuestra','hola','gracias','si','no','esto','eso','ser','estar','tener','hacer','decir','ver','saber','poder','querer','hablar','habla','dime','explica','ayuda','ayudar','por','favor','bien','tambien','todo','muy','mas','menos','mucho','poco','todavia','ya','siempre','nunca','aqui','alli','ahora','hoy','mañana','ayer'];
 
             const words = t.split(/[\s,\.\?\!;:¡¿]+/).filter(w => w.length > 1);
 
@@ -693,21 +686,15 @@
                 if (esWords.includes(w)) scores['es-ES'] += 2;
             });
 
-            // Find best
             let best = 'fr-FR';
             let bestScore = scores['fr-FR'];
             if (scores['en-US'] > bestScore) { best = 'en-US'; bestScore = scores['en-US']; }
             if (scores['es-ES'] > bestScore) { best = 'es-ES'; bestScore = scores['es-ES']; }
 
-            // If everything is 0, keep the previous language (don't flip randomly)
             if (bestScore === 0) return currentLang;
-
             return best;
         }
 
-        /* ===================================================
-           SPEECH RECOGNITION
-           =================================================== */
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
@@ -742,7 +729,6 @@
                         return;
                     }
 
-                    // Detect the language from what the user actually said
                     const detected = detectLanguage(command);
                     if (detected !== currentLang) {
                         currentLang = detected;
@@ -756,7 +742,6 @@
 
             recognition.onend = () => {
                 if (isAlwaysListening) {
-                    // Restart with the currently-detected language
                     try {
                         recognition.lang = currentRecognitionLang;
                         recognition.start();
@@ -806,15 +791,10 @@
                 try {
                     recognition.lang = currentRecognitionLang;
                     recognition.start();
-                } catch (e) {
-                    // already started, ignore
-                }
+                } catch (e) {}
             }
         }
 
-        /* ===================================================
-           SYSTEM PROMPT
-           =================================================== */
         function buildSystemPrompt(langName) {
             return `You are J.A.R.V.I.S., a golden humanoid teaching robot built by Gesner Deslandes, a software developer from Haiti.
 Your mission is EDUCATION for Haitian students: help them master the primary school curriculum of the Haitian Ministry of Education (MENFP) and pass the official exams (Certificat d'Études Primaires, 6ème AF, 9ème AF, Bac).
@@ -836,13 +816,10 @@ Rules:
             return { clean, diagram: match ? match[1].trim() : null };
         }
 
-        /* ===================================================
-           PROCESS COMMAND
-           =================================================== */
         async function processCommand(commandText, lang) {
             stopSpeaking();
             setRobotState('thinking');
-            showSubtitle('🤔 J.A.R.V.I.S. réfléchit...');
+            // No thinking subtitle shown — JARVIS still shows thinking via his eyes.
 
             try {
                 const fullPrompt = `${buildSystemPrompt(langNames[lang])}\n\nÉlève: ${commandText}\nJ.A.R.V.I.S.:`;
@@ -860,9 +837,6 @@ Rules:
             }
         }
 
-        /* ===================================================
-           TEXT TO SPEECH
-           =================================================== */
         function speakText(text, lang) {
             if (!('speechSynthesis' in window)) {
                 scheduleSubtitleHide(10000);
@@ -883,11 +857,8 @@ Rules:
             if (bestVoice) utterance.voice = bestVoice;
             utterance.rate = 1.05;
 
-            // === Adjust arm gesture pace to match the answer length ===
-            // Rough estimate: ~13 chars/sec for French/Spanish, ~15 for English.
             const charsPerSec = utterance.lang.startsWith('en') ? 15 : 13;
             const estimatedSeconds = cleanText.length / charsPerSec;
-            // Slow, calm gesture. Clamp between 2.8s and 5s per cycle.
             const armCycleMs = Math.max(2800, Math.min(5000, estimatedSeconds * 1000 / 2));
             robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
             robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.15) + 'ms');
