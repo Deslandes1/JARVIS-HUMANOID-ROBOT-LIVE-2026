@@ -11,7 +11,7 @@
             --accent-2: #ffc72c;
             --cyan: #00e5ff;
             --danger: #dc2626;
-            --success: #16a34a;
+            --success: #22c55e;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         html, body { height: 100%; }
@@ -58,11 +58,27 @@
         }
         @keyframes twinkle { from { opacity: .55; } to { opacity: 1; } }
         @keyframes starDrift { from { transform: translate3d(0,0,0); } to { transform: translate3d(-70px,-45px,0); } }
-        .status-badge {
+
+        /* Top HUD for clean video framing */
+        .top-hud {
             position: fixed;
             top: 14px;
             left: 14px;
+            right: 14px;
             z-index: 50;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .top-left-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: auto;
+        }
+        .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -73,7 +89,7 @@
             backdrop-filter: blur(10px);
             font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             color: var(--accent-2);
         }
         .status-dot {
@@ -83,10 +99,35 @@
             background: var(--accent-2);
             box-shadow: 0 0 10px var(--accent-2);
         }
+        .hud-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .hud-btn {
+            background: rgba(15, 23, 42, 0.85);
+            color: #fff;
+            border: 1px solid rgba(255, 199, 44, 0.45);
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: transform 0.15s, border-color 0.2s, background 0.2s;
+        }
+        .hud-btn:hover {
+            border-color: var(--accent-2);
+            background: rgba(30, 41, 59, 0.95);
+            transform: translateY(-1px);
+        }
+        .hud-btn.active {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
         .owner-card {
-            position: fixed;
-            top: 14px;
-            right: 14px;
+            pointer-events: auto;
             background: rgba(255,255,255,0.94);
             backdrop-filter: blur(14px);
             border: 2px solid var(--accent-2);
@@ -96,7 +137,6 @@
             font-size: 0.82rem;
             color: #475569;
             line-height: 1.5;
-            z-index: 50;
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             max-width: 250px;
         }
@@ -127,6 +167,13 @@
             transition: color .15s;
         }
         .owner-card a:hover { color: var(--accent); text-decoration: underline; }
+
+        /* Video Studio / Clean Presentation Mode */
+        body.video-mode .owner-card,
+        body.video-mode .hud-actions .hide-in-video {
+            display: none;
+        }
+
         .stage {
             flex: 1;
             display: flex;
@@ -147,31 +194,31 @@
             height: 100%;
             width: auto;
             display: block;
-            filter: drop-shadow(0 10px 30px rgba(184,134,11,0.55));
-            transition: filter 0.3s ease, transform 0.5s ease;
+            filter: drop-shadow(0 12px 34px rgba(255,199,44,0.45));
+            transition: filter 0.3s ease, transform 0.45s ease;
         }
         .chest-mic {
             position: absolute;
-            top: 34.4%;
+            top: 36.2%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #FFF4C2, #FFC72C 60%, #B87A00 100%);
-            border: 2px solid #ffffff;
+            border: 2.5px solid #ffffff;
             color: #2a1c00;
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             cursor: pointer;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 16px rgba(255,199,44,0.9), inset 0 0 10px rgba(255,255,255,0.5);
+            box-shadow: 0 0 18px rgba(255,199,44,0.9), inset 0 0 10px rgba(255,255,255,0.55);
             animation: micGlow 2.4s ease-in-out infinite;
             transition: transform .15s, background .2s;
         }
-        .chest-mic:hover { transform: translate(-50%, -50%) scale(1.1); }
+        .chest-mic:hover { transform: translate(-50%, -50%) scale(1.12); }
         .chest-mic:active { transform: translate(-50%, -50%) scale(0.95); }
         .chest-mic.listening {
             background: radial-gradient(circle at 30% 30%, #FFB0B0, #DC2626 60%, #7F1D1D 100%);
@@ -179,65 +226,84 @@
             animation: micListen 1s ease-in-out infinite;
         }
         @keyframes micGlow {
-            0%, 100% { box-shadow: 0 0 16px rgba(255,199,44,0.9), inset 0 0 10px rgba(255,255,255,0.5); }
-            50% { box-shadow: 0 0 30px rgba(255,199,44,1), inset 0 0 14px rgba(255,255,255,0.9); }
+            0%, 100% { box-shadow: 0 0 18px rgba(255,199,44,0.9), inset 0 0 10px rgba(255,255,255,0.55); }
+            50% { box-shadow: 0 0 32px rgba(255,199,44,1), inset 0 0 15px rgba(255,255,255,0.9); }
         }
         @keyframes micListen {
-            0%, 100% { box-shadow: 0 0 20px rgba(220,38,38,0.9); }
-            50% { box-shadow: 0 0 40px rgba(220,38,38,1); }
+            0%, 100% { box-shadow: 0 0 22px rgba(220,38,38,0.95); }
+            50% { box-shadow: 0 0 42px rgba(220,38,38,1); }
         }
-        #robotBody .eye-bar { animation: eyeIdle 3.6s ease-in-out infinite; }
-        #robotBody .core { animation: coreIdle 2.6s ease-in-out infinite; }
-        #robotBody .halo-ring { transform-origin: 120px 250px; animation: haloSpin 40s linear infinite; }
+
+        /* Humanoid animations */
+        #robotBody .eye-bar { animation: eyeIdle 3.4s ease-in-out infinite; }
+        #robotBody .core { animation: coreIdle 2.5s ease-in-out infinite; }
+        #robotBody .halo-ring { transform-origin: 120px 250px; animation: haloSpin 36s linear infinite; }
+        #robotBody .head-group { transform-box: view-box; transform-origin: 120px 104px; transition: transform 0.4s ease; }
         .arm-left, .arm-right {
             transform-box: view-box;
-            transition: transform 0.6s ease-in-out;
+            transition: transform 0.5s ease-in-out;
         }
-        .arm-left  { transform-origin: 64px 132px; }
-        .arm-right { transform-origin: 176px 132px; }
-        #robotBody:not(.speaking) .arm-left  { animation: armIdleLeft 6s ease-in-out infinite; }
-        #robotBody:not(.speaking) .arm-right { animation: armIdleRight 6.8s ease-in-out infinite; }
-        #robotBody.speaking .arm-left  { animation: armSpeakLeft var(--arm-speed-left, 2800ms) ease-in-out infinite; }
-        #robotBody.speaking .arm-right { animation: armSpeakRight var(--arm-speed-right, 3200ms) ease-in-out infinite; }
+        .arm-left  { transform-origin: 58px 134px; }
+        .arm-right { transform-origin: 182px 134px; }
+
+        #robotBody:not(.speaking) .head-group { animation: headIdle 5.5s ease-in-out infinite; }
+        #robotBody:not(.speaking) .arm-left  { animation: armIdleLeft 5.8s ease-in-out infinite; }
+        #robotBody:not(.speaking) .arm-right { animation: armIdleRight 6.4s ease-in-out infinite; }
+
+        #robotBody.speaking .head-group { animation: headSpeak 1.6s ease-in-out infinite; }
+        #robotBody.speaking .arm-left  { animation: armSpeakLeft var(--arm-speed-left, 2400ms) ease-in-out infinite; }
+        #robotBody.speaking .arm-right { animation: armSpeakRight var(--arm-speed-right, 2700ms) ease-in-out infinite; }
+
+        @keyframes headIdle {
+            0%, 100% { transform: rotate(0deg); }
+            50%      { transform: rotate(2.2deg); }
+        }
+        @keyframes headSpeak {
+            0%, 100% { transform: rotate(0deg) translateY(0); }
+            50%      { transform: rotate(-2.5deg) translateY(-2px); }
+        }
         @keyframes armIdleLeft {
             0%, 100% { transform: rotate(0deg); }
-            50%      { transform: rotate(-2deg); }
+            50%      { transform: rotate(-3deg); }
         }
         @keyframes armIdleRight {
             0%, 100% { transform: rotate(0deg); }
-            50%      { transform: rotate(2deg); }
+            50%      { transform: rotate(3deg); }
         }
         @keyframes armSpeakLeft {
             0%   { transform: rotate(0deg); }
-            30%  { transform: rotate(-10deg); }
-            60%  { transform: rotate(-4deg); }
+            30%  { transform: rotate(-16deg); }
+            65%  { transform: rotate(-6deg); }
             100% { transform: rotate(0deg); }
         }
         @keyframes armSpeakRight {
             0%   { transform: rotate(0deg); }
-            35%  { transform: rotate(9deg); }
-            65%  { transform: rotate(3deg); }
+            35%  { transform: rotate(15deg); }
+            70%  { transform: rotate(5deg); }
             100% { transform: rotate(0deg); }
         }
+
         #robotBody.speaking {
-            filter: drop-shadow(0 10px 42px rgba(255,199,44,0.95));
-            transform: translateY(-3px);
+            filter: drop-shadow(0 12px 44px rgba(255,199,44,0.95));
+            transform: translateY(-4px);
         }
-        #robotBody.speaking .eye-bar { animation: eyeSpeak .24s ease-in-out infinite; fill: #ffffff; }
-        #robotBody.speaking .mouth-group { transform-origin: 120px 88px; animation: mouthSpeak .2s ease-in-out infinite; }
-        #robotBody.speaking .core { animation: coreSpeak .3s ease-in-out infinite; }
+        #robotBody.speaking .eye-bar { animation: eyeSpeak .22s ease-in-out infinite; fill: #ffffff; }
+        #robotBody.speaking .mouth-group { transform-origin: 120px 88px; animation: mouthSpeak .19s ease-in-out infinite; }
+        #robotBody.speaking .core { animation: coreSpeak .28s ease-in-out infinite; }
         #robotBody.speaking .visor { filter: drop-shadow(0 0 12px #ffd24d); }
         #robotBody.speaking .halo-ring { animation: haloSpin 3.5s linear infinite; opacity: .95; stroke: #00e5ff; }
-        #robotBody.listening .eye-bar { fill: #3ef58c; animation: eyeListen 1.2s ease-in-out infinite; }
-        #robotBody.listening .halo-ring { animation: haloSpin 10s linear infinite; stroke: #3ef58c; }
-        #robotBody.thinking .eye-bar { fill: #00e5ff; animation: eyeSpeak .45s ease-in-out infinite; }
+        #robotBody.listening .eye-bar { fill: #3ef58c; animation: eyeListen 1.1s ease-in-out infinite; }
+        #robotBody.listening .halo-ring { animation: haloSpin 9s linear infinite; stroke: #3ef58c; }
+        #robotBody.thinking .eye-bar { fill: #00e5ff; animation: eyeSpeak .4s ease-in-out infinite; }
+
         @keyframes eyeIdle { 0%,100% { opacity: 1; } 50% { opacity: .68; } }
         @keyframes eyeSpeak { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
         @keyframes eyeListen { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
-        @keyframes mouthSpeak { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(2.7); } }
+        @keyframes mouthSpeak { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(2.8); } }
         @keyframes coreIdle { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
         @keyframes coreSpeak { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
         @keyframes haloSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
         .subtitle {
             position: fixed;
             bottom: 24px;
@@ -245,19 +311,19 @@
             transform: translateX(-50%);
             max-width: 860px;
             width: 92%;
-            max-height: 40vh;
+            max-height: 36vh;
             overflow-y: auto;
             background: rgba(15, 23, 42, 0.92);
             color: #ffffff;
-            padding: 20px 26px;
+            padding: 18px 24px;
             border-radius: 18px;
             border: 2px solid rgba(255,199,44,0.65);
-            font-size: 1.25rem;
-            line-height: 1.6;
+            font-size: 1.2rem;
+            line-height: 1.55;
             text-align: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.35s ease;
+            transition: opacity 0.3s ease;
             box-shadow: 0 10px 34px rgba(0,0,0,0.55);
             backdrop-filter: blur(12px);
             z-index: 90;
@@ -268,243 +334,314 @@
             display: block;
             color: var(--accent-2);
             font-weight: 900;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             letter-spacing: 3px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        .name-overlay {
+
+        /* Overlays (Welcome + NVIDIA Config) */
+        .modal-overlay {
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(15, 23, 42, 0.78);
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            animation: fadeIn .3s ease;
+            animation: fadeIn .25s ease;
         }
-        .name-overlay.hidden { display: none; }
-        .name-card {
+        .modal-overlay.hidden { display: none; }
+        .modal-card {
             background: linear-gradient(180deg, #ffffff 0%, #fff8e1 100%);
             border: 3px solid var(--accent-2);
             border-radius: 20px;
-            padding: 32px 28px;
-            max-width: 440px;
+            padding: 28px 26px;
+            max-width: 460px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             text-align: center;
             color: #101828;
         }
-        .name-card h2 { font-size: 1.5rem; color: #7a5200; margin-bottom: 14px; }
-        .name-card p { font-size: 1rem; color: #475569; line-height: 1.55; margin-bottom: 20px; }
-        .name-card input {
+        .modal-card h2 { font-size: 1.45rem; color: #7a5200; margin-bottom: 10px; }
+        .modal-card p { font-size: 0.95rem; color: #475569; line-height: 1.5; margin-bottom: 16px; }
+        .modal-card label {
+            display: block;
+            text-align: left;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 5px;
+        }
+        .modal-card input {
             width: 100%;
-            padding: 14px 20px;
+            padding: 12px 15px;
             border-radius: 12px;
             border: 2px solid #d7cfb5;
             background: #fff;
             color: #101828;
-            font-size: 1.15rem;
+            font-size: 1rem;
             outline: none;
             margin-bottom: 14px;
         }
-        .name-card input:focus {
+        .modal-card input:focus {
             border-color: var(--accent-2);
             box-shadow: 0 0 0 3px rgba(255,199,44,0.28);
         }
-        .name-card .go-btn {
+        .modal-card .go-btn {
             width: 100%;
-            padding: 15px;
+            padding: 13px;
             background: linear-gradient(135deg, #ffc72c, #ff9500);
             color: #2a1c00;
             border: none;
             border-radius: 12px;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255,150,0,0.5);
-            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(255,150,0,0.45);
+            margin-bottom: 8px;
         }
-        .name-card .go-btn:hover { filter: brightness(1.06); }
-        .name-card .skip-btn {
+        .modal-card .go-btn:hover { filter: brightness(1.06); }
+        .modal-card .skip-btn {
             background: transparent;
             border: none;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             text-decoration: underline;
             cursor: pointer;
             padding: 6px;
         }
-        .name-card .skip-btn:hover { color: #334155; }
+        .modal-card .skip-btn:hover { color: #334155; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         @media (max-width: 760px) {
-            .status-badge { font-size: 0.65rem; padding: 6px 10px; top: 10px; left: 10px; }
+            .status-badge { font-size: 0.65rem; padding: 6px 10px; }
+            .hud-btn { font-size: 0.68rem; padding: 5px 10px; }
             .owner-card {
                 font-size: 0.72rem;
                 padding: 10px 13px;
-                max-width: 190px;
-                top: 10px;
-                right: 10px;
+                max-width: 185px;
             }
             .owner-card strong { font-size: 0.82rem; }
             .owner-card a { font-size: 0.68rem; }
             .owner-card .edu-pill { font-size: 0.6rem; padding: 2px 8px; }
-            .stage { padding: 0; }
-            .robot-wrap { height: 100vh; }
-            .chest-mic { width: 36px; height: 36px; font-size: 1rem; top: 34.4%; }
+            .chest-mic { width: 40px; height: 40px; font-size: 1.1rem; top: 36.2%; }
             .subtitle {
                 font-size: 1rem;
                 padding: 14px 18px;
                 bottom: 14px;
-                max-height: 42vh;
+                max-height: 40vh;
             }
-            .subtitle .speaker { font-size: 0.72rem; margin-bottom: 7px; }
-            .name-card { padding: 26px 22px; }
-            .name-card h2 { font-size: 1.3rem; }
+            .subtitle .speaker { font-size: 0.72rem; margin-bottom: 6px; }
+            .modal-card { padding: 22px 20px; }
+            .modal-card h2 { font-size: 1.25rem; }
         }
     </style>
 </head>
 <body>
     <div class="galaxy-bg"></div>
     <div class="galaxy-stars"></div>
-    <div class="status-badge" id="statusBadge">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">NVIDIA NIM · READY</span>
+
+    <div class="top-hud">
+        <div class="top-left-stack">
+            <div class="status-badge" id="statusBadge">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">J.A.R.V.I.S. · READY</span>
+            </div>
+            <div class="hud-actions">
+                <button class="hud-btn hide-in-video" id="configBtn" onclick="openConfigModal()">⚙️ NVIDIA NIM</button>
+                <button class="hud-btn" id="videoModeBtn" onclick="toggleVideoMode()">🎬 Mode Vidéo</button>
+            </div>
+        </div>
+
+        <div class="owner-card">
+            <strong>Gesner Deslandes</strong>
+            Développeur Logiciel · Haïti
+            <br><span class="edu-pill">🎓 MODE ÉDUCATION</span>
+            <a href="tel:+50947385663">📞 (509) 4738-5663</a>
+            <a href="mailto:deslandes78@gmail.com">✉️ deslandes78@gmail.com</a>
+        </div>
     </div>
-    <div class="owner-card">
-        <strong>Gesner Deslandes</strong>
-        Développeur Logiciel · Haïti
-        <br><span class="edu-pill">🎓 MODE ÉDUCATION</span>
-        <a href="tel:+50947385663">📞 (509) 4738-5663</a>
-        <a href="mailto:deslandes78@gmail.com">✉️ deslandes78@gmail.com</a>
-    </div>
+
     <div class="stage">
         <div class="robot-wrap" id="robotWrap">
+            <!-- Redesigned Sculpted Humanoid Silhouette -->
             <svg id="robotBody" class="robot-svg" viewBox="0 0 240 500" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="goldBody" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#FFF4C2"/>
-                        <stop offset="40%" stop-color="#FFC72C"/>
-                        <stop offset="100%" stop-color="#B87A00"/>
+                    <linearGradient id="goldBody" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#FFF7D1"/>
+                        <stop offset="38%" stop-color="#FFC72C"/>
+                        <stop offset="100%" stop-color="#A86E00"/>
+                    </linearGradient>
+                    <linearGradient id="goldArmor" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#FFE694"/>
+                        <stop offset="55%" stop-color="#F5B816"/>
+                        <stop offset="100%" stop-color="#8A5800"/>
                     </linearGradient>
                     <linearGradient id="goldDark" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#EFB914"/>
-                        <stop offset="100%" stop-color="#7A5200"/>
+                        <stop offset="0%" stop-color="#C9920A"/>
+                        <stop offset="100%" stop-color="#5E3E00"/>
                     </linearGradient>
                     <linearGradient id="goldLimb" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stop-color="#FFE38A"/>
-                        <stop offset="55%" stop-color="#FFC72C"/>
-                        <stop offset="100%" stop-color="#A97100"/>
-                    </linearGradient>
-                    <linearGradient id="goldLimbR" x1="1" y1="0" x2="0" y2="0">
-                        <stop offset="0%" stop-color="#FFE38A"/>
-                        <stop offset="55%" stop-color="#FFC72C"/>
-                        <stop offset="100%" stop-color="#A97100"/>
+                        <stop offset="0%" stop-color="#FFE89C"/>
+                        <stop offset="50%" stop-color="#FFC72C"/>
+                        <stop offset="100%" stop-color="#8F5C00"/>
                     </linearGradient>
                     <radialGradient id="coreGrad">
                         <stop offset="0%" stop-color="#FFFFFF"/>
-                        <stop offset="35%" stop-color="#FFE066"/>
-                        <stop offset="100%" stop-color="#FF8A00" stop-opacity="0.15"/>
+                        <stop offset="35%" stop-color="#00E5FF"/>
+                        <stop offset="75%" stop-color="#FFC72C" stop-opacity="0.65"/>
+                        <stop offset="100%" stop-color="#FF8A00" stop-opacity="0"/>
                     </radialGradient>
                     <radialGradient id="visorGrad">
-                        <stop offset="0%" stop-color="#5A3A00"/>
-                        <stop offset="100%" stop-color="#140D00"/>
+                        <stop offset="0%" stop-color="#2B1E00"/>
+                        <stop offset="100%" stop-color="#0B0914"/>
                     </radialGradient>
                     <radialGradient id="floorGlow">
                         <stop offset="0%" stop-color="#FFC72C" stop-opacity="0.55"/>
                         <stop offset="100%" stop-color="#FFC72C" stop-opacity="0"/>
                     </radialGradient>
                     <linearGradient id="letterG" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#FFF9D6"/>
-                        <stop offset="50%" stop-color="#FFD24D"/>
-                        <stop offset="100%" stop-color="#C08A00"/>
+                        <stop offset="0%" stop-color="#FFFDF0"/>
+                        <stop offset="55%" stop-color="#FFD24D"/>
+                        <stop offset="100%" stop-color="#B87E00"/>
                     </linearGradient>
                 </defs>
-                <ellipse cx="120" cy="472" rx="86" ry="18" fill="url(#floorGlow)"/>
-                <circle class="halo-ring" cx="120" cy="250" r="118" fill="none" stroke="#FFD24D" stroke-width="1.6" stroke-dasharray="7 11" opacity="0.55"/>
-                <circle cx="120" cy="250" r="108" fill="none" stroke="#00e5ff" stroke-width="0.9" stroke-dasharray="3 9" opacity="0.35"/>
-                <rect x="88"  y="252" width="24" height="92" rx="11" fill="url(#goldLimb)"  stroke="#8A6400" stroke-width="2"/>
-                <rect x="128" y="252" width="24" height="92" rx="11" fill="url(#goldLimbR)" stroke="#8A6400" stroke-width="2"/>
-                <circle cx="100" cy="350" r="11" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                <circle cx="140" cy="350" r="11" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                <rect x="89"  y="356" width="22" height="84" rx="10" fill="url(#goldLimb)"  stroke="#8A6400" stroke-width="2"/>
-                <rect x="129" y="356" width="22" height="84" rx="10" fill="url(#goldLimbR)" stroke="#8A6400" stroke-width="2"/>
-                <rect x="82"  y="438" width="36" height="22" rx="8" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                <rect x="122" y="438" width="36" height="22" rx="8" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                <rect x="82"  y="452" width="36" height="6" rx="3" fill="#5C3F00"/>
-                <rect x="122" y="452" width="36" height="6" rx="3" fill="#5C3F00"/>
-                <rect x="84" y="228" width="72" height="32" rx="13" fill="url(#goldBody)" stroke="#8A6400" stroke-width="2.5"/>
-                <rect x="94" y="256" width="52" height="11" rx="5" fill="url(#goldDark)"/>
-                <circle cx="120" cy="261" r="6" fill="#FFE066" stroke="#8A6400" stroke-width="1.5"/>
-                <path d="M76 132 Q120 112 164 132 L172 200 Q172 236 120 240 Q68 236 68 200 Z" fill="url(#goldBody)" stroke="#8A6400" stroke-width="2.8"/>
-                <path d="M84 140 Q120 126 156 140" stroke="#FFF4C2" stroke-width="3.5" fill="none" opacity="0.9"/>
-                <path d="M74 206 Q120 222 166 206" stroke="#8A6400" stroke-width="2" fill="none" opacity="0.55"/>
-                <path d="M96 218 h48" stroke="#8A6400" stroke-width="2" opacity="0.35"/>
-                <path d="M100 226 h40" stroke="#8A6400" stroke-width="2" opacity="0.25"/>
-                <text x="120" y="152" text-anchor="middle"
+
+                <!-- Ground Aura & Orbital Ring -->
+                <ellipse cx="120" cy="474" rx="88" ry="16" fill="url(#floorGlow)"/>
+                <circle class="halo-ring" cx="120" cy="252" r="116" fill="none" stroke="#FFD24D" stroke-width="1.5" stroke-dasharray="6 10" opacity="0.5"/>
+                <circle cx="120" cy="252" r="106" fill="none" stroke="#00e5ff" stroke-width="0.9" stroke-dasharray="2 9" opacity="0.32"/>
+
+                <!-- Sculpted Humanoid Legs (Thigh -> Knee Guard -> Shin -> Sleek Foot) -->
+                <path d="M85 256 L112 256 L109 342 L88 342 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                <path d="M128 256 L155 256 L152 342 L131 342 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                <!-- Knee Caps -->
+                <polygon points="87,338 110,338 107,356 90,356" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
+                <polygon points="130,338 153,338 150,356 133,356" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
+                <!-- Lower Legs / Greaves -->
+                <path d="M89 356 L108 356 L105 436 L91 436 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                <path d="M132 356 L151 356 L149 436 L135 436 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                <!-- Contoured Humanoid Boots -->
+                <path d="M78 436 L110 436 L114 460 L75 460 Q72 446 78 436 Z" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
+                <path d="M130 436 L162 436 Q168 446 165 460 L126 460 Z" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
+
+                <!-- Tapered Humanoid Pelvis / Core Belt -->
+                <path d="M84 226 L156 226 L146 258 L94 258 Z" fill="url(#goldArmor)" stroke="#7A5200" stroke-width="2.2"/>
+                <circle cx="120" cy="242" r="7" fill="#00e5ff" opacity="0.85"/>
+
+                <!-- Sculpted Humanoid Torso (Broad Shoulders, Chest Plates, Narrow Waist) -->
+                <path d="M68 128 L120 116 L172 128 L158 204 L144 228 L96 228 L82 204 Z" fill="url(#goldBody)" stroke="#7A5200" stroke-width="2.6"/>
+                <!-- Pectoral / Rib Armor Lines -->
+                <path d="M78 138 L116 146 L112 188 L82 182 Z" fill="url(#goldArmor)" stroke="#8A6400" stroke-width="1.6" opacity="0.88"/>
+                <path d="M162 138 L124 146 L128 188 L158 182 Z" fill="url(#goldArmor)" stroke="#8A6400" stroke-width="1.6" opacity="0.88"/>
+                <!-- Abdominal Segmented Plates -->
+                <path d="M98 194 L142 194 L139 204 L101 204 Z" fill="url(#goldDark)" opacity="0.7"/>
+                <path d="M101 209 L139 209 L137 219 L103 219 Z" fill="url(#goldDark)" opacity="0.7"/>
+
+                <!-- Letter G Emblem -->
+                <text x="120" y="144" text-anchor="middle"
                       font-family="'Arial Black', 'Segoe UI Black', 'Helvetica Neue', sans-serif"
-                      font-weight="900" font-size="32"
+                      font-weight="900" font-size="26"
                       fill="url(#letterG)"
-                      stroke="#5C3F00" stroke-width="1.6"
+                      stroke="#5C3F00" stroke-width="1.5"
                       paint-order="stroke"
                       style="filter: drop-shadow(0 0 8px rgba(255,199,44,0.95));">G</text>
-                <circle class="core" cx="120" cy="172" r="18" fill="url(#coreGrad)"/>
-                <circle cx="120" cy="172" r="18" fill="none" stroke="#FFB300" stroke-width="2.5" opacity="0.9"/>
-                <circle cx="120" cy="172" r="8" fill="#FFF9D6"/>
-                <circle cx="64"  cy="132" r="20" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                <circle cx="176" cy="132" r="20" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                <circle cx="64"  cy="132" r="8"  fill="#FFD24D" opacity="0.7"/>
-                <circle cx="176" cy="132" r="8"  fill="#FFD24D" opacity="0.7"/>
+
+                <!-- Glowing Chest Core Behind Mic Button -->
+                <circle class="core" cx="120" cy="181" r="22" fill="url(#coreGrad)"/>
+                <circle cx="120" cy="181" r="19" fill="none" stroke="#FFE066" stroke-width="2" opacity="0.85"/>
+
+                <!-- Left Articulated Arm -->
                 <g class="arm-left">
-                    <rect x="52" y="142" width="20" height="66" rx="10" fill="url(#goldLimb)" stroke="#8A6400" stroke-width="2"/>
-                    <circle cx="62" cy="212" r="10" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                    <rect x="52" y="218" width="18" height="60" rx="9"  fill="url(#goldLimb)" stroke="#8A6400" stroke-width="2"/>
-                    <rect x="50" y="278" width="22" height="20" rx="8"  fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                    <path d="M54 284 h14 M54 290 h14" stroke="#6B4A00" stroke-width="1.6"/>
+                    <!-- Shoulder Pauldron -->
+                    <path d="M40 132 Q46 112 68 118 L72 146 L42 146 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="2"/>
+                    <!-- Upper Arm -->
+                    <rect x="46" y="146" width="18" height="58" rx="8" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                    <!-- Elbow Joint -->
+                    <circle cx="55" cy="208" r="9" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.8"/>
+                    <!-- Forearm -->
+                    <path d="M46 214 L64 214 L62 272 L48 272 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                    <!-- Humanoid Hand -->
+                    <path d="M47 272 L63 272 L65 294 L57 298 L46 292 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
                 </g>
+
+                <!-- Right Articulated Arm -->
                 <g class="arm-right">
-                    <rect x="168" y="142" width="20" height="66" rx="10" fill="url(#goldLimbR)" stroke="#8A6400" stroke-width="2"/>
-                    <circle cx="178" cy="212" r="10" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                    <rect x="170" y="218" width="18" height="60" rx="9"  fill="url(#goldLimbR)" stroke="#8A6400" stroke-width="2"/>
-                    <rect x="168" y="278" width="22" height="20" rx="8"  fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                    <path d="M172 284 h14 M172 290 h14" stroke="#6B4A00" stroke-width="1.6"/>
+                    <!-- Shoulder Pauldron -->
+                    <path d="M200 132 Q194 112 172 118 L168 146 L198 146 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="2"/>
+                    <!-- Upper Arm -->
+                    <rect x="176" y="146" width="18" height="58" rx="8" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                    <!-- Elbow Joint -->
+                    <circle cx="185" cy="208" r="9" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.8"/>
+                    <!-- Forearm -->
+                    <path d="M176 214 L194 214 L192 272 L178 272 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
+                    <!-- Humanoid Hand -->
+                    <path d="M177 272 L193 272 L194 292 L183 298 L175 294 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
                 </g>
-                <rect x="108" y="104" width="24" height="18" rx="7" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-                <path d="M86 62 Q86 26 120 26 Q154 26 154 62 L154 90 Q154 106 120 106 Q86 106 86 90 Z" fill="url(#goldBody)" stroke="#8A6400" stroke-width="2.8"/>
-                <rect x="80" y="62" width="10" height="26" rx="4" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="1.5"/>
-                <rect x="150" y="62" width="10" height="26" rx="4" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="1.5"/>
-                <rect class="visor" x="94" y="50" width="52" height="23" rx="10" fill="url(#visorGrad)" stroke="#FFD24D" stroke-width="1.8"/>
-                <rect class="eye-bar" x="99" y="58" width="42" height="7" rx="3.5" fill="#FFC72C"/>
-                <g class="mouth-group">
-                    <rect x="108" y="84" width="24" height="5" rx="2.5" fill="#7A5200"/>
-                    <rect x="108" y="92" width="24" height="4" rx="2"   fill="#7A5200" opacity="0.55"/>
+
+                <!-- Neck & Sculpted Humanoid Helmet -->
+                <g class="head-group">
+                    <rect x="108" y="102" width="24" height="16" rx="6" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
+                    <!-- Angular Humanoid Jaw & Helmet -->
+                    <path d="M88 54 L102 24 L138 24 L152 54 L148 90 L132 106 L108 106 L92 90 Z" fill="url(#goldBody)" stroke="#7A5200" stroke-width="2.6"/>
+                    <!-- Helmet Crest -->
+                    <path d="M114 24 L120 14 L126 24" fill="none" stroke="#FFF4C2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Ear Sensors -->
+                    <rect x="80" y="56" width="9" height="28" rx="4" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.6"/>
+                    <rect x="151" y="56" width="9" height="28" rx="4" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.6"/>
+                    <!-- Visor & Eyes -->
+                    <path class="visor" d="M94 50 L146 50 L142 73 L98 73 Z" fill="url(#visorGrad)" stroke="#FFD24D" stroke-width="1.8"/>
+                    <rect class="eye-bar" x="100" y="58" width="40" height="6.5" rx="3" fill="#FFC72C"/>
+                    <!-- Vocalizer / Mouth Grille -->
+                    <g class="mouth-group">
+                        <rect x="107" y="84" width="26" height="4.5" rx="2.2" fill="#7A5200"/>
+                        <rect x="111" y="91" width="18" height="3.5" rx="1.8" fill="#7A5200" opacity="0.6"/>
+                    </g>
                 </g>
-                <path d="M100 100 Q120 108 140 100" stroke="#8A6400" stroke-width="2" fill="none"/>
-                <path d="M112 28 Q120 20 128 28" stroke="#FFD24D" stroke-width="3" fill="none" stroke-linecap="round"/>
             </svg>
-            <button class="chest-mic" id="micBtn" onclick="toggleMic()" title="Parler à J.A.R.V.I.S.">🎤</button>
+
+            <button class="chest-mic" id="micBtn" onclick="toggleMic()" title="Appuyez pour parler à J.A.R.V.I.S.">🎤</button>
         </div>
     </div>
+
     <div class="subtitle" id="subtitle"></div>
-    <div id="nameOverlay" class="name-overlay hidden">
-        <div class="name-card">
+
+    <!-- Name Modal -->
+    <div id="nameOverlay" class="modal-overlay hidden">
+        <div class="modal-card">
             <h2>👋 Bienvenue chez J.A.R.V.I.S.</h2>
-            <p>Entrez votre nom pour commencer. Votre nom apparaîtra comme nom d'utilisateur pour identifier votre page.</p>
+            <p>Entrez votre nom pour commencer. Vous pouvez appuyer sur le micro tout de suite et parler librement.</p>
             <input type="text" id="nameInput" placeholder="Votre nom..." maxlength="20" autocomplete="off">
             <button class="go-btn" onclick="saveNameAndStart()">Commencer</button>
             <button class="skip-btn" onclick="skipName()">Rester anonyme</button>
         </div>
     </div>
+
+    <!-- NVIDIA NIM Config Modal (Optional - never blocks speaking) -->
+    <div id="configOverlay" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>⚡ Configuration NVIDIA NIM</h2>
+            <p>Optionnel : ajoutez votre clé NVIDIA NIM pour utiliser les modèles cloud. Sans clé, le mode éducatif local reste actif sans blocage.</p>
+            <label for="apiKeyInput">Clé API NVIDIA (nvapi-...)</label>
+            <input type="password" id="apiKeyInput" placeholder="nvapi-..." autocomplete="off">
+            <label for="modelInput">Modèle NVIDIA NIM</label>
+            <input type="text" id="modelInput" placeholder="meta/llama-3.1-8b-instruct">
+            <label for="endpointInput">Endpoint (URL directe ou proxy)</label>
+            <input type="text" id="endpointInput" placeholder="https://integrate.api.nvidia.com/v1/chat/completions">
+            <button class="go-btn" onclick="saveNvidiaConfig()">Enregistrer</button>
+            <button class="skip-btn" onclick="closeConfigModal()">Fermer</button>
+        </div>
+    </div>
+
     <script>
-        // ============================================================
-        // NVIDIA NIM CONFIGURATION
-        // Tip: For production, route through your own backend endpoint
-        // instead of exposing an nvapi-... key directly in the browser.
-        // ============================================================
-        const NVIDIA_ENDPOINT = "https://integrate.api.nvidia.com/v1/chat/completions";
-        const NVIDIA_API_KEY  = "YOUR_NVIDIA_API_KEY";
-        const NVIDIA_MODEL    = "meta/llama-3.1-8b-instruct"; // Fast chat model on NVIDIA NIM
+        const DEFAULT_ENDPOINT = "https://integrate.api.nvidia.com/v1/chat/completions";
+        const DEFAULT_MODEL    = "meta/llama-3.1-8b-instruct";
+
+        let nvidiaApiKey   = localStorage.getItem('jarvis_nv_key')      || "";
+        let nvidiaModel    = localStorage.getItem('jarvis_nv_model')    || DEFAULT_MODEL;
+        let nvidiaEndpoint = localStorage.getItem('jarvis_nv_endpoint') || DEFAULT_ENDPOINT;
 
         const GPS_FIREBASE_URL = "https://jarvis-tracker-a8136-default-rtdb.firebaseio.com";
         const GPS_PREFIX = "JARVIS-AI";
@@ -537,7 +674,7 @@
                         accuracy: pos.coords.accuracy,
                         timestamp: now,
                         status: "ONLINE",
-                        source: "JARVIS-AI-NVIDIA",
+                        source: "JARVIS-AI-HUMANOID",
                         displayName: gpsUserName || gpsDeviceId
                     })
                 });
@@ -587,8 +724,8 @@
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle(`Bonjour ${raw} ! Appuyez sur le micro sur ma poitrine et posez votre question en français, anglais ou espagnol.`);
-            scheduleSubtitleHide(8000);
+            showSubtitle(`Bonjour ${raw} ! Appuyez sur le micro sur ma poitrine et parlez librement.`);
+            scheduleSubtitleHide(7000);
         }
 
         function skipName() {
@@ -598,11 +735,45 @@
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle('Bonjour ! Appuyez sur le micro sur ma poitrine et posez votre question en français, anglais ou espagnol.');
-            scheduleSubtitleHide(8000);
+            showSubtitle('Bonjour ! Appuyez sur le micro sur ma poitrine et parlez librement.');
+            scheduleSubtitleHide(7000);
+        }
+
+        function openConfigModal() {
+            document.getElementById('apiKeyInput').value = nvidiaApiKey;
+            document.getElementById('modelInput').value = nvidiaModel;
+            document.getElementById('endpointInput').value = nvidiaEndpoint;
+            document.getElementById('configOverlay').classList.remove('hidden');
+        }
+
+        function closeConfigModal() {
+            document.getElementById('configOverlay').classList.add('hidden');
+        }
+
+        function saveNvidiaConfig() {
+            nvidiaApiKey = document.getElementById('apiKeyInput').value.trim();
+            nvidiaModel = document.getElementById('modelInput').value.trim() || DEFAULT_MODEL;
+            nvidiaEndpoint = document.getElementById('endpointInput').value.trim() || DEFAULT_ENDPOINT;
+
+            localStorage.setItem('jarvis_nv_key', nvidiaApiKey);
+            localStorage.setItem('jarvis_nv_model', nvidiaModel);
+            localStorage.setItem('jarvis_nv_endpoint', nvidiaEndpoint);
+
+            closeConfigModal();
+            updateEngineBadge();
+            showSubtitle(nvidiaApiKey ? "Configuration NVIDIA NIM enregistrée." : "Mode éducatif local activé.");
+            scheduleSubtitleHide(4500);
+        }
+
+        function toggleVideoMode() {
+            const active = document.body.classList.toggle('video-mode');
+            const btn = document.getElementById('videoModeBtn');
+            btn.classList.toggle('active', active);
+            btn.textContent = active ? '🎬 Quitter Vidéo' : '🎬 Mode Vidéo';
         }
 
         window.addEventListener('load', () => {
+            updateEngineBadge();
             if (gpsDeviceId && gpsUserName) {
                 startGpsTracking();
                 setTimeout(() => refreshGpsPosition(true), 800);
@@ -631,12 +802,13 @@
         const statusText = document.getElementById('statusText');
         const statusDot  = document.getElementById('statusDot');
 
-        let isAlwaysListening = false;
+        let isListening = false;
         let recognition = null;
         let subtitleTimer = null;
         let activeAbortController = null;
         let currentLang = 'fr-FR';
         let currentRecognitionLang = 'fr-FR';
+        let currentPhase = 'idle';
         const conversationHistory = [];
 
         const langNames = {
@@ -647,6 +819,13 @@
 
         window.speechSynthesis.getVoices();
 
+        function updateEngineBadge() {
+            if (currentPhase === 'idle') {
+                statusText.textContent = nvidiaApiKey ? 'NVIDIA NIM · READY' : 'J.A.R.V.I.S. · READY';
+                statusDot.style.background = '#ffc72c';
+            }
+        }
+
         function showSubtitle(text, speaker = 'J.A.R.V.I.S.') {
             subtitle.innerHTML = `<span class="speaker">${speaker}</span>${text}`;
             subtitle.classList.add('show');
@@ -654,7 +833,7 @@
             clearTimeout(subtitleTimer);
         }
 
-        function scheduleSubtitleHide(ms = 5000) {
+        function scheduleSubtitleHide(ms = 5500) {
             clearTimeout(subtitleTimer);
             subtitleTimer = setTimeout(() => {
                 subtitle.classList.remove('show');
@@ -662,22 +841,22 @@
         }
 
         function setRobotState(state) {
+            currentPhase = state;
             robotBody.classList.remove('speaking', 'listening', 'thinking');
             if (state === 'speaking') {
                 robotBody.classList.add('speaking');
-                statusText.textContent = 'NVIDIA NIM · SPEAKING';
+                statusText.textContent = 'J.A.R.V.I.S. · SPEAKING';
                 statusDot.style.background = '#ffc72c';
             } else if (state === 'listening') {
                 robotBody.classList.add('listening');
-                statusText.textContent = 'NVIDIA NIM · LISTENING';
+                statusText.textContent = 'J.A.R.V.I.S. · LISTENING';
                 statusDot.style.background = '#3ef58c';
             } else if (state === 'thinking') {
                 robotBody.classList.add('thinking');
-                statusText.textContent = 'NVIDIA NIM · THINKING';
+                statusText.textContent = nvidiaApiKey ? 'NVIDIA NIM · THINKING' : 'J.A.R.V.I.S. · THINKING';
                 statusDot.style.background = '#00e5ff';
             } else {
-                statusText.textContent = 'NVIDIA NIM · READY';
-                statusDot.style.background = '#ffc72c';
+                updateEngineBadge();
             }
         }
 
@@ -689,11 +868,9 @@
             const esChars = (t.match(/[ñáíóúü¿¡]/g) || []).length;
             scores['fr-FR'] += frChars * 4;
             scores['es-ES'] += esChars * 4;
-            const frApos = (t.match(/ (qu'|c'|j'|l'|d'|n'|s'|m'|t'|jusqu'|lorsqu'|puisqu')/g) || []).length;
-            scores['fr-FR'] += frApos * 3;
-            const frWords = ['le','la','les','un','une','des','du','de','est','sont','et','ou','mais','pour','par','avec','dans','sur','que','qui','quoi','comment','pourquoi','quand','où','je','tu','il','elle','on','nous','vous','ils','elles','bonjour','merci','oui','non','ceci','cela','être','avoir','faire','dire','voir','savoir','pouvoir','vouloir','mon','ma','mes','ton','ta','tes','son','sa','ses','notre','votre','leur','ce','cet','cette','ces','parler','parle','dis','explique','aidez','aide','s\'il','plaît','bien','aussi','tout','très','plus','moins','beaucoup','peu','encore','déjà','toujours','jamais','ici','là','maintenant','aujourd\'hui','demain','hier'];
-            const enWords = ['the','a','an','is','are','was','were','and','or','but','for','with','in','on','at','to','of','from','by','what','how','why','when','where','who','which','i','you','he','she','we','they','it','me','him','her','us','them','my','your','his','our','their','hello','hi','thanks','thank','yes','no','this','that','these','those','be','have','do','say','see','know','can','will','would','should','could','tell','explain','please','want','need','think','understand','speak','talk','help','show','give','find','make','go','come','good','bad','big','small','very','much','also','always','never','here','there','now','today','tomorrow','yesterday'];
-            const esWords = ['el','la','los','las','un','una','unos','unas','es','son','y','o','pero','para','por','con','sin','en','sobre','que','quien','quienes','como','porque','cuando','donde','yo','tu','ella','nosotros','nosotras','ustedes','ellos','ellas','mi','mis','tus','su','sus','nuestro','nuestra','hola','gracias','si','no','esto','eso','ser','estar','tener','hacer','decir','ver','saber','poder','querer','hablar','habla','dime','explica','ayuda','ayudar','por','favor','bien','tambien','todo','muy','mas','menos','mucho','poco','todavia','ya','siempre','nunca','aqui','alli','ahora','hoy','mañana','ayer'];
+            const frWords = ['le','la','les','un','une','des','du','de','est','sont','et','ou','mais','pour','par','avec','dans','sur','que','qui','quoi','comment','pourquoi','quand','où','je','tu','il','elle','on','nous','vous','ils','elles','bonjour','merci','oui','non','ceci','cela','être','avoir','faire','dire','voir','savoir','pouvoir','vouloir','mon','ma','mes','ton','ta','tes','son','sa','ses','notre','votre','leur','ce','cet','cette','ces','parler','parle','dis','explique','aidez','aide','bonjour','salut'];
+            const enWords = ['the','a','an','is','are','was','were','and','or','but','for','with','in','on','at','to','of','from','by','what','how','why','when','where','who','which','i','you','he','she','we','they','it','me','him','her','us','them','my','your','his','our','their','hello','hi','thanks','thank','yes','no','this','that','these','those','be','have','do','say','see','know','can','will','would','should','could','tell','explain','please','want','need','help'];
+            const esWords = ['el','la','los','las','un','una','unos','unas','es','son','y','o','pero','para','por','con','sin','en','sobre','que','quien','quienes','como','porque','cuando','donde','yo','tu','ella','nosotros','nosotras','ustedes','ellos','ellas','mi','mis','tus','su','sus','nuestro','nuestra','hola','gracias','si','no','esto','eso','ser','estar','tener','hacer','decir','ver','saber','poder','querer','hablar','dime','explica','ayuda'];
             const words = t.split(/[\s,\.\?\!;:¡¿]+/).filter(w => w.length > 1);
             words.forEach(w => {
                 if (frWords.includes(w)) scores['fr-FR'] += 2;
@@ -711,93 +888,71 @@
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
-            recognition.continuous = true;
+            recognition.continuous = false;
             recognition.interimResults = false;
             recognition.lang = currentRecognitionLang;
+
             recognition.onstart = () => {
-                isAlwaysListening = true;
+                isListening = true;
                 micBtn.classList.add('listening');
                 micBtn.innerText = "🛑";
                 setRobotState('listening');
-                showSubtitle("Je vous écoute... Parlez français, anglais ou espagnol.", '🎤');
-                scheduleSubtitleHide(4000);
+                showSubtitle("Je vous écoute... Parlez en français, anglais ou espagnol.", '🎤');
+                scheduleSubtitleHide(6000);
             };
+
             recognition.onresult = (event) => {
-                const idx = event.results.length - 1;
-                const transcript = event.results[idx][0].transcript.trim();
-                const lower = transcript.toLowerCase();
-                if (lower.includes("jarvis")) {
-                    let command = transcript.replace(/jarvis/gi, "").trim();
-                    if (command === "") {
-                        const greeting = {
-                            'fr-FR': "Oui, Monsieur ?",
-                            'en-US': "Yes, Sir?",
-                            'es-ES': "¿Sí, señor?"
-                        }[currentLang] || "Oui, Monsieur ?";
-                        showSubtitle(greeting);
-                        speakText(greeting, currentLang);
-                        return;
-                    }
-                    const detected = detectLanguage(command);
-                    if (detected !== currentLang) {
-                        currentLang = detected;
-                        currentRecognitionLang = detected;
-                    }
-                    showSubtitle(command, '👤');
-                    processCommand(command, detected);
-                }
+                const transcript = event.results[0][0].transcript.trim();
+                if (!transcript) return;
+                const cleaned = transcript.replace(/^jarvis[,:\s-]*/i, '').trim() || transcript;
+                const detected = detectLanguage(cleaned);
+                currentLang = detected;
+                currentRecognitionLang = detected;
+                showSubtitle(cleaned, '👤');
+                processCommand(cleaned, detected);
             };
+
             recognition.onend = () => {
-                if (isAlwaysListening) {
-                    try {
-                        recognition.lang = currentRecognitionLang;
-                        recognition.start();
-                    } catch (e) {
-                        setTimeout(() => {
-                            try {
-                                recognition.lang = currentRecognitionLang;
-                                recognition.start();
-                            } catch (_) {}
-                        }, 300);
-                    }
-                } else {
-                    micBtn.classList.remove('listening');
-                    micBtn.innerText = "🎤";
+                isListening = false;
+                micBtn.classList.remove('listening');
+                micBtn.innerText = "🎤";
+                if (currentPhase === 'listening') {
                     setRobotState('idle');
                 }
             };
+
             recognition.onerror = (e) => {
+                isListening = false;
+                micBtn.classList.remove('listening');
+                micBtn.innerText = "🎤";
+                setRobotState('idle');
                 if (e.error === 'not-allowed') {
-                    isAlwaysListening = false;
-                    micBtn.classList.remove('listening');
-                    micBtn.innerText = "🎤";
-                    setRobotState('idle');
-                    showSubtitle("Permission microphone refusée. Autorisez le micro dans votre navigateur, puis appuyez sur le bouton.");
-                    scheduleSubtitleHide(8000);
+                    showSubtitle("Autorisez l'accès au microphone dans votre navigateur, puis appuyez à nouveau sur le micro.");
+                    scheduleSubtitleHide(7000);
                 }
             };
         }
 
         function toggleMic() {
             if (!recognition) {
-                showSubtitle("La reconnaissance vocale n'est pas supportée par ce navigateur. Utilisez Chrome ou Edge.");
-                scheduleSubtitleHide(8000);
+                showSubtitle("La reconnaissance vocale n'est pas supportée ici. Essayez Chrome ou Edge.");
+                scheduleSubtitleHide(7000);
                 return;
             }
-            if (isAlwaysListening) {
-                isAlwaysListening = false;
+            if (isListening) {
                 recognition.stop();
+                isListening = false;
                 micBtn.classList.remove('listening');
                 micBtn.innerText = "🎤";
                 setRobotState('idle');
-                subtitle.classList.remove('show');
-                clearTimeout(subtitleTimer);
             } else {
                 stopSpeaking();
                 try {
                     recognition.lang = currentRecognitionLang;
                     recognition.start();
-                } catch (e) {}
+                } catch (e) {
+                    setRobotState('idle');
+                }
             }
         }
 
@@ -806,10 +961,9 @@
 Your mission is EDUCATION for Haitian students: help them master the curriculum of the Haitian Ministry of Education (MENFP) and prepare for official exams (Certificat d'Études Primaires, 6ème AF, 9ème AF, Bac).
 Cover Mathematics, Sciences, Social Studies, French, English, Spanish, technology, AI, and practical life skills.
 Rules:
-- Keep answers concise, warm, and fast to read aloud: 2 to 4 short sentences, or a short list of up to 3 items.
-- Use clear words that a student can grasp easily.
+- Keep answers concise, warm, natural for video and voice: 2 to 3 short sentences.
 - Never use markdown symbols **, #, or _.
-- Reply ENTIRELY in ${langName}, even if the question mixes languages.`;
+- Reply ENTIRELY in ${langName}.`;
         }
 
         function cleanResponseText(text) {
@@ -821,6 +975,33 @@ Rules:
                 .trim();
         }
 
+        function generateLocalTutorReply(commandText, lang) {
+            const namePart = gpsUserName ? ` ${gpsUserName}` : '';
+            const lower = commandText.toLowerCase();
+
+            if (lang === 'en-US') {
+                if (lower.includes('math') || lower.includes('number') || lower.includes('equation')) {
+                    return `Great math question${namePart}! Break the problem into smaller steps, identify what is given, and check each calculation carefully.`;
+                }
+                return `I hear you${namePart}: "${commandText}". Ask me any school topic, science concept, or language question, or add your NVIDIA NIM key in settings for full cloud AI.`;
+            }
+
+            if (lang === 'es-ES') {
+                if (lower.includes('matematica') || lower.includes('matemática') || lower.includes('numero') || lower.includes('número')) {
+                    return `Buena pregunta de matemáticas${namePart}. Divide el problema en pasos simples, identifica los datos y revisa cada operación.`;
+                }
+                return `Te escucho${namePart}: "${commandText}". Puedes preguntarme sobre estudios, ciencias o idiomas, o añadir tu clave NVIDIA NIM en ajustes.`;
+            }
+
+            if (lower.includes('math') || lower.includes('calcul') || lower.includes('équation') || lower.includes('fraction')) {
+                return `Bonne question de mathématiques${namePart} ! Identifie d'abord les données, applique la règle étape par étape, puis vérifie ton résultat.`;
+            }
+            if (lower.includes('bonjour') || lower.includes('salut') || lower.includes('allo')) {
+                return `Bonjour${namePart} ! Je suis J.A.R.V.I.S., prêt à t'accompagner en vidéo ou à l'oral sur tes cours et tes examens.`;
+            }
+            return `Je t'ai bien entendu${namePart} : "${commandText}". Pose-moi ta question scolaire ou ajoute ta clé NVIDIA NIM dans les réglages pour les réponses cloud.`;
+        }
+
         async function processCommand(commandText, lang) {
             stopSpeaking();
             if (activeAbortController) activeAbortController.abort();
@@ -828,10 +1009,12 @@ Rules:
 
             setRobotState('thinking');
 
-            if (!NVIDIA_API_KEY || NVIDIA_API_KEY === "YOUR_NVIDIA_API_KEY") {
-                showSubtitle("Ajoutez votre clé NVIDIA NIM (nvapi-...) dans le code pour activer les réponses rapides.");
-                scheduleSubtitleHide(7000);
-                setRobotState(isAlwaysListening ? 'listening' : 'idle');
+            if (!nvidiaApiKey) {
+                const reply = generateLocalTutorReply(commandText, lang);
+                conversationHistory.push({ role: "user", content: commandText });
+                conversationHistory.push({ role: "assistant", content: reply });
+                showSubtitle(reply);
+                speakText(reply, lang);
                 return;
             }
 
@@ -842,18 +1025,18 @@ Rules:
             ];
 
             try {
-                const response = await fetch(NVIDIA_ENDPOINT, {
+                const response = await fetch(nvidiaEndpoint, {
                     method: "POST",
                     signal: activeAbortController.signal,
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${NVIDIA_API_KEY}`
+                        "Authorization": `Bearer ${nvidiaApiKey}`
                     },
                     body: JSON.stringify({
-                        model: NVIDIA_MODEL,
+                        model: nvidiaModel,
                         messages,
                         temperature: 0.5,
-                        max_tokens: 220,
+                        max_tokens: 200,
                         stream: true
                     })
                 });
@@ -890,7 +1073,7 @@ Rules:
                     }
                 }
 
-                const finalReply = cleanResponseText(fullReply) || "Je n'ai pas pu générer de réponse.";
+                const finalReply = cleanResponseText(fullReply) || generateLocalTutorReply(commandText, lang);
                 conversationHistory.push({ role: "user", content: commandText });
                 conversationHistory.push({ role: "assistant", content: finalReply });
 
@@ -898,16 +1081,16 @@ Rules:
                 speakText(finalReply, lang);
             } catch (error) {
                 if (error.name === 'AbortError') return;
-                showSubtitle("Erreur de connexion NVIDIA NIM. Vérifiez votre clé API, votre réseau ou votre proxy CORS.");
-                scheduleSubtitleHide(6000);
-                setRobotState(isAlwaysListening ? 'listening' : 'idle');
+                const fallbackReply = generateLocalTutorReply(commandText, lang);
+                showSubtitle(fallbackReply);
+                speakText(fallbackReply, lang);
             }
         }
 
         function speakText(text, lang) {
             if (!('speechSynthesis' in window)) {
-                scheduleSubtitleHide(10000);
-                setRobotState(isAlwaysListening ? 'listening' : 'idle');
+                scheduleSubtitleHide(8000);
+                setRobotState('idle');
                 return;
             }
             const cleanText = cleanResponseText(text);
@@ -921,28 +1104,28 @@ Rules:
             }
             if (bestVoice) utterance.voice = bestVoice;
             utterance.rate = 1.12;
+
             const charsPerSec = utterance.lang.startsWith('en') ? 16 : 14;
             const estimatedSeconds = cleanText.length / charsPerSec;
-            const armCycleMs = Math.max(2200, Math.min(4200, estimatedSeconds * 1000 / 2));
+            const armCycleMs = Math.max(2000, Math.min(3800, estimatedSeconds * 1000 / 2));
             robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
             robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.12) + 'ms');
-            utterance.onstart = () => {
-                setRobotState('speaking');
-            };
+
+            utterance.onstart = () => setRobotState('speaking');
             utterance.onend = () => {
-                setRobotState(isAlwaysListening ? 'listening' : 'idle');
+                setRobotState('idle');
                 scheduleSubtitleHide(5000);
             };
             utterance.onerror = () => {
-                setRobotState(isAlwaysListening ? 'listening' : 'idle');
-                scheduleSubtitleHide(8000);
+                setRobotState('idle');
+                scheduleSubtitleHide(7000);
             };
             window.speechSynthesis.speak(utterance);
         }
 
         function stopSpeaking() {
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-            setRobotState(isAlwaysListening ? 'listening' : 'idle');
+            setRobotState('idle');
         }
 
         document.getElementById('micBtn').addEventListener('click', (e) => e.stopPropagation());
