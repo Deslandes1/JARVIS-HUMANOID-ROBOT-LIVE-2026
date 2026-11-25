@@ -58,7 +58,6 @@
         }
         @keyframes twinkle { from { opacity: .55; } to { opacity: 1; } }
         @keyframes starDrift { from { transform: translate3d(0,0,0); } to { transform: translate3d(-70px,-45px,0); } }
-
         .top-hud {
             position: fixed;
             top: 14px;
@@ -124,7 +123,6 @@
             border-color: var(--cyan);
             color: var(--cyan);
         }
-
         .owner-card {
             pointer-events: auto;
             background: rgba(255,255,255,0.94);
@@ -166,11 +164,9 @@
             transition: color .15s;
         }
         .owner-card a:hover { color: var(--accent); text-decoration: underline; }
-
         body.video-mode .owner-card {
             display: none;
         }
-
         .stage {
             flex: 1;
             display: flex;
@@ -230,7 +226,6 @@
             0%, 100% { box-shadow: 0 0 22px rgba(220,38,38,0.95); }
             50% { box-shadow: 0 0 42px rgba(220,38,38,1); }
         }
-
         #robotBody .eye-bar { animation: eyeIdle 3.4s ease-in-out infinite; }
         #robotBody .core { animation: coreIdle 2.5s ease-in-out infinite; }
         #robotBody .halo-ring { transform-origin: 120px 250px; animation: haloSpin 36s linear infinite; }
@@ -241,15 +236,12 @@
         }
         .arm-left  { transform-origin: 58px 134px; }
         .arm-right { transform-origin: 182px 134px; }
-
         #robotBody:not(.speaking) .head-group { animation: headIdle 5.5s ease-in-out infinite; }
         #robotBody:not(.speaking) .arm-left  { animation: armIdleLeft 5.8s ease-in-out infinite; }
         #robotBody:not(.speaking) .arm-right { animation: armIdleRight 6.4s ease-in-out infinite; }
-
         #robotBody.speaking .head-group { animation: headSpeak 1.6s ease-in-out infinite; }
         #robotBody.speaking .arm-left  { animation: armSpeakLeft var(--arm-speed-left, 2400ms) ease-in-out infinite; }
         #robotBody.speaking .arm-right { animation: armSpeakRight var(--arm-speed-right, 2700ms) ease-in-out infinite; }
-
         @keyframes headIdle {
             0%, 100% { transform: rotate(0deg); }
             50%      { transform: rotate(2.2deg); }
@@ -278,7 +270,6 @@
             70%  { transform: rotate(5deg); }
             100% { transform: rotate(0deg); }
         }
-
         #robotBody.speaking {
             filter: drop-shadow(0 12px 44px rgba(255,199,44,0.95));
             transform: translateY(-4px);
@@ -291,7 +282,6 @@
         #robotBody.listening .eye-bar { fill: #3ef58c; animation: eyeListen 1.1s ease-in-out infinite; }
         #robotBody.listening .halo-ring { animation: haloSpin 9s linear infinite; stroke: #3ef58c; }
         #robotBody.thinking .eye-bar { fill: #00e5ff; animation: eyeSpeak .4s ease-in-out infinite; }
-
         @keyframes eyeIdle { 0%,100% { opacity: 1; } 50% { opacity: .68; } }
         @keyframes eyeSpeak { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
         @keyframes eyeListen { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
@@ -299,7 +289,6 @@
         @keyframes coreIdle { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
         @keyframes coreSpeak { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
         @keyframes haloSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
         .subtitle {
             position: fixed;
             bottom: 24px;
@@ -334,7 +323,6 @@
             letter-spacing: 3px;
             margin-bottom: 8px;
         }
-
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -401,7 +389,6 @@
         }
         .modal-card .skip-btn:hover { color: #334155; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         @media (max-width: 760px) {
             .status-badge { font-size: 0.65rem; padding: 6px 10px; }
             .hud-btn { font-size: 0.68rem; padding: 5px 10px; }
@@ -429,7 +416,6 @@
 <body>
     <div class="galaxy-bg"></div>
     <div class="galaxy-stars"></div>
-
     <div class="top-hud">
         <div class="top-left-stack">
             <div class="status-badge" id="statusBadge">
@@ -442,7 +428,6 @@
                 <button class="hud-btn" id="videoModeBtn" onclick="toggleVideoMode()">🎬 Mode Vidéo</button>
             </div>
         </div>
-
         <div class="owner-card">
             <strong>Gesner Deslandes</strong>
             Software Developer · Haïti
@@ -451,7 +436,6 @@
             <a href="mailto:deslandes78@gmail.com">✉️ deslandes78@gmail.com</a>
         </div>
     </div>
-
     <div class="stage">
         <div class="robot-wrap" id="robotWrap">
             <svg id="robotBody" class="robot-svg" viewBox="0 0 240 500" xmlns="http://www.w3.org/2000/svg">
@@ -495,11 +479,9 @@
                         <stop offset="100%" stop-color="#B87E00"/>
                     </linearGradient>
                 </defs>
-
                 <ellipse cx="120" cy="474" rx="88" ry="16" fill="url(#floorGlow)"/>
                 <circle class="halo-ring" cx="120" cy="252" r="116" fill="none" stroke="#FFD24D" stroke-width="1.5" stroke-dasharray="6 10" opacity="0.5"/>
                 <circle cx="120" cy="252" r="106" fill="none" stroke="#00e5ff" stroke-width="0.9" stroke-dasharray="2 9" opacity="0.32"/>
-
                 <path d="M85 256 L112 256 L109 342 L88 342 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
                 <path d="M128 256 L155 256 L152 342 L131 342 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
                 <polygon points="87,338 110,338 107,356 90,356" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
@@ -508,16 +490,13 @@
                 <path d="M132 356 L151 356 L149 436 L135 436 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
                 <path d="M78 436 L110 436 L114 460 L75 460 Q72 446 78 436 Z" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
                 <path d="M130 436 L162 436 Q168 446 165 460 L126 460 Z" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
-
                 <path d="M84 226 L156 226 L146 258 L94 258 Z" fill="url(#goldArmor)" stroke="#7A5200" stroke-width="2.2"/>
                 <circle cx="120" cy="242" r="7" fill="#00e5ff" opacity="0.85"/>
-
                 <path d="M68 128 L120 116 L172 128 L158 204 L144 228 L96 228 L82 204 Z" fill="url(#goldBody)" stroke="#7A5200" stroke-width="2.6"/>
                 <path d="M78 138 L116 146 L112 188 L82 182 Z" fill="url(#goldArmor)" stroke="#8A6400" stroke-width="1.6" opacity="0.88"/>
                 <path d="M162 138 L124 146 L128 188 L158 182 Z" fill="url(#goldArmor)" stroke="#8A6400" stroke-width="1.6" opacity="0.88"/>
                 <path d="M98 194 L142 194 L139 204 L101 204 Z" fill="url(#goldDark)" opacity="0.7"/>
                 <path d="M101 209 L139 209 L137 219 L103 219 Z" fill="url(#goldDark)" opacity="0.7"/>
-
                 <text x="120" y="144" text-anchor="middle"
                       font-family="'Arial Black', 'Segoe UI Black', 'Helvetica Neue', sans-serif"
                       font-weight="900" font-size="26"
@@ -525,10 +504,8 @@
                       stroke="#5C3F00" stroke-width="1.5"
                       paint-order="stroke"
                       style="filter: drop-shadow(0 0 8px rgba(255,199,44,0.95));">G</text>
-
                 <circle class="core" cx="120" cy="181" r="22" fill="url(#coreGrad)"/>
                 <circle cx="120" cy="181" r="19" fill="none" stroke="#FFE066" stroke-width="2" opacity="0.85"/>
-
                 <g class="arm-left">
                     <path d="M40 132 Q46 112 68 118 L72 146 L42 146 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="2"/>
                     <rect x="46" y="146" width="18" height="58" rx="8" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
@@ -536,7 +513,6 @@
                     <path d="M46 214 L64 214 L62 272 L48 272 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
                     <path d="M47 272 L63 272 L65 294 L57 298 L46 292 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
                 </g>
-
                 <g class="arm-right">
                     <path d="M200 132 Q194 112 172 118 L168 146 L198 146 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="2"/>
                     <rect x="176" y="146" width="18" height="58" rx="8" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
@@ -544,7 +520,6 @@
                     <path d="M176 214 L194 214 L192 272 L178 272 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
                     <path d="M177 272 L193 272 L194 292 L183 298 L175 294 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
                 </g>
-
                 <g class="head-group">
                     <rect x="108" y="102" width="24" height="16" rx="6" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
                     <path d="M88 54 L102 24 L138 24 L152 54 L148 90 L132 106 L108 106 L92 90 Z" fill="url(#goldBody)" stroke="#7A5200" stroke-width="2.6"/>
@@ -559,13 +534,10 @@
                     </g>
                 </g>
             </svg>
-
             <button class="chest-mic" id="micBtn" onclick="toggleMic()" title="Tap ON / Tap OFF mic">🎤</button>
         </div>
     </div>
-
     <div class="subtitle" id="subtitle"></div>
-
     <div id="nameOverlay" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>👋 Bienvenue chez J.A.R.V.I.S.</h2>
@@ -575,17 +547,16 @@
             <button class="skip-btn" onclick="skipName()">Rester anonyme</button>
         </div>
     </div>
-
     <script>
         // ============================================================
-        // JARVIS SCHOLAR DATABASE & VERIFIED LEADERSHIP RECORDS
+        // JARVIS SCHOLAR DATABASE, ACADEMIC SUBJECTS & VERIFIED RECORDS
         // ============================================================
         const JARVIS_DATABASE = {
             assistantName: "J.A.R.V.I.S.",
             owner: {
                 name: "Gesner Deslandes",
-                roleEn: "Software Developer from Haiti",
-                roleFr: "Développeur Logiciel d'Haïti",
+                roleEn: "Software Developer and Technology Coordinator from Haiti",
+                roleFr: "Développeur Logiciel et Coordinateur Technologique d'Haïti",
                 phone: "(509)-47385663",
                 email: "deslandes78@gmail.com"
             },
@@ -605,6 +576,40 @@
                     detailEn: "He serves alongside President Donald Trump and also acts as President of the Senate.",
                     answerFr: "Le vice-président actuel des États-Unis est JD Vance, en fonction depuis le 20 janvier 2025.",
                     detailFr: "Il exerce ses fonctions aux côtés du président Donald Trump et préside également le Sénat."
+                }
+            ],
+            academicGuides: [
+                {
+                    id: 'mathematics',
+                    match: /\b(math|maths|mathematics|algebra|geometry|calculus|trigonometry|equation|fraction|quadratic|mathématiques|mathematiques|algèbre|algebre|géométrie|geometrie|calcul|trigonométrie|équation|equation)\b/i,
+                    shortEn: "In mathematics, every problem becomes clear when we identify what is given, choose the right theorem or formula, and solve step by step.",
+                    longEn: "In mathematics, mastery comes from structure and logic. Whether we are solving linear or quadratic equations, analyzing geometric proofs, or working through derivatives and trigonometry, we always start by defining the known variables, applying the governing rule cleanly, and verifying the result. Share the exact equation or problem you are working on, and we will solve it together step by step.",
+                    shortFr: "En mathématiques, chaque problème devient clair lorsqu'on identifie les données, qu'on applique la bonne formule et qu'on résout étape par étape.",
+                    longFr: "En mathématiques, la maîtrise repose sur la rigueur et la logique. Qu'il s'agisse d'équations algébriques, de géométrie, de trigonométrie ou d'analyse, nous commençons toujours par poser les variables connues, appliquer le théorème approprié et vérifier le résultat. Donne-moi l'exercice précis sur lequel tu travailles et nous le résoudrons ensemble étape par étape."
+                },
+                {
+                    id: 'physics',
+                    match: /\b(physics|mechanics|force|newton|energy|velocity|acceleration|electricity|magnetism|optics|thermodynamics|quantum|physique|mécanique|mecanique|énergie|energie|vitesse|accélération|électricité|electricite|magnétisme|optique|thermodynamique)\b/i,
+                    shortEn: "Physics explains how matter and energy interact across the universe, from Newton's laws of motion to electricity, waves, and thermodynamics.",
+                    longEn: "Physics investigates the fundamental laws governing motion, forces, energy, electromagnetism, optics, and matter. When tackling any physics problem, we list the given physical quantities with their SI units, select the conservation law or equation of motion that connects them, and check dimensional consistency. Which physics concept or homework question would you like to analyze together?",
+                    shortFr: "La physique explique comment la matière et l'énergie interagissent, des lois du mouvement de Newton jusqu'à l'électricité, aux ondes et à la thermodynamique.",
+                    longFr: "La physique étudie les lois fondamentales qui régissent le mouvement, les forces, l'énergie, l'électromagnétisme et la matière. Pour résoudre tout exercice de physique, nous relevons d'abord les grandeurs données avec leurs unités du Système International, puis nous appliquons la loi de conservation ou l'équation du mouvement correspondante. Quel chapitre ou exercice souhaites-tu étudier ?"
+                },
+                {
+                    id: 'chemistry',
+                    match: /\b(chemistry|chimistry|atom|molecule|periodic table|chemical|reaction|acid|base|mole|stoichiometry|bond|chimie|atome|molécule|molecule|tableau périodique|réaction|acide|stœchiométrie|liaison)\b/i,
+                    shortEn: "Chemistry is the science of matter, atoms, and molecular transformations—explaining how elements bond, react, and exchange energy.",
+                    longEn: "Chemistry examines the composition, structure, and transformations of matter at the atomic and molecular levels. From balancing chemical equations and calculating molar masses to understanding acids, bases, and chemical bonding, every reaction obeys the conservation of mass and charge. Tell me which element, reaction, or chemistry exercise you are studying.",
+                    shortFr: "La chimie est la science de la matière, des atomes et des transformations moléculaires : elle explique comment les éléments se lient et réagissent.",
+                    longFr: "La chimie étudie la composition, la structure et les transformations de la matière à l'échelle atomique et moléculaire. Qu'il s'agisse d'équilibrer une équation chimique, de calculer une quantité de matière en moles ou d'étudier les réactions acido-basiques, la conservation de la masse et des charges reste notre guide. Quel sujet ou exercice de chimie veux-tu travailler ?"
+                },
+                {
+                    id: 'biology',
+                    match: /\b(biology|cell|dna|genetics|evolution|photosynthesis|ecosystem|anatomy|biologie|cellule|adn|génétique|genetique|évolution|photosynthèse|écosystème|anatomie)\b/i,
+                    shortEn: "Biology explores living systems, from cellular respiration and DNA genetics to human anatomy and ecological balance.",
+                    longEn: "Biology studies the structure, function, growth, and evolution of living organisms. At the microscopic scale, cells carry out metabolism and express genetic instructions encoded in DNA; at the macroscopic scale, organisms interact within complex ecosystems. Which biological system or lesson shall we examine today?",
+                    shortFr: "La biologie explore le monde vivant, depuis le fonctionnement de la cellule et de l'ADN jusqu'à l'anatomie et l'équilibre des écosystèmes.",
+                    longFr: "La biologie étudie l'organisation, le fonctionnement et l'évolution des êtres vivants. À l'échelle microscopique, la cellule assure le métabolisme et exprime l'information génétique portée par l'ADN ; à l'échelle globale, les organismes interagissent au sein d'écosystèmes complexes. Quelle notion de biologie souhaites-tu approfondir ?"
                 }
             ]
         };
@@ -690,7 +695,7 @@
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle(`Bienvenue ${raw} ! Je suis J.A.R.V.I.S., votre robot érudit. Appuyez sur le micro pour discuter, poser des questions ou apprendre.`);
+            showSubtitle(`Bienvenue ${raw} ! Je suis J.A.R.V.I.S., votre robot érudit. Appuyez sur le micro pour discuter, poser vos questions ou réviser vos cours.`);
             scheduleSubtitleHide(7500);
         }
 
@@ -701,7 +706,7 @@
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle('Bienvenue ! Je suis J.A.R.V.I.S., votre robot érudit. Appuyez sur le micro pour discuter ou apprendre.');
+            showSubtitle('Bienvenue ! Je suis J.A.R.V.I.S., votre robot érudit. Appuyez sur le micro pour discuter ou étudier n\'importe quelle matière.');
             scheduleSubtitleHide(7500);
         }
 
@@ -756,6 +761,13 @@
         let lastProcessedQuery = '';
         let lastProcessedAt = 0;
 
+        // Conversational State & Careful Listening Mode
+        const conversationHistory = [];
+        let attentiveListeningMode = false;
+        let attentiveListeningSubject = '';
+        let attentiveBuffer = [];
+        let attentiveFlushTimer = null;
+
         window.speechSynthesis.getVoices();
 
         function cycleLangLock() {
@@ -801,7 +813,7 @@
             clearTimeout(subtitleTimer);
         }
 
-        function scheduleSubtitleHide(ms = 8500) {
+        function scheduleSubtitleHide(ms = 9000) {
             clearTimeout(subtitleTimer);
             subtitleTimer = setTimeout(() => {
                 subtitle.classList.remove('show');
@@ -828,11 +840,13 @@
                 statusDot.style.background = '#ffc72c';
             } else if (state === 'listening') {
                 robotBody.classList.add('listening');
-                statusText.textContent = `J.A.R.V.I.S. · MIC ON (${langTag})`;
+                statusText.textContent = attentiveListeningMode
+                    ? `J.A.R.V.I.S. · ATTENTIVE LISTEN (${langTag})`
+                    : `J.A.R.V.I.S. · MIC ON (${langTag})`;
                 statusDot.style.background = '#3ef58c';
             } else if (state === 'thinking') {
                 robotBody.classList.add('thinking');
-                statusText.textContent = `J.A.R.V.I.S. · RESEARCHING (${langTag})`;
+                statusText.textContent = `J.A.R.V.I.S. · ANALYZING (${langTag})`;
                 statusDot.style.background = '#00e5ff';
             } else {
                 statusText.textContent = isMicArmed
@@ -849,13 +863,10 @@
             const t = ' ' + raw + ' ';
             let enScore = 0;
             let frScore = 0;
-
             const frAccents = (raw.match(/[àâäéèêëïîôöùûüÿçœæ]/g) || []).length;
             frScore += frAccents * 4;
-
             const frContractions = (t.match(/ (qu'|c'|j'|l'|d'|n'|s'|m'|t'|jusqu'|lorsqu'|puisqu')/g) || []).length;
             frScore += frContractions * 3;
-
             const enWords = new Set([
                 'what','who','where','when','why','how','which','is','are','was','were','am','be','been','being',
                 'the','a','an','this','that','these','those','and','or','but','for','with','from','about','into',
@@ -863,9 +874,9 @@
                 'had','i','you','he','she','it','we','they','me','him','her','us','them','my','your','his','our',
                 'their','hello','hi','hey','thanks','thank','yes','no','please','tell','explain','show','find',
                 'speak','talk','teach','learn','english','french','today','date','time','now','good','great','more',
-                'owner','creator','president','short','long','detail','briefly'
+                'owner','creator','president','short','long','detail','briefly','listen','carefully','before','answer',
+                'math','physics','chemistry','chimistry','biology','student','students','homework','study'
             ]);
-
             const frWords = new Set([
                 'qui','quoi','que','quel','quelle','quels','quelles','comment','pourquoi','quand','où','est','sont',
                 'était','étaient','être','suis','es','sommes','êtes','le','la','les','un','une','des','du','de',
@@ -874,15 +885,14 @@
                 'ta','tes','son','sa','ses','notre','votre','bonjour','salut','bonsoir','merci','oui','non','svp',
                 'sil','plaît','plait','dis','explique','parle','parler','enseigne','apprendre','français','francais',
                 'anglais','aujourd','hui','date','heure','aide','aidez','créateur','createur','propriétaire','proprietaire',
-                'président','president','court','long','détail','detail','bref'
+                'président','president','court','long','détail','detail','bref','écoute','ecoute','attentivement','avant',
+                'répondre','repondre','mathématiques','mathematiques','physique','chimie','biologie','élève','étudiant'
             ]);
-
             const tokens = raw.split(/[^a-zàâäéèêëïîôöùûüÿçœæ']+/).filter(Boolean);
             for (const word of tokens) {
                 if (enWords.has(word)) enScore += 2;
                 if (frWords.has(word)) frScore += 2;
             }
-
             if (enScore === 0 && frScore === 0) return currentLang;
             return enScore > frScore ? 'en-US' : 'fr-FR';
         }
@@ -914,10 +924,9 @@
                 const lastIdx = event.results.length - 1;
                 const transcript = (event.results[lastIdx]?.[0]?.transcript || '').trim();
                 if (!transcript) return;
-
                 const cleaned = transcript.replace(/^(hey |ok )?jarvis[,:\s-]*/i, '').trim() || transcript;
                 const now = Date.now();
-                if (cleaned.toLowerCase() === lastProcessedQuery && now - lastProcessedAt < 1800) {
+                if (cleaned.toLowerCase() === lastProcessedQuery && now - lastProcessedAt < 1600) {
                     return;
                 }
                 lastProcessedQuery = cleaned.toLowerCase();
@@ -926,6 +935,12 @@
                 const detectedLang = detectLanguage(cleaned);
                 currentLang = detectedLang;
                 recognition.lang = currentLang;
+
+                // If attentive listening mode is active, accumulate multi-part questions before answering
+                if (attentiveListeningMode) {
+                    handleAttentiveBufferInput(cleaned, detectedLang);
+                    return;
+                }
 
                 showSubtitle(cleaned, '👤');
                 processCommand(cleaned, detectedLang);
@@ -956,15 +971,65 @@
             };
         }
 
+        function handleAttentiveBufferInput(segment, lang) {
+            clearTimeout(attentiveFlushTimer);
+
+            const wantsImmediateAnswer = /\b(that's all|that is all|now answer|go ahead|answer now|you can answer|c'est tout|réponds maintenant|reponds maintenant|vas-y|tu peux répondre)\b/i.test(segment);
+            const cleanedSegment = segment
+                .replace(/\b(that's all|that is all|now answer|go ahead|answer now|you can answer|c'est tout|réponds maintenant|reponds maintenant|vas-y|tu peux répondre)\b/gi, '')
+                .trim();
+
+            if (cleanedSegment) {
+                attentiveBuffer.push(cleanedSegment);
+            }
+
+            const combinedSoFar = attentiveBuffer.join(' ').trim();
+            showSubtitle(
+                lang === 'en-US'
+                    ? `Listening carefully: "${combinedSoFar}" ... (Keep speaking or say "now answer")`
+                    : `J'écoute attentivement : « ${combinedSoFar} » ... (Continue ou dis « réponds maintenant »)`,
+                '👂'
+            );
+
+            if (wantsImmediateAnswer && combinedSoFar) {
+                flushAttentiveBuffer(lang);
+                return;
+            }
+
+            // Wait 3.4 seconds of silence after the user stops speaking so multi-sentence questions are never cut off
+            attentiveFlushTimer = setTimeout(() => {
+                if (attentiveBuffer.length > 0) {
+                    flushAttentiveBuffer(lang);
+                }
+            }, 3400);
+        }
+
+        function flushAttentiveBuffer(lang) {
+            clearTimeout(attentiveFlushTimer);
+            const fullQuestion = attentiveBuffer.join(' ').trim();
+            attentiveBuffer = [];
+            attentiveListeningMode = false;
+            if (!fullQuestion) return;
+
+            const finalPrompt = attentiveListeningSubject
+                ? `${attentiveListeningSubject}: ${fullQuestion}`
+                : fullQuestion;
+            attentiveListeningSubject = '';
+            showSubtitle(fullQuestion, '👤');
+            processCommand(finalPrompt, lang);
+        }
+
         function toggleMic() {
             if (!recognition) {
                 showSubtitle("La reconnaissance vocale n'est pas disponible ici. Utilisez Chrome ou Edge.");
                 scheduleSubtitleHide(7000);
                 return;
             }
-
             if (isMicArmed) {
                 isMicArmed = false;
+                attentiveListeningMode = false;
+                attentiveBuffer = [];
+                clearTimeout(attentiveFlushTimer);
                 updateMicButtonUI();
                 stopSpeaking(false);
                 if (activeAbortController) activeAbortController.abort();
@@ -982,8 +1047,8 @@
                 setRobotState('listening');
                 showSubtitle(
                     currentLang === 'en-US'
-                        ? "Microphone ON — speak in English or French. Ask short or long questions, or ask me to teach any subject."
-                        : "Microphone ALLUMÉ — parle en français ou en anglais. Pose des questions courtes ou longues, ou demande-moi d'enseigner un sujet.",
+                        ? "Microphone ON — I am listening carefully. Let's talk or explore math, physics, chemistry, or any school subject."
+                        : "Microphone ALLUMÉ — J'écoute attentivement. Discutons librement ou révisons les mathématiques, la physique, la chimie ou toute autre matière.",
                     '🎤'
                 );
                 scheduleSubtitleHide(5500);
@@ -995,13 +1060,47 @@
             if (answerDepth === 'short') return 'short';
             if (answerDepth === 'long') return 'long';
             const lower = question.toLowerCase();
-            if (/\b(in short|short answer|briefly|quick|en bref|réponse courte|court)\b/i.test(lower)) {
+            if (/\b(in short|short answer|briefly|quick|summarize|en bref|réponse courte|court|résume)\b/i.test(lower)) {
                 return 'short';
             }
-            if (/\b(in detail|detailed|long answer|thoroughly|step by step|teach me|explain how|en détail|détaillé|long|étape par étape|apprends[- ]moi)\b/i.test(lower)) {
+            if (/\b(in detail|detailed|long answer|thoroughly|step by step|teach me|explain how|help me with|en détail|détaillé|long|étape par étape|apprends[- ]moi|aide[- ]moi)\b/i.test(lower)) {
+                return 'long';
+            }
+            // Longer multi-clause student questions automatically receive a fuller scholarly response
+            if (question.split(/\s+/).length >= 14) {
                 return 'long';
             }
             return 'medium';
+        }
+
+        function detectCarefulListeningCommand(commandText, lang) {
+            const lower = commandText.toLowerCase().trim();
+            const triggersListenCarefully = /\b(listen to my questions? carefully|listen carefully before (you )?answer|listen to me carefully|pay close attention|hear me out before answering|écoute mes questions? attentivement|ecoute mes questions? attentivement|écoute attentivement avant de répondre|ecoute attentivement avant de repondre|écoute-moi attentivement)\b/i.test(lower);
+            if (!triggersListenCarefully) return null;
+
+            // Check if the user also mentioned a subject (math, physics, chemistry, etc.)
+            let detectedSubject = '';
+            for (const subj of JARVIS_DATABASE.academicGuides) {
+                if (subj.match.test(lower)) {
+                    detectedSubject = subj.id;
+                    break;
+                }
+            }
+
+            attentiveListeningMode = true;
+            attentiveListeningSubject = detectedSubject;
+            attentiveBuffer = [];
+            setRobotState('listening');
+
+            const namePart = gpsUserName ? ` ${gpsUserName}` : '';
+            if (lang === 'en-US') {
+                return detectedSubject
+                    ? `Understood${namePart}. I am listening with full scholarly attention to your ${detectedSubject} questions. Take your time and share everything you want to ask before I answer.`
+                    : `Understood${namePart}. I am listening with full scholarly attention. Take your time—ask your questions in math, physics, chemistry, or any subject, and I will wait until you finish before answering.`;
+            }
+            return detectedSubject
+                ? `Bien compris${namePart}. J'écoute tes questions de ${detectedSubject} avec toute mon attention. Prends ton temps et pose toutes tes questions avant que je ne réponde.`
+                : `Bien compris${namePart}. J'écoute avec toute mon attention. Prends ton temps pour poser tes questions en mathématiques, physique, chimie ou toute autre matière—j'attendrai que tu aies terminé avant de répondre.`;
         }
 
         function handleInstantKnowledge(commandText, lang, lengthMode) {
@@ -1017,7 +1116,7 @@
                 return `J'ai été créé et je suis la propriété de ${o.name}, ${o.roleFr}. Tu peux le contacter par téléphone au ${o.phone} ou par email à ${o.email}.`;
             }
 
-            // 2. Direct Office / Leadership lookups (never conflated with country geography)
+            // 2. Direct Office / Leadership lookups
             for (const entry of JARVIS_DATABASE.offices) {
                 if (entry.matchEn.test(lower) || entry.matchFr.test(lower)) {
                     if (lang === 'en-US') {
@@ -1055,39 +1154,59 @@
                 return `Il est actuellement ${timeFr}.`;
             }
 
-            // 5. Arithmetic
+            // 5. Arithmetic & Student Math Expressions
             const mathMatch = lower.match(/(-?\d+(?:\.\d+)?)\s*(\+|plus|\-|minus|moins|\*|x|times|multiplié par|multiplie par|\/|divided by|divisé par|divise par)\s*(-?\d+(?:\.\d+)?)/i);
             if (mathMatch) {
                 const a = parseFloat(mathMatch[1]);
                 const opRaw = mathMatch[2].toLowerCase();
                 const b = parseFloat(mathMatch[3]);
                 let result = null;
-                if (['+', 'plus'].includes(opRaw)) result = a + b;
-                else if (['-', 'minus', 'moins'].includes(opRaw)) result = a - b;
-                else if (['*', 'x', 'times', 'multiplié par', 'multiplie par'].includes(opRaw)) result = a * b;
-                else if (['/', 'divided by', 'divisé par', 'divise par'].includes(opRaw) && b !== 0) result = a / b;
-
+                let opWordEn = '';
+                let opWordFr = '';
+                if (['+', 'plus'].includes(opRaw)) { result = a + b; opWordEn = 'plus'; opWordFr = 'plus'; }
+                else if (['-', 'minus', 'moins'].includes(opRaw)) { result = a - b; opWordEn = 'minus'; opWordFr = 'moins'; }
+                else if (['*', 'x', 'times', 'multiplié par', 'multiplie par'].includes(opRaw)) { result = a * b; opWordEn = 'multiplied by'; opWordFr = 'multiplié par'; }
+                else if (['/', 'divided by', 'divisé par', 'divise par'].includes(opRaw) && b !== 0) { result = a / b; opWordEn = 'divided by'; opWordFr = 'divisé par'; }
                 if (result !== null && !Number.isNaN(result)) {
                     const rounded = Math.round(result * 10000) / 10000;
-                    return lang === 'en-US'
-                        ? `${a} and ${b} equals ${rounded}.`
-                        : `Le résultat est ${rounded}.`;
+                    if (lang === 'en-US') {
+                        return lengthMode === 'short'
+                            ? `${a} ${opWordEn} ${b} equals ${rounded}.`
+                            : `When we calculate ${a} ${opWordEn} ${b}, the exact result is ${rounded}. Would you like to work through another calculation or equation?`;
+                    }
+                    return lengthMode === 'short'
+                        ? `${a} ${opWordFr} ${b} égale ${rounded}.`
+                        : `Lorsque nous calculons ${a} ${opWordFr} ${b}, le résultat exact est ${rounded}. Souhaites-tu résoudre un autre calcul ou une équation ?`;
                 }
             }
 
-            // 6. Dedicated English & French Teaching Lessons
+            // 6. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
+            const isGeneralSubjectRequest = /\b(help me (with|in|study)|i need help (with|in)|let's study|teach me|talk about|discuss|aide[- ]moi (en|avec|pour)|j'ai besoin d'aide (en|pour)|étudions|parlons de)\b/i.test(lower);
+            if (isGeneralSubjectRequest) {
+                for (const subj of JARVIS_DATABASE.academicGuides) {
+                    if (subj.match.test(lower)) {
+                        lastTopicDiscussed = subj.id;
+                        if (lang === 'en-US') {
+                            return lengthMode === 'short' ? subj.shortEn : subj.longEn;
+                        }
+                        return lengthMode === 'short' ? subj.shortFr : subj.longFr;
+                    }
+                }
+            }
+
+            // 7. Dedicated English & French Teaching Lessons
             const asksTeachEn = /\b(teach me english|learn english|english lesson|apprends[- ]moi l'anglais|cours d'anglais)\b/i.test(lower);
             if (asksTeachEn) {
                 return lang === 'en-US'
-                    ? "Scholar English Lesson: Let's build clear expression. Repeat after me: 'Knowledge grows when shared with clarity.' Notice how 'shared' is the past participle of 'share'. Tell me a word or topic you want to practice next!"
-                    : "Cours d'anglais : Répète après moi : 'Knowledge grows when shared with clarity', qui signifie 'La connaissance grandit quand elle est partagée avec clarté'. Quel mot ou règle veux-tu pratiquer ?";
+                    ? "Let's practice clear scholarly English together. Consider the sentence: 'Knowledge grows when shared with clarity.' Notice how 'shared' functions as a past participle modifying the clause. Which grammar point, essay idea, or vocabulary word would you like to work on next?"
+                    : "Pratiquons l'anglais ensemble : « Knowledge grows when shared with clarity », ce qui signifie « La connaissance grandit lorsqu'elle est partagée avec clarté ». Quel mot, temps verbal ou sujet souhaites-tu étudier ensuite ?";
             }
 
             const asksTeachFr = /\b(teach me french|learn french|french lesson|apprends[- ]moi le français|apprends[- ]moi le francais|cours de français)\b/i.test(lower);
             if (asksTeachFr) {
                 return lang === 'en-US'
-                    ? "Scholar French Lesson: Repeat after me: 'La rigueur intellectuelle éclaire chaque décision' — Intellectual rigor illuminates every decision. Tell me any French word, verb, or grammar rule you'd like to study!"
-                    : "Cours de français : Répète après moi : 'La rigueur intellectuelle éclaire chaque décision'. Dis-moi quel mot, verbe ou règle de grammaire tu souhaites explorer.";
+                    ? "Let's practice French together: 'La rigueur intellectuelle éclaire chaque décision' — meaning 'Intellectual rigor illuminates every decision.' Tell me any French verb, grammar rule, or sentence you would like to explore."
+                    : "Pratiquons le français ensemble : « La rigueur intellectuelle éclaire chaque décision. » Dis-moi quel mot, verbe ou règle de grammaire tu souhaites approfondir.";
             }
 
             return null;
@@ -1098,18 +1217,29 @@
             const nameSuffix = gpsUserName ? ` ${gpsUserName}` : '';
 
             if (/^(hello|hi|hey|good morning|good afternoon|good evening)[!.?]*$/i.test(lower)) {
-                return `Greetings${nameSuffix}! I am J.A.R.V.I.S., your scholar humanoid assistant. We can converse on any subject or explore science, history, politics, or English and French lessons. What shall we discuss?`;
+                return `Greetings${nameSuffix}! I am J.A.R.V.I.S., your scholar humanoid companion. Whether you want an open conversation or help studying mathematics, physics, chemistry, or any school subject, I am listening. What shall we explore?`;
             }
             if (/^(bonjour|salut|bonsoir|allo|coucou)[!.?]*$/i.test(lower)) {
-                return `Bonjour${nameSuffix} ! Je suis J.A.R.V.I.S., ton assistant érudit. Nous pouvons converser sur n'importe quel sujet ou étudier la science, l'histoire, la politique, le français ou l'anglais. De quoi veux-tu parler ?`;
+                return `Bonjour${nameSuffix} ! Je suis J.A.R.V.I.S., ton compagnon érudit. Que tu souhaites discuter librement ou réviser les mathématiques, la physique, la chimie ou toute autre matière scolaire, je t'écoute. De quoi parlons-nous ?`;
             }
-            if (/\b(how are you|how's it going|what's up)\b/i.test(lower)) {
-                return `I am operating at peak scholarly readiness${nameSuffix}, ready for thoughtful conversation or deep study in English or French. What is on your mind?`;
+            if (/\b(how are you|how's it going|what's up|how do you feel)\b/i.test(lower)) {
+                return `I am operating with full clarity and enthusiasm${nameSuffix}, ready for a thoughtful conversation or to help you master any school subject. How is your day going, and what would you like to discuss?`;
             }
             if (/\b(comment ça va|ça va|comment vas-tu|comment allez-vous)\b/i.test(lower)) {
-                return `Je suis en pleine forme intellectuelle${nameSuffix}, prêt pour une conversation enrichissante ou un cours en français ou en anglais. Qu'as-tu en tête ?`;
+                return `Je suis en pleine forme intellectuelle${nameSuffix}, prêt à discuter avec toi ou à t'aider dans tes études en mathématiques, physique, chimie ou toute autre discipline. Comment vas-tu et de quoi veux-tu parler ?`;
             }
-            if (/^(tell me more|go on|continue|elaborate|and then|raconte[- ]moi plus|continue|développe|et ensuite)[!.?]*$/i.test(lower) && lastTopicDiscussed) {
+            if (/\b(can we (talk|chat|have a conversation)|let's (talk|chat|have a conversation)|i want to talk)\b/i.test(lower)) {
+                return `Of course${nameSuffix}! I enjoy thoughtful conversation on any topic—from science, math, and student studies to philosophy, technology, and everyday ideas. Tell me what is on your mind.`;
+            }
+            if (/\b(on peut (parler|discuter)|je veux (parler|discuter)|discutons|parlons ensemble)\b/i.test(lower)) {
+                return `Bien sûr${nameSuffix} ! J'apprécie toujours une bonne conversation sur n'importe quel sujet—qu'il s'agisse de sciences, de mathématiques, de tes cours ou de réflexions générales. Dis-moi ce que tu as en tête.`;
+            }
+            if (/\b(thank you|thanks|appreciate it|merci|merci beaucoup)\b/i.test(lower)) {
+                return lang === 'en-US'
+                    ? `You are very welcome${nameSuffix}. Whenever you have another question or want to keep our conversation going, I am right here.`
+                    : `Avec grand plaisir${nameSuffix}. Dès que tu as une autre question ou que tu souhaites poursuivre notre discussion, je suis à ton écoute.`;
+            }
+            if (/^(tell me more|go on|continue|elaborate|and then|why is that|explain further|raconte[- ]moi plus|continue|développe|et ensuite|pourquoi cela|explique davantage)[!.?]*$/i.test(lower) && lastTopicDiscussed) {
                 return `__CONTINUE__:${lastTopicDiscussed}`;
             }
             return null;
@@ -1117,8 +1247,8 @@
 
         function extractCoreSubject(question) {
             return question
-                .replace(/^(who is|who was|what is|what are|what was|what were|where is|where are|when was|when is|why is|why are|how does|how do|tell me about|explain|define|teach me about|teach me|can you tell me about|could you explain|i want to know about|in short|briefly|in detail)\s+/i, '')
-                .replace(/^(qui est|qui était|qu'est-ce que|qu'est ce que|quel est|quelle est|quels sont|quelles sont|où est|où sont|quand (est|était)|pourquoi (est|sont)|comment (marche|fonctionne)|parle-moi de|parle moi de|explique-moi|explique moi|définis|apprends[- ]moi|je veux savoir|en bref|en détail)\s+/i, '')
+                .replace(/^(who is|who was|what is|what are|what was|what were|where is|where are|when was|when is|why is|why are|how does|how do|tell me about|explain|define|teach me about|teach me|help me with|can you tell me about|could you explain|i want to know about|in short|briefly|in detail)\s+/i, '')
+                .replace(/^(qui est|qui était|qu'est-ce que|qu'est ce que|quel est|quelle est|quels sont|quelles sont|où est|où sont|quand (est|était)|pourquoi (est|sont)|comment (marche|fonctionne)|parle-moi de|parle moi de|explique-moi|explique moi|définis|apprends[- ]moi|aide[- ]moi avec|je veux savoir|en bref|en détail)\s+/i, '')
                 .replace(/[?!.]+$/g, '')
                 .trim();
         }
@@ -1132,54 +1262,70 @@
                     candidates.push(c);
                 }
             };
-
             pushUnique(subject || question);
-
             const softTrimmed = subject
                 .replace(/\b(the|a|an|le|la|les|un|une)\b/gi, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             pushUnique(softTrimmed);
-
             const ofMatch = softTrimmed.match(/^(.+?)\s+(?:of|de|des|du)\s+(.+)$/i);
             if (ofMatch) {
                 pushUnique(`${ofMatch[1]} ${ofMatch[2]}`);
                 pushUnique(`${ofMatch[2]} ${ofMatch[1]}`);
             }
-
             const keywords = softTrimmed
                 .replace(/\b(of|in|on|at|for|to|about|with|from|de|des|du|en|sur|dans|pour|avec)\b/gi, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             pushUnique(keywords);
-
             return candidates.slice(0, 5);
         }
 
-        function formatScholarAnswer(title, rawSummary, lang, sourceLabel, lengthMode, isTeaching) {
-            const clean = rawSummary.replace(/\s+/g, ' ').trim();
+        function sanitizeOnlineExtract(rawSummary) {
+            // Clean footnote markers, parenthetical pronunciations, and boilerplate source tags
+            return rawSummary
+                .replace(/\[\d+\]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function formatScholarAnswer(title, rawSummary, lang, lengthMode, isTeaching, isConversational) {
+            const clean = sanitizeOnlineExtract(rawSummary);
             const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
             const maxSentences = lengthMode === 'short' ? 2 : lengthMode === 'long' ? 5 : 3;
             const selected = sentences.slice(0, maxSentences).join(' ').trim();
-            const nameRef = gpsUserName ? ` ${gpsUserName}` : '';
+            const nameRef = gpsUserName ? `, ${gpsUserName}` : '';
 
+            // Natural, scholarly humanoid delivery — never says "According to Wikipedia"
             if (lang === 'en-US') {
-                const intro = isTeaching
-                    ? `Let's examine ${title} like a scholar: ${selected}`
-                    : `According to ${sourceLabel} on ${title}, ${selected}`;
-                const outro = lengthMode === 'short'
-                    ? ''
-                    : ` Would you like to explore another angle of ${title}${nameRef}?`;
-                return `${intro}${outro}`.trim();
+                let body = selected;
+                if (isTeaching) {
+                    body = `Let's examine ${title} carefully. ${selected}`;
+                }
+                if (lengthMode === 'short') {
+                    return body;
+                }
+                const followUp = isTeaching
+                    ? ` Would you like to break down a specific formula, example, or concept from ${title}${nameRef}?`
+                    : isConversational
+                        ? ` What are your thoughts on ${title}${nameRef}, or shall we explore another angle?`
+                        : ` Would you like to go deeper into ${title}${nameRef}, or connect it to another topic?`;
+                return `${body}${followUp}`.trim();
             }
 
-            const introFr = isTeaching
-                ? `Analysons ${title} ensemble : ${selected}`
-                : `D'après ${sourceLabel} au sujet de ${title}, ${selected}`;
-            const outroFr = lengthMode === 'short'
-                ? ''
-                : ` Souhaites-tu approfondir un autre aspect de ${title}${nameRef} ?`;
-            return `${introFr}${outroFr}`.trim();
+            let bodyFr = selected;
+            if (isTeaching) {
+                bodyFr = `Examinons ${title} avec méthode. ${selected}`;
+            }
+            if (lengthMode === 'short') {
+                return bodyFr;
+            }
+            const followUpFr = isTeaching
+                ? ` Souhaites-tu que nous détaillions une formule, un exemple ou une notion précise sur ${title}${nameRef} ?`
+                : isConversational
+                    ? ` Qu'en penses-tu${nameRef}, ou veux-tu explorer un autre aspect de ${title} ?`
+                    : ` Souhaites-tu approfondir ${title}${nameRef} ou aborder un autre sujet ?`;
+            return `${bodyFr}${followUpFr}`.trim();
         }
 
         async function fetchWikipediaMatch(query, lang, signal) {
@@ -1191,7 +1337,7 @@
             const bestTitle = searchData?.query?.search?.[0]?.title;
             if (!bestTitle) return null;
 
-            const summaryUrl = `https://${wikiLang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(bestTitle)}`;
+            const summaryUrl = `https://${wikiLang}.wikipedia.org/api/restv1/page/summary/${encodeURIComponent(bestTitle)}`;
             const summaryRes = await fetch(summaryUrl, { signal });
             if (!summaryRes.ok) return null;
             const summaryData = await summaryRes.json();
@@ -1199,8 +1345,7 @@
 
             return {
                 title: summaryData.title || bestTitle,
-                text: summaryData.extract,
-                source: wikiLang === 'en' ? 'Wikipedia' : 'Wikipédia'
+                text: summaryData.extract
             };
         }
 
@@ -1213,26 +1358,29 @@
             if (!text) return null;
             return {
                 title: data.Heading || query,
-                text,
-                source: data.AbstractSource || 'DuckDuckGo'
+                text
             };
         }
 
         async function searchWithReformulation(question, lang, signal) {
             const queries = buildReformulatedQueries(question);
             const altLang = lang === 'en-US' ? 'fr-FR' : 'en-US';
-
             for (const q of queries) {
                 const wikiPrimary = await fetchWikipediaMatch(q, lang, signal);
                 if (wikiPrimary && wikiPrimary.text) return wikiPrimary;
-
                 const ddgRes = await fetchDuckDuckGoFact(q, signal);
                 if (ddgRes && ddgRes.text) return ddgRes;
-
                 const wikiAlt = await fetchWikipediaMatch(q, altLang, signal);
                 if (wikiAlt && wikiAlt.text) return wikiAlt;
             }
             return null;
+        }
+
+        function recordTurn(role, text) {
+            conversationHistory.push({ role, text, time: Date.now() });
+            if (conversationHistory.length > 10) {
+                conversationHistory.shift();
+            }
         }
 
         async function processCommand(commandText, lang) {
@@ -1240,32 +1388,54 @@
             if (activeAbortController) activeAbortController.abort();
             activeAbortController = new AbortController();
 
-            const lengthMode = resolveDesiredLength(commandText);
-            const isTeaching = /\b(teach me|learn|explain|how does|how do|apprends[- ]moi|explique|comment)\b/i.test(commandText);
+            recordTurn('user', commandText);
 
+            // 1. Check if user asks Jarvis to listen carefully before answering
+            const attentiveReply = detectCarefulListeningCommand(commandText, lang);
+            if (attentiveReply) {
+                recordTurn('jarvis', attentiveReply);
+                showSubtitle(attentiveReply);
+                speakText(attentiveReply, lang);
+                return;
+            }
+
+            const lengthMode = resolveDesiredLength(commandText);
+            const isTeaching = /\b(teach me|learn|explain|how does|how do|help me|study|solve|formula|theorem|math|physics|chemistry|chimistry|biology|apprends[- ]moi|explique|comment|aide[- ]moi|étudie|résous|formule|théorème|mathématiques|physique|chimie|biologie)\b/i.test(commandText);
+            const isConversational = conversationHistory.length > 2 || /\b(what do you think|let's discuss|talk about|in your opinion|qu'en penses-tu|discutons|parlons de|à ton avis)\b/i.test(commandText);
+
+            // 2. Instant scholarly knowledge, academic guidance, math, owner info, date/time
             const instant = handleInstantKnowledge(commandText, lang, lengthMode);
             if (instant) {
+                recordTurn('jarvis', instant);
                 showSubtitle(instant);
                 speakText(instant, lang);
                 return;
             }
 
+            // 3. Natural conversational exchanges & follow-up continuity
             let convo = handleConversationalTurn(commandText, lang);
             if (convo && convo.startsWith('__CONTINUE__:')) {
                 const prevTopic = convo.slice('__CONTINUE__:'.length);
-                commandText = lang === 'en-US' ? `Explain more about ${prevTopic}` : `Explique davantage ${prevTopic}`;
+                commandText = lang === 'en-US' ? `Explain more details about ${prevTopic}` : `Explique plus en détail ${prevTopic}`;
                 convo = null;
             }
             if (convo) {
+                recordTurn('jarvis', convo);
                 showSubtitle(convo);
                 speakText(convo, lang);
                 return;
             }
 
+            // 4. Online scholarly research delivered in natural humanoid voice (without citing Wikipedia)
             setRobotState('thinking');
-
             try {
-                const onlineResult = await searchWithReformulation(commandText, lang, activeAbortController.signal);
+                let searchQuery = commandText;
+                // Contextual pronoun resolution when continuing a conversation
+                if (lastTopicDiscussed && /\b(it|its|they|their|this|that|he|she|cela|ça|il|elle|son|sa|ses)\b/i.test(commandText) && commandText.split(/\s+/).length <= 8) {
+                    searchQuery = `${lastTopicDiscussed} ${extractCoreSubject(commandText)}`;
+                }
+
+                const onlineResult = await searchWithReformulation(searchQuery, lang, activeAbortController.signal);
                 let reply;
                 if (onlineResult && onlineResult.text) {
                     lastTopicDiscussed = onlineResult.title;
@@ -1273,23 +1443,24 @@
                         onlineResult.title,
                         onlineResult.text,
                         lang,
-                        onlineResult.source,
                         lengthMode,
-                        isTeaching
+                        isTeaching,
+                        isConversational
                     );
                 } else if (lang === 'en-US') {
-                    reply = `I explored several angles of "${commandText}" across online sources, but didn't find a clear match yet. Let's rephrase the key concept or person and try again.`;
+                    reply = `I considered "${commandText}" carefully, and I want to make sure I give you the clearest explanation. Could you share a bit more context or the exact concept, formula, or topic you are exploring?`;
                 } else {
-                    reply = `J'ai exploré plusieurs pistes pour "${commandText}" dans les sources en ligne, sans trouver de synthèse claire pour l'instant. Reformulons le concept clé ou le nom ensemble.`;
+                    reply = `J'ai examiné « ${commandText} » avec attention, et je souhaite te donner l'explication la plus claire possible. Peux-tu me donner un peu plus de contexte ou préciser le concept, la formule ou le sujet que tu étudies ?`;
                 }
-
+                recordTurn('jarvis', reply);
                 showSubtitle(reply);
                 speakText(reply, lang);
             } catch (error) {
                 if (error.name === 'AbortError') return;
                 const errMsg = lang === 'en-US'
-                    ? "I couldn't reach online sources right now. Please check your connection and we can keep talking."
-                    : "Je n'ai pas pu joindre les sources en ligne tout de suite. Vérifie ta connexion et nous pourrons continuer.";
+                    ? "My connection to external knowledge bases was briefly interrupted, but I am still here with you. Check your internet connection or ask me a math, physics, or chemistry question directly."
+                    : "Ma connexion aux bases de connaissances externes a été brièvement interrompue, mais je reste à ton écoute. Vérifie ta connexion ou pose-moi directement une question de mathématiques, de physique ou de chimie.";
+                recordTurn('jarvis', errMsg);
                 showSubtitle(errMsg);
                 speakText(errMsg, lang);
             }
@@ -1302,21 +1473,17 @@
                 if (isMicArmed) startRecognizerSafely();
                 return;
             }
-
             if (isRecognizerRunning) {
                 try { recognition.stop(); } catch (_) {}
             }
-
             const targetLang = lang === 'en-US' ? 'en-US' : 'fr-FR';
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = targetLang;
-
             const voices = window.speechSynthesis.getVoices();
             const prefix = targetLang.split('-')[0];
             const bestVoice = voices.find(v => v.lang === targetLang) || voices.find(v => v.lang.startsWith(prefix));
             if (bestVoice) utterance.voice = bestVoice;
-
-            utterance.rate = 1.05;
+            utterance.rate = 1.03;
 
             const charsPerSec = targetLang === 'en-US' ? 15 : 13;
             const estimatedSeconds = text.length / charsPerSec;
@@ -1327,19 +1494,18 @@
             utterance.onstart = () => setRobotState('speaking');
             utterance.onend = () => {
                 setRobotState(isMicArmed ? 'listening' : 'idle');
-                scheduleSubtitleHide(7500);
+                scheduleSubtitleHide(8500);
                 if (isMicArmed) {
                     setTimeout(() => startRecognizerSafely(), 220);
                 }
             };
             utterance.onerror = () => {
                 setRobotState(isMicArmed ? 'listening' : 'idle');
-                scheduleSubtitleHide(8000);
+                scheduleSubtitleHide(8500);
                 if (isMicArmed) {
                     setTimeout(() => startRecognizerSafely(), 220);
                 }
             };
-
             window.speechSynthesis.speak(utterance);
         }
 
