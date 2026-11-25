@@ -59,7 +59,6 @@
         @keyframes twinkle { from { opacity: .55; } to { opacity: 1; } }
         @keyframes starDrift { from { transform: translate3d(0,0,0); } to { transform: translate3d(-70px,-45px,0); } }
 
-        /* Top HUD for clean video framing */
         .top-hud {
             position: fixed;
             top: 14px;
@@ -168,9 +167,7 @@
         }
         .owner-card a:hover { color: var(--accent); text-decoration: underline; }
 
-        /* Video Studio / Clean Presentation Mode */
-        body.video-mode .owner-card,
-        body.video-mode .hud-actions .hide-in-video {
+        body.video-mode .owner-card {
             display: none;
         }
 
@@ -234,7 +231,6 @@
             50% { box-shadow: 0 0 42px rgba(220,38,38,1); }
         }
 
-        /* Humanoid animations */
         #robotBody .eye-bar { animation: eyeIdle 3.4s ease-in-out infinite; }
         #robotBody .core { animation: coreIdle 2.5s ease-in-out infinite; }
         #robotBody .halo-ring { transform-origin: 120px 250px; animation: haloSpin 36s linear infinite; }
@@ -339,7 +335,6 @@
             margin-bottom: 8px;
         }
 
-        /* Overlays (Welcome + NVIDIA Config) */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -358,7 +353,7 @@
             border: 3px solid var(--accent-2);
             border-radius: 20px;
             padding: 28px 26px;
-            max-width: 460px;
+            max-width: 440px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             text-align: center;
@@ -366,14 +361,6 @@
         }
         .modal-card h2 { font-size: 1.45rem; color: #7a5200; margin-bottom: 10px; }
         .modal-card p { font-size: 0.95rem; color: #475569; line-height: 1.5; margin-bottom: 16px; }
-        .modal-card label {
-            display: block;
-            text-align: left;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 5px;
-        }
         .modal-card input {
             width: 100%;
             padding: 12px 15px;
@@ -447,10 +434,9 @@
         <div class="top-left-stack">
             <div class="status-badge" id="statusBadge">
                 <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">J.A.R.V.I.S. · READY</span>
+                <span id="statusText">J.A.R.V.I.S. · ONLINE READY</span>
             </div>
             <div class="hud-actions">
-                <button class="hud-btn hide-in-video" id="configBtn" onclick="openConfigModal()">⚙️ NVIDIA NIM</button>
                 <button class="hud-btn" id="videoModeBtn" onclick="toggleVideoMode()">🎬 Mode Vidéo</button>
             </div>
         </div>
@@ -466,7 +452,6 @@
 
     <div class="stage">
         <div class="robot-wrap" id="robotWrap">
-            <!-- Redesigned Sculpted Humanoid Silhouette -->
             <svg id="robotBody" class="robot-svg" viewBox="0 0 240 500" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="goldBody" x1="0" y1="0" x2="1" y2="1">
@@ -509,38 +494,28 @@
                     </linearGradient>
                 </defs>
 
-                <!-- Ground Aura & Orbital Ring -->
                 <ellipse cx="120" cy="474" rx="88" ry="16" fill="url(#floorGlow)"/>
                 <circle class="halo-ring" cx="120" cy="252" r="116" fill="none" stroke="#FFD24D" stroke-width="1.5" stroke-dasharray="6 10" opacity="0.5"/>
                 <circle cx="120" cy="252" r="106" fill="none" stroke="#00e5ff" stroke-width="0.9" stroke-dasharray="2 9" opacity="0.32"/>
 
-                <!-- Sculpted Humanoid Legs (Thigh -> Knee Guard -> Shin -> Sleek Foot) -->
                 <path d="M85 256 L112 256 L109 342 L88 342 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
                 <path d="M128 256 L155 256 L152 342 L131 342 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
-                <!-- Knee Caps -->
                 <polygon points="87,338 110,338 107,356 90,356" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
                 <polygon points="130,338 153,338 150,356 133,356" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
-                <!-- Lower Legs / Greaves -->
                 <path d="M89 356 L108 356 L105 436 L91 436 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
                 <path d="M132 356 L151 356 L149 436 L135 436 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
-                <!-- Contoured Humanoid Boots -->
                 <path d="M78 436 L110 436 L114 460 L75 460 Q72 446 78 436 Z" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
                 <path d="M130 436 L162 436 Q168 446 165 460 L126 460 Z" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
 
-                <!-- Tapered Humanoid Pelvis / Core Belt -->
                 <path d="M84 226 L156 226 L146 258 L94 258 Z" fill="url(#goldArmor)" stroke="#7A5200" stroke-width="2.2"/>
                 <circle cx="120" cy="242" r="7" fill="#00e5ff" opacity="0.85"/>
 
-                <!-- Sculpted Humanoid Torso (Broad Shoulders, Chest Plates, Narrow Waist) -->
                 <path d="M68 128 L120 116 L172 128 L158 204 L144 228 L96 228 L82 204 Z" fill="url(#goldBody)" stroke="#7A5200" stroke-width="2.6"/>
-                <!-- Pectoral / Rib Armor Lines -->
                 <path d="M78 138 L116 146 L112 188 L82 182 Z" fill="url(#goldArmor)" stroke="#8A6400" stroke-width="1.6" opacity="0.88"/>
                 <path d="M162 138 L124 146 L128 188 L158 182 Z" fill="url(#goldArmor)" stroke="#8A6400" stroke-width="1.6" opacity="0.88"/>
-                <!-- Abdominal Segmented Plates -->
                 <path d="M98 194 L142 194 L139 204 L101 204 Z" fill="url(#goldDark)" opacity="0.7"/>
                 <path d="M101 209 L139 209 L137 219 L103 219 Z" fill="url(#goldDark)" opacity="0.7"/>
 
-                <!-- Letter G Emblem -->
                 <text x="120" y="144" text-anchor="middle"
                       font-family="'Arial Black', 'Segoe UI Black', 'Helvetica Neue', sans-serif"
                       font-weight="900" font-size="26"
@@ -549,52 +524,33 @@
                       paint-order="stroke"
                       style="filter: drop-shadow(0 0 8px rgba(255,199,44,0.95));">G</text>
 
-                <!-- Glowing Chest Core Behind Mic Button -->
                 <circle class="core" cx="120" cy="181" r="22" fill="url(#coreGrad)"/>
                 <circle cx="120" cy="181" r="19" fill="none" stroke="#FFE066" stroke-width="2" opacity="0.85"/>
 
-                <!-- Left Articulated Arm -->
                 <g class="arm-left">
-                    <!-- Shoulder Pauldron -->
                     <path d="M40 132 Q46 112 68 118 L72 146 L42 146 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="2"/>
-                    <!-- Upper Arm -->
                     <rect x="46" y="146" width="18" height="58" rx="8" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
-                    <!-- Elbow Joint -->
                     <circle cx="55" cy="208" r="9" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.8"/>
-                    <!-- Forearm -->
                     <path d="M46 214 L64 214 L62 272 L48 272 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
-                    <!-- Humanoid Hand -->
                     <path d="M47 272 L63 272 L65 294 L57 298 L46 292 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
                 </g>
 
-                <!-- Right Articulated Arm -->
                 <g class="arm-right">
-                    <!-- Shoulder Pauldron -->
                     <path d="M200 132 Q194 112 172 118 L168 146 L198 146 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="2"/>
-                    <!-- Upper Arm -->
                     <rect x="176" y="146" width="18" height="58" rx="8" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
-                    <!-- Elbow Joint -->
                     <circle cx="185" cy="208" r="9" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.8"/>
-                    <!-- Forearm -->
                     <path d="M176 214 L194 214 L192 272 L178 272 Z" fill="url(#goldLimb)" stroke="#7A5200" stroke-width="2"/>
-                    <!-- Humanoid Hand -->
                     <path d="M177 272 L193 272 L194 292 L183 298 L175 294 Z" fill="url(#goldArmor)" stroke="#6B4A00" stroke-width="1.8"/>
                 </g>
 
-                <!-- Neck & Sculpted Humanoid Helmet -->
                 <g class="head-group">
                     <rect x="108" y="102" width="24" height="16" rx="6" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="2"/>
-                    <!-- Angular Humanoid Jaw & Helmet -->
                     <path d="M88 54 L102 24 L138 24 L152 54 L148 90 L132 106 L108 106 L92 90 Z" fill="url(#goldBody)" stroke="#7A5200" stroke-width="2.6"/>
-                    <!-- Helmet Crest -->
                     <path d="M114 24 L120 14 L126 24" fill="none" stroke="#FFF4C2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <!-- Ear Sensors -->
                     <rect x="80" y="56" width="9" height="28" rx="4" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.6"/>
                     <rect x="151" y="56" width="9" height="28" rx="4" fill="url(#goldDark)" stroke="#5C3F00" stroke-width="1.6"/>
-                    <!-- Visor & Eyes -->
                     <path class="visor" d="M94 50 L146 50 L142 73 L98 73 Z" fill="url(#visorGrad)" stroke="#FFD24D" stroke-width="1.8"/>
                     <rect class="eye-bar" x="100" y="58" width="40" height="6.5" rx="3" fill="#FFC72C"/>
-                    <!-- Vocalizer / Mouth Grille -->
                     <g class="mouth-group">
                         <rect x="107" y="84" width="26" height="4.5" rx="2.2" fill="#7A5200"/>
                         <rect x="111" y="91" width="18" height="3.5" rx="1.8" fill="#7A5200" opacity="0.6"/>
@@ -608,41 +564,17 @@
 
     <div class="subtitle" id="subtitle"></div>
 
-    <!-- Name Modal -->
     <div id="nameOverlay" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>👋 Bienvenue chez J.A.R.V.I.S.</h2>
-            <p>Entrez votre nom pour commencer. Vous pouvez appuyer sur le micro tout de suite et parler librement.</p>
+            <p>Entrez votre nom pour commencer. Vous pouvez appuyer sur le micro tout de suite et poser vos questions.</p>
             <input type="text" id="nameInput" placeholder="Votre nom..." maxlength="20" autocomplete="off">
             <button class="go-btn" onclick="saveNameAndStart()">Commencer</button>
             <button class="skip-btn" onclick="skipName()">Rester anonyme</button>
         </div>
     </div>
 
-    <!-- NVIDIA NIM Config Modal (Optional - never blocks speaking) -->
-    <div id="configOverlay" class="modal-overlay hidden">
-        <div class="modal-card">
-            <h2>⚡ Configuration NVIDIA NIM</h2>
-            <p>Optionnel : ajoutez votre clé NVIDIA NIM pour utiliser les modèles cloud. Sans clé, le mode éducatif local reste actif sans blocage.</p>
-            <label for="apiKeyInput">Clé API NVIDIA (nvapi-...)</label>
-            <input type="password" id="apiKeyInput" placeholder="nvapi-..." autocomplete="off">
-            <label for="modelInput">Modèle NVIDIA NIM</label>
-            <input type="text" id="modelInput" placeholder="meta/llama-3.1-8b-instruct">
-            <label for="endpointInput">Endpoint (URL directe ou proxy)</label>
-            <input type="text" id="endpointInput" placeholder="https://integrate.api.nvidia.com/v1/chat/completions">
-            <button class="go-btn" onclick="saveNvidiaConfig()">Enregistrer</button>
-            <button class="skip-btn" onclick="closeConfigModal()">Fermer</button>
-        </div>
-    </div>
-
     <script>
-        const DEFAULT_ENDPOINT = "https://integrate.api.nvidia.com/v1/chat/completions";
-        const DEFAULT_MODEL    = "meta/llama-3.1-8b-instruct";
-
-        let nvidiaApiKey   = localStorage.getItem('jarvis_nv_key')      || "";
-        let nvidiaModel    = localStorage.getItem('jarvis_nv_model')    || DEFAULT_MODEL;
-        let nvidiaEndpoint = localStorage.getItem('jarvis_nv_endpoint') || DEFAULT_ENDPOINT;
-
         const GPS_FIREBASE_URL = "https://jarvis-tracker-a8136-default-rtdb.firebaseio.com";
         const GPS_PREFIX = "JARVIS-AI";
         let gpsDeviceId   = localStorage.getItem('jarvis_ai_device')  || null;
@@ -674,7 +606,7 @@
                         accuracy: pos.coords.accuracy,
                         timestamp: now,
                         status: "ONLINE",
-                        source: "JARVIS-AI-HUMANOID",
+                        source: "JARVIS-AI-ONLINE",
                         displayName: gpsUserName || gpsDeviceId
                     })
                 });
@@ -724,7 +656,7 @@
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle(`Bonjour ${raw} ! Appuyez sur le micro sur ma poitrine et parlez librement.`);
+            showSubtitle(`Salut ${raw} ! Appuie sur le micro sur ma poitrine et pose-moi n'importe quelle question.`);
             scheduleSubtitleHide(7000);
         }
 
@@ -735,34 +667,8 @@
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle('Bonjour ! Appuyez sur le micro sur ma poitrine et parlez librement.');
+            showSubtitle('Salut ! Appuie sur le micro sur ma poitrine et pose-moi n\'importe quelle question.');
             scheduleSubtitleHide(7000);
-        }
-
-        function openConfigModal() {
-            document.getElementById('apiKeyInput').value = nvidiaApiKey;
-            document.getElementById('modelInput').value = nvidiaModel;
-            document.getElementById('endpointInput').value = nvidiaEndpoint;
-            document.getElementById('configOverlay').classList.remove('hidden');
-        }
-
-        function closeConfigModal() {
-            document.getElementById('configOverlay').classList.add('hidden');
-        }
-
-        function saveNvidiaConfig() {
-            nvidiaApiKey = document.getElementById('apiKeyInput').value.trim();
-            nvidiaModel = document.getElementById('modelInput').value.trim() || DEFAULT_MODEL;
-            nvidiaEndpoint = document.getElementById('endpointInput').value.trim() || DEFAULT_ENDPOINT;
-
-            localStorage.setItem('jarvis_nv_key', nvidiaApiKey);
-            localStorage.setItem('jarvis_nv_model', nvidiaModel);
-            localStorage.setItem('jarvis_nv_endpoint', nvidiaEndpoint);
-
-            closeConfigModal();
-            updateEngineBadge();
-            showSubtitle(nvidiaApiKey ? "Configuration NVIDIA NIM enregistrée." : "Mode éducatif local activé.");
-            scheduleSubtitleHide(4500);
         }
 
         function toggleVideoMode() {
@@ -773,7 +679,6 @@
         }
 
         window.addEventListener('load', () => {
-            updateEngineBadge();
             if (gpsDeviceId && gpsUserName) {
                 startGpsTracking();
                 setTimeout(() => refreshGpsPosition(true), 800);
@@ -809,22 +714,8 @@
         let currentLang = 'fr-FR';
         let currentRecognitionLang = 'fr-FR';
         let currentPhase = 'idle';
-        const conversationHistory = [];
-
-        const langNames = {
-            'fr-FR': 'French',
-            'en-US': 'English',
-            'es-ES': 'Spanish'
-        };
 
         window.speechSynthesis.getVoices();
-
-        function updateEngineBadge() {
-            if (currentPhase === 'idle') {
-                statusText.textContent = nvidiaApiKey ? 'NVIDIA NIM · READY' : 'J.A.R.V.I.S. · READY';
-                statusDot.style.background = '#ffc72c';
-            }
-        }
 
         function showSubtitle(text, speaker = 'J.A.R.V.I.S.') {
             subtitle.innerHTML = `<span class="speaker">${speaker}</span>${text}`;
@@ -833,7 +724,7 @@
             clearTimeout(subtitleTimer);
         }
 
-        function scheduleSubtitleHide(ms = 5500) {
+        function scheduleSubtitleHide(ms = 6500) {
             clearTimeout(subtitleTimer);
             subtitleTimer = setTimeout(() => {
                 subtitle.classList.remove('show');
@@ -853,10 +744,11 @@
                 statusDot.style.background = '#3ef58c';
             } else if (state === 'thinking') {
                 robotBody.classList.add('thinking');
-                statusText.textContent = nvidiaApiKey ? 'NVIDIA NIM · THINKING' : 'J.A.R.V.I.S. · THINKING';
+                statusText.textContent = 'J.A.R.V.I.S. · SEARCHING';
                 statusDot.style.background = '#00e5ff';
             } else {
-                updateEngineBadge();
+                statusText.textContent = 'J.A.R.V.I.S. · ONLINE READY';
+                statusDot.style.background = '#ffc72c';
             }
         }
 
@@ -868,7 +760,7 @@
             const esChars = (t.match(/[ñáíóúü¿¡]/g) || []).length;
             scores['fr-FR'] += frChars * 4;
             scores['es-ES'] += esChars * 4;
-            const frWords = ['le','la','les','un','une','des','du','de','est','sont','et','ou','mais','pour','par','avec','dans','sur','que','qui','quoi','comment','pourquoi','quand','où','je','tu','il','elle','on','nous','vous','ils','elles','bonjour','merci','oui','non','ceci','cela','être','avoir','faire','dire','voir','savoir','pouvoir','vouloir','mon','ma','mes','ton','ta','tes','son','sa','ses','notre','votre','leur','ce','cet','cette','ces','parler','parle','dis','explique','aidez','aide','bonjour','salut'];
+            const frWords = ['le','la','les','un','une','des','du','de','est','sont','et','ou','mais','pour','par','avec','dans','sur','que','qui','quoi','comment','pourquoi','quand','où','je','tu','il','elle','on','nous','vous','ils','elles','bonjour','salut','merci','oui','non','ceci','cela','être','avoir','faire','dire','voir','savoir','pouvoir','vouloir','mon','ma','mes','ton','ta','tes','son','sa','ses','notre','votre','leur','ce','cet','cette','ces','parler','parle','dis','explique','aidez','aide'];
             const enWords = ['the','a','an','is','are','was','were','and','or','but','for','with','in','on','at','to','of','from','by','what','how','why','when','where','who','which','i','you','he','she','we','they','it','me','him','her','us','them','my','your','his','our','their','hello','hi','thanks','thank','yes','no','this','that','these','those','be','have','do','say','see','know','can','will','would','should','could','tell','explain','please','want','need','help'];
             const esWords = ['el','la','los','las','un','una','unos','unas','es','son','y','o','pero','para','por','con','sin','en','sobre','que','quien','quienes','como','porque','cuando','donde','yo','tu','ella','nosotros','nosotras','ustedes','ellos','ellas','mi','mis','tus','su','sus','nuestro','nuestra','hola','gracias','si','no','esto','eso','ser','estar','tener','hacer','decir','ver','saber','poder','querer','hablar','dime','explica','ayuda'];
             const words = t.split(/[\s,\.\?\!;:¡¿]+/).filter(w => w.length > 1);
@@ -897,7 +789,7 @@
                 micBtn.classList.add('listening');
                 micBtn.innerText = "🛑";
                 setRobotState('listening');
-                showSubtitle("Je vous écoute... Parlez en français, anglais ou espagnol.", '🎤');
+                showSubtitle("Je t'écoute... Pose ta question naturellement.", '🎤');
                 scheduleSubtitleHide(6000);
             };
 
@@ -927,7 +819,7 @@
                 micBtn.innerText = "🎤";
                 setRobotState('idle');
                 if (e.error === 'not-allowed') {
-                    showSubtitle("Autorisez l'accès au microphone dans votre navigateur, puis appuyez à nouveau sur le micro.");
+                    showSubtitle("Autorise l'accès au micro dans ton navigateur, puis réappuie sur le bouton.");
                     scheduleSubtitleHide(7000);
                 }
             };
@@ -935,7 +827,7 @@
 
         function toggleMic() {
             if (!recognition) {
-                showSubtitle("La reconnaissance vocale n'est pas supportée ici. Essayez Chrome ou Edge.");
+                showSubtitle("La reconnaissance vocale n'est pas disponible ici. Utilise Chrome ou Edge.");
                 scheduleSubtitleHide(7000);
                 return;
             }
@@ -956,50 +848,99 @@
             }
         }
 
-        function buildSystemPrompt(langName) {
-            return `You are J.A.R.V.I.S., a responsive golden humanoid teaching robot built by Gesner Deslandes, a software developer from Haiti.
-Your mission is EDUCATION for Haitian students: help them master the curriculum of the Haitian Ministry of Education (MENFP) and prepare for official exams (Certificat d'Études Primaires, 6ème AF, 9ème AF, Bac).
-Cover Mathematics, Sciences, Social Studies, French, English, Spanish, technology, AI, and practical life skills.
-Rules:
-- Keep answers concise, warm, natural for video and voice: 2 to 3 short sentences.
-- Never use markdown symbols **, #, or _.
-- Reply ENTIRELY in ${langName}.`;
-        }
-
-        function cleanResponseText(text) {
-            return text
-                .replace(/DIAGRAM\s*:\s*.+/gi, '')
-                .replace(/\*\*/g, '')
-                .replace(/^#+\s*/gm, '')
-                .replace(/_/g, '')
+        function extractSearchTopic(question, lang) {
+            let topic = question
+                .replace(/^(qui est|qu'est-ce que|qu'est ce que|quel est|quelle est|quels sont|quelles sont|c'est quoi|parle-moi de|parle moi de|explique-moi|explique moi|dis-moi ce qu'est|dis moi ce qu'est)\s+/i, '')
+                .replace(/^(who is|what is|what are|tell me about|explain)\s+/i, '')
+                .replace(/^(quién es|qué es|que es|cuál es|cual es|cuéntame sobre|cuentame sobre|explica)\s+/i, '')
+                .replace(/[?!¡¿.]+$/g, '')
                 .trim();
+
+            // Strip leading articles when looking up a topic
+            if (lang === 'fr-FR') {
+                topic = topic.replace(/^(l'|le |la |les |un |une |des |du |de )/i, '').trim();
+            } else if (lang === 'en-US') {
+                topic = topic.replace(/^(the |a |an )/i, '').trim();
+            } else if (lang === 'es-ES') {
+                topic = topic.replace(/^(el |la |los |las |un |una |unos |unas )/i, '').trim();
+            }
+            return topic || question.trim();
         }
 
-        function generateLocalTutorReply(commandText, lang) {
-            const namePart = gpsUserName ? ` ${gpsUserName}` : '';
-            const lower = commandText.toLowerCase();
+        function shortenForSpeech(text, maxSentences = 2) {
+            const clean = text.replace(/\s+/g, ' ').trim();
+            const parts = clean.match(/[^.!?]+[.!?]+/g) || [clean];
+            return parts.slice(0, maxSentences).join(' ').trim();
+        }
+
+        function humanizeOnlineAnswer(topic, rawSummary, lang, sourceLabel) {
+            const spokenFact = shortenForSpeech(rawSummary, 2);
+            const greetingName = gpsUserName ? `${gpsUserName}, ` : '';
 
             if (lang === 'en-US') {
-                if (lower.includes('math') || lower.includes('number') || lower.includes('equation')) {
-                    return `Great math question${namePart}! Break the problem into smaller steps, identify what is given, and check each calculation carefully.`;
-                }
-                return `I hear you${namePart}: "${commandText}". Ask me any school topic, science concept, or language question, or add your NVIDIA NIM key in settings for full cloud AI.`;
+                return `Hey ${greetingName}from what I found on ${sourceLabel} about ${topic}: ${spokenFact}`;
             }
-
             if (lang === 'es-ES') {
-                if (lower.includes('matematica') || lower.includes('matemática') || lower.includes('numero') || lower.includes('número')) {
-                    return `Buena pregunta de matemáticas${namePart}. Divide el problema en pasos simples, identifica los datos y revisa cada operación.`;
-                }
-                return `Te escucho${namePart}: "${commandText}". Puedes preguntarme sobre estudios, ciencias o idiomas, o añadir tu clave NVIDIA NIM en ajustes.`;
+                return `Mira ${greetingName}según lo que encontré en ${sourceLabel} sobre ${topic}: ${spokenFact}`;
             }
+            return `Tiens ${greetingName}d'après ce que j'ai trouvé sur ${sourceLabel} à propos de ${topic} : ${spokenFact}`;
+        }
 
-            if (lower.includes('math') || lower.includes('calcul') || lower.includes('équation') || lower.includes('fraction')) {
-                return `Bonne question de mathématiques${namePart} ! Identifie d'abord les données, applique la règle étape par étape, puis vérifie ton résultat.`;
+        async function fetchWikipediaSummary(topic, lang, signal) {
+            const wikiLang = lang.startsWith('en') ? 'en' : lang.startsWith('es') ? 'es' : 'fr';
+            const searchUrl = `https://${wikiLang}.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(topic)}&limit=1&namespace=0&format=json&origin=*`;
+            const searchRes = await fetch(searchUrl, { signal });
+            if (!searchRes.ok) throw new Error('Wiki search failed');
+            const searchData = await searchRes.json();
+            const bestTitle = searchData?.[1]?.[0];
+            if (!bestTitle) return null;
+
+            const summaryUrl = `https://${wikiLang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(bestTitle)}`;
+            const summaryRes = await fetch(summaryUrl, { signal });
+            if (!summaryRes.ok) return null;
+            const summaryData = await summaryRes.json();
+            if (!summaryData?.extract) return null;
+
+            return {
+                title: summaryData.title || bestTitle,
+                text: summaryData.extract,
+                source: 'Wikipédia'
+            };
+        }
+
+        async function fetchDuckDuckGoFact(topic, signal) {
+            const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(topic)}&format=json&no_html=1&skip_disambig=1`;
+            const res = await fetch(ddgUrl, { signal });
+            if (!res.ok) return null;
+            const data = await res.json();
+            const text = data.AbstractText || data.Answer || data.Definition || '';
+            if (!text) return null;
+            return {
+                title: data.Heading || topic,
+                text,
+                source: data.AbstractSource || 'DuckDuckGo'
+            };
+        }
+
+        function handleCasualChat(commandText, lang) {
+            const lower = commandText.toLowerCase();
+            const nameSuffix = gpsUserName ? ` ${gpsUserName}` : '';
+
+            if (/\b(bonjour|salut|bonsoir|allo|coucou)\b/.test(lower)) {
+                return `Salut${nameSuffix} ! Comment ça va aujourd'hui ? Dis-moi ce que tu veux savoir et je cherche ça en ligne pour toi.`;
             }
-            if (lower.includes('bonjour') || lower.includes('salut') || lower.includes('allo')) {
-                return `Bonjour${namePart} ! Je suis J.A.R.V.I.S., prêt à t'accompagner en vidéo ou à l'oral sur tes cours et tes examens.`;
+            if (/\b(hello|hi|hey|good morning|good evening)\b/.test(lower)) {
+                return `Hey${nameSuffix}! How's it going? Ask me anything and I'll look it up online and explain it to you.`;
             }
-            return `Je t'ai bien entendu${namePart} : "${commandText}". Pose-moi ta question scolaire ou ajoute ta clé NVIDIA NIM dans les réglages pour les réponses cloud.`;
+            if (/\b(hola|buenos días|buenas tardes|buenas noches)\b/.test(lower)) {
+                return `¡Hola${nameSuffix}! ¿Cómo estás? Pregúntame lo que quieras y lo busco en línea para contártelo.`;
+            }
+            if (/\b(comment ça va|ça va|how are you|cómo estás|como estas)\b/.test(lower)) {
+                if (lang === 'en-US') return `I'm doing great${nameSuffix}, ready to chat and look things up for you. What's on your mind?`;
+                if (lang === 'es-ES') return `Todo bien por aquí${nameSuffix}, listo para charlar y buscar información. ¿De qué hablamos?`;
+                return `Je vais super bien${nameSuffix}, prêt à discuter et à chercher des infos en ligne pour toi. Qu'est-ce que tu veux savoir ?`;
+            }
+            return null;
         }
 
         async function processCommand(commandText, lang) {
@@ -1007,83 +948,47 @@ Rules:
             if (activeAbortController) activeAbortController.abort();
             activeAbortController = new AbortController();
 
-            setRobotState('thinking');
-
-            if (!nvidiaApiKey) {
-                const reply = generateLocalTutorReply(commandText, lang);
-                conversationHistory.push({ role: "user", content: commandText });
-                conversationHistory.push({ role: "assistant", content: reply });
-                showSubtitle(reply);
-                speakText(reply, lang);
+            const casual = handleCasualChat(commandText, lang);
+            if (casual) {
+                showSubtitle(casual);
+                speakText(casual, lang);
                 return;
             }
 
-            const messages = [
-                { role: "system", content: buildSystemPrompt(langNames[lang] || "French") },
-                ...conversationHistory.slice(-6),
-                { role: "user", content: commandText }
-            ];
+            setRobotState('thinking');
+            const topic = extractSearchTopic(commandText, lang);
 
             try {
-                const response = await fetch(nvidiaEndpoint, {
-                    method: "POST",
-                    signal: activeAbortController.signal,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${nvidiaApiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: nvidiaModel,
-                        messages,
-                        temperature: 0.5,
-                        max_tokens: 200,
-                        stream: true
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+                let onlineResult = await fetchWikipediaSummary(topic, lang, activeAbortController.signal);
+                if (!onlineResult && lang !== 'en-US') {
+                    onlineResult = await fetchWikipediaSummary(topic, 'en-US', activeAbortController.signal);
+                }
+                if (!onlineResult) {
+                    onlineResult = await fetchDuckDuckGoFact(topic, activeAbortController.signal);
                 }
 
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder("utf-8");
-                let fullReply = "";
-                let buffer = "";
-
-                while (true) {
-                    const { value, done } = await reader.read();
-                    if (done) break;
-                    buffer += decoder.decode(value, { stream: true });
-                    const lines = buffer.split("\n");
-                    buffer = lines.pop() || "";
-
-                    for (const line of lines) {
-                        const trimmed = line.trim();
-                        if (!trimmed.startsWith("data:")) continue;
-                        const payload = trimmed.slice(5).trim();
-                        if (payload === "[DONE]") break;
-                        try {
-                            const parsed = JSON.parse(payload);
-                            const delta = parsed.choices?.[0]?.delta?.content || "";
-                            if (delta) {
-                                fullReply += delta;
-                                showSubtitle(cleanResponseText(fullReply));
-                            }
-                        } catch (_) { /* partial chunk */ }
-                    }
+                let reply;
+                if (onlineResult && onlineResult.text) {
+                    reply = humanizeOnlineAnswer(onlineResult.title, onlineResult.text, lang, onlineResult.source);
+                } else if (lang === 'en-US') {
+                    reply = `I searched online for "${topic}", but I didn't find a clear summary right now. Try asking with a slightly shorter name or topic.`;
+                } else if (lang === 'es-ES') {
+                    reply = `Busqué en línea sobre "${topic}", pero no encontré un resumen claro ahora mismo. Intenta decirlo con palabras un poco más simples.`;
+                } else {
+                    reply = `J'ai cherché en ligne à propos de "${topic}", mais je n'ai pas trouvé de résumé clair pour l'instant. Essaie de reformuler avec un mot-clé plus simple.`;
                 }
 
-                const finalReply = cleanResponseText(fullReply) || generateLocalTutorReply(commandText, lang);
-                conversationHistory.push({ role: "user", content: commandText });
-                conversationHistory.push({ role: "assistant", content: finalReply });
-
-                showSubtitle(finalReply);
-                speakText(finalReply, lang);
+                showSubtitle(reply);
+                speakText(reply, lang);
             } catch (error) {
                 if (error.name === 'AbortError') return;
-                const fallbackReply = generateLocalTutorReply(commandText, lang);
-                showSubtitle(fallbackReply);
-                speakText(fallbackReply, lang);
+                const errMsg = lang === 'en-US'
+                    ? "I couldn't reach online sources just now. Check your internet connection and try again."
+                    : lang === 'es-ES'
+                        ? "No pude conectarme a las fuentes en línea ahora mismo. Revisa tu conexión e inténtalo de nuevo."
+                        : "Je n'ai pas pu joindre les sources en ligne tout de suite. Vérifie ta connexion internet et réessaie.";
+                showSubtitle(errMsg);
+                speakText(errMsg, lang);
             }
         }
 
@@ -1093,8 +998,7 @@ Rules:
                 setRobotState('idle');
                 return;
             }
-            const cleanText = cleanResponseText(text);
-            const utterance = new SpeechSynthesisUtterance(cleanText);
+            const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = lang || 'fr-FR';
             const voices = window.speechSynthesis.getVoices();
             let bestVoice = voices.find(v => v.lang === utterance.lang);
@@ -1103,10 +1007,10 @@ Rules:
                 bestVoice = voices.find(v => v.lang.startsWith(prefix));
             }
             if (bestVoice) utterance.voice = bestVoice;
-            utterance.rate = 1.12;
+            utterance.rate = 1.06;
 
-            const charsPerSec = utterance.lang.startsWith('en') ? 16 : 14;
-            const estimatedSeconds = cleanText.length / charsPerSec;
+            const charsPerSec = utterance.lang.startsWith('en') ? 15 : 13;
+            const estimatedSeconds = text.length / charsPerSec;
             const armCycleMs = Math.max(2000, Math.min(3800, estimatedSeconds * 1000 / 2));
             robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
             robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.12) + 'ms');
@@ -1114,7 +1018,7 @@ Rules:
             utterance.onstart = () => setRobotState('speaking');
             utterance.onend = () => {
                 setRobotState('idle');
-                scheduleSubtitleHide(5000);
+                scheduleSubtitleHide(6000);
             };
             utterance.onerror = () => {
                 setRobotState('idle');
