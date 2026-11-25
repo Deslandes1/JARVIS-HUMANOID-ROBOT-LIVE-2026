@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -164,7 +164,8 @@
             transition: color .15s;
         }
         .owner-card a:hover { color: var(--accent); text-decoration: underline; }
-        body.video-mode .owner-card {
+        body.video-mode .owner-card,
+        body.video-mode .chat-bar {
             display: none;
         }
         .stage {
@@ -291,20 +292,20 @@
         @keyframes haloSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .subtitle {
             position: fixed;
-            bottom: 24px;
+            bottom: 76px;
             left: 50%;
             transform: translateX(-50%);
             max-width: 900px;
             width: 92%;
-            max-height: 42vh;
+            max-height: 36vh;
             overflow-y: auto;
             background: rgba(15, 23, 42, 0.94);
             color: #ffffff;
-            padding: 18px 24px;
+            padding: 16px 22px;
             border-radius: 18px;
             border: 2px solid rgba(255,199,44,0.65);
-            font-size: 1.15rem;
-            line-height: 1.58;
+            font-size: 1.08rem;
+            line-height: 1.55;
             text-align: center;
             opacity: 0;
             pointer-events: none;
@@ -314,14 +315,60 @@
             z-index: 90;
             white-space: pre-wrap;
         }
-        .subtitle.show { opacity: 1; }
+        .subtitle.show { opacity: 1; pointer-events: auto; }
         .subtitle .speaker {
             display: block;
             color: var(--accent-2);
             font-weight: 900;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             letter-spacing: 3px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+        }
+        .chat-bar {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 720px;
+            z-index: 95;
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1.5px solid rgba(255, 199, 44, 0.55);
+            border-radius: 999px;
+            padding: 6px 8px 6px 16px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+        }
+        .chat-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.92rem;
+            outline: none;
+            min-width: 0;
+        }
+        .chat-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
+        }
+        .chat-bar button {
+            background: linear-gradient(135deg, #ffc72c, #ff9500);
+            color: #2a1c00;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: filter 0.15s, transform 0.15s;
+        }
+        .chat-bar button:hover { filter: brightness(1.08); }
+        .chat-bar button.stop-btn {
+            background: rgba(220, 38, 38, 0.85);
+            color: #fff;
+            padding: 8px 12px;
         }
         .modal-overlay {
             position: fixed;
@@ -402,12 +449,15 @@
             .owner-card .edu-pill { font-size: 0.6rem; padding: 2px 8px; }
             .chest-mic { width: 40px; height: 40px; font-size: 1.1rem; top: 36.2%; }
             .subtitle {
-                font-size: 1rem;
-                padding: 14px 18px;
-                bottom: 14px;
-                max-height: 42vh;
+                font-size: 0.96rem;
+                padding: 12px 16px;
+                bottom: 68px;
+                max-height: 36vh;
             }
-            .subtitle .speaker { font-size: 0.72rem; margin-bottom: 6px; }
+            .subtitle .speaker { font-size: 0.7rem; margin-bottom: 5px; }
+            .chat-bar { bottom: 12px; padding: 5px 6px 5px 12px; }
+            .chat-bar input { font-size: 0.85rem; }
+            .chat-bar button { padding: 7px 12px; font-size: 0.76rem; }
             .modal-card { padding: 22px 20px; }
             .modal-card h2 { font-size: 1.25rem; }
         }
@@ -537,26 +587,35 @@
             <button class="chest-mic" id="micBtn" onclick="toggleMic()" title="Tap ON / Tap OFF mic">🎤</button>
         </div>
     </div>
+
     <div class="subtitle" id="subtitle"></div>
+
+    <form class="chat-bar" id="chatForm" onsubmit="handleTextSubmit(event)">
+        <input type="text" id="chatInput" placeholder="Ask J.A.R.V.I.S. anything or tap the chest mic..." autocomplete="off">
+        <button type="button" class="stop-btn" onclick="stopSpeaking(true)" title="Stop voice">⏹</button>
+        <button type="submit">Ask</button>
+    </form>
+
     <div id="nameOverlay" class="modal-overlay hidden">
         <div class="modal-card">
-            <h2>👋 Bienvenue chez J.A.R.V.I.S.</h2>
-            <p>Entrez votre nom pour commencer. Appuyez sur le micro pour l'allumer jusqu'à ce que vous le désactiviez.</p>
-            <input type="text" id="nameInput" placeholder="Votre nom..." maxlength="20" autocomplete="off">
-            <button class="go-btn" onclick="saveNameAndStart()">Commencer</button>
-            <button class="skip-btn" onclick="skipName()">Rester anonyme</button>
+            <h2>👋 Welcome to J.A.R.V.I.S.</h2>
+            <p>Enter your name to begin. Tap the chest microphone to talk or type any question below.</p>
+            <input type="text" id="nameInput" placeholder="Your name..." maxlength="24" autocomplete="off">
+            <button class="go-btn" onclick="saveNameAndStart()">Start</button>
+            <button class="skip-btn" onclick="skipName()">Continue as Guest</button>
         </div>
     </div>
+
     <script>
         // ============================================================
-        // JARVIS SCHOLAR DATABASE, ACADEMIC SUBJECTS & VERIFIED RECORDS
+        // JARVIS SCHOLAR KNOWLEDGE BASE & CONVERSATIONAL INTELLIGENCE
         // ============================================================
         const JARVIS_DATABASE = {
             assistantName: "J.A.R.V.I.S.",
             owner: {
                 name: "Gesner Deslandes",
-                roleEn: "Software Developer and Technology Coordinator from Haiti",
-                roleFr: "Développeur Logiciel et Coordinateur Technologique d'Haïti",
+                roleEn: "Software Developer, Educator, and Technology Coordinator from Haiti",
+                roleFr: "Développeur Logiciel, Éducateur et Coordinateur Technologique d'Haïti",
                 phone: "(509)-47385663",
                 email: "deslandes78@gmail.com"
             },
@@ -578,38 +637,70 @@
                     detailFr: "Il exerce ses fonctions aux côtés du président Donald Trump et préside également le Sénat."
                 }
             ],
+            humanoidTopics: [
+                {
+                    match: /\b(why.*human[- ]?shaped|why.*humanoid\s+body|instead\s+of.*screen|pourquoi.*corps\s+humain|pourquoi.*forme\s+humaine)\b/i,
+                    en: "Engineers build humanoid AI with a human-shaped body because our world—stairs, doorways, desks, tools, and vehicles—is already designed for human proportions. A human form also makes face-to-face communication, expressive gestures, and learning by observing people far more intuitive.",
+                    fr: "Les ingénieurs conçoivent l'IA humanoïde avec un corps de forme humaine parce que notre environnement—escaliers, portes, bureaux et outils—est déjà adapté aux proportions humaines. Cette forme rend aussi la communication naturelle et l'apprentissage par imitation beaucoup plus intuitifs."
+                },
+                {
+                    match: /\b(how.*understand.*speech|vision.*gestures|how.*humanoid.*(work|think|understand|learn)|comment.*humanoïde.*(comprend|fonctionne|apprend))\b/i,
+                    en: "A humanoid AI combines speech recognition, computer vision, and multimodal language-action models. Microphones convert spoken words into meaning, cameras recognize faces and objects, and neural networks coordinate natural replies and physical gestures in real time.",
+                    fr: "Une IA humanoïde combine la reconnaissance vocale, la vision par ordinateur et des modèles multimodaux langage-action. Les microphones traduisent la parole, les caméras analysent l'environnement et les réseaux neuronaux coordonnent des réponses naturelles en temps réel."
+                },
+                {
+                    match: /\b(everyday\s+tasks|what.*can.*humanoid.*do|tasks.*in\s+schools|tâches\s+quotidiennes|que\s+peut\s+faire.*humanoïde)\b/i,
+                    en: "Today, humanoid AI excels at interactive tutoring in classrooms, answering questions in multiple languages, guiding visitors, and handling structured logistics or repetitive physical tasks in labs and workplaces.",
+                    fr: "Aujourd'hui, l'IA humanoïde excelle dans le tutorat interactif en classe, les réponses multilingues, l'accueil des visiteurs et les tâches logistiques structurées en laboratoire ou en entreprise."
+                },
+                {
+                    match: /\b(safe|safety|accurate|trustworthy|sécurité|securite|fiable|confiance)\b/i,
+                    en: "Humanoid AI systems are kept safe and trustworthy through physical force limits, collision sensors, verified knowledge bases, and clear privacy controls around microphones and cameras.",
+                    fr: "Les systèmes d'IA humanoïde restent sûrs et fiables grâce à des limiteurs de force physique, des capteurs anticollision, des bases de connaissances vérifiées et une protection stricte des données vocales et visuelles."
+                },
+                {
+                    match: /\b(replace\s+human\s+jobs|assistant\s+and\s+educational\s+partner|remplacer.*emplois|partenaire\s+éducatif)\b/i,
+                    en: "Humanoid AI is best designed as a collaborative assistant and educational partner rather than a replacement for human judgment, creativity, and empathy. It handles repetitive work and provides 24/7 tutoring so teachers and professionals can focus on higher-level mentoring.",
+                    fr: "L'IA humanoïde est avant tout conçue comme un assistant collaboratif et un partenaire éducatif plutôt qu'un remplacement de la créativité et de l'empathie humaines. Elle accompagne les élèves et libère du temps pour l'enseignement."
+                },
+                {
+                    match: /\b(what\s+is\s+(a\s+)?humanoid(\s+ai|\s+robot)?|qu'est[- ]ce\s+qu'un\s+robot\s+humanoïde|ia\s+humanoïde)\b/i,
+                    en: "A humanoid AI is an intelligent system embodied in a human-like form—complete with head, torso, arms, and conversational intelligence—designed to interact naturally with people through voice, vision, and reasoning.",
+                    fr: "Une IA humanoïde est un système intelligent doté d'une silhouette humaine—tête, torse, bras et intelligence conversationnelle—conçu pour interagir naturellement par la voix, la vision et le raisonnement."
+                }
+            ],
             academicGuides: [
                 {
                     id: 'mathematics',
-                    match: /\b(math|maths|mathematics|algebra|geometry|calculus|trigonometry|equation|fraction|quadratic|mathématiques|mathematiques|algèbre|algebre|géométrie|geometrie|calcul|trigonométrie|équation|equation)\b/i,
-                    shortEn: "In mathematics, every problem becomes clear when we identify what is given, choose the right theorem or formula, and solve step by step.",
-                    longEn: "In mathematics, mastery comes from structure and logic. Whether we are solving linear or quadratic equations, analyzing geometric proofs, or working through derivatives and trigonometry, we always start by defining the known variables, applying the governing rule cleanly, and verifying the result. Share the exact equation or problem you are working on, and we will solve it together step by step.",
+                    match: /\b(math|maths|mathematics|algebra|geometry|calculus|trigonometry|equation|fraction|quadratic|pythagoras|pythagorean|mathématiques|mathematiques|algèbre|algebre|géométrie|geometrie|calcul|trigonométrie|équation|equation|pythagore)\b/i,
+                    shortEn: "In mathematics, every problem becomes clear when we identify the given values, select the governing formula or theorem, and solve step by step.",
+                    longEn: "In mathematics, mastery comes from clear logical steps. Whether solving algebraic equations, applying the Pythagorean theorem ($a^2 + b^2 = c^2$), or working through trigonometry and calculus, we define what is known, apply the exact rule, and verify our answer. Give me the specific equation or problem you want to solve!",
                     shortFr: "En mathématiques, chaque problème devient clair lorsqu'on identifie les données, qu'on applique la bonne formule et qu'on résout étape par étape.",
-                    longFr: "En mathématiques, la maîtrise repose sur la rigueur et la logique. Qu'il s'agisse d'équations algébriques, de géométrie, de trigonométrie ou d'analyse, nous commençons toujours par poser les variables connues, appliquer le théorème approprié et vérifier le résultat. Donne-moi l'exercice précis sur lequel tu travailles et nous le résoudrons ensemble étape par étape."
+                    longFr: "En mathématiques, la maîtrise repose sur une démarche logique rigoureuse. Qu'il s'agisse d'équations algébriques, du théorème de Pythagore, de géométrie ou de trigonométrie, nous posons les données connues, appliquons la règle exacte et vérifions le résultat. Donne-moi ton exercice précis pour que nous le résolvions ensemble !"
                 },
                 {
                     id: 'physics',
-                    match: /\b(physics|mechanics|force|newton|energy|velocity|acceleration|electricity|magnetism|optics|thermodynamics|quantum|physique|mécanique|mecanique|énergie|energie|vitesse|accélération|électricité|electricite|magnétisme|optique|thermodynamique)\b/i,
-                    shortEn: "Physics explains how matter and energy interact across the universe, from Newton's laws of motion to electricity, waves, and thermodynamics.",
-                    longEn: "Physics investigates the fundamental laws governing motion, forces, energy, electromagnetism, optics, and matter. When tackling any physics problem, we list the given physical quantities with their SI units, select the conservation law or equation of motion that connects them, and check dimensional consistency. Which physics concept or homework question would you like to analyze together?",
-                    shortFr: "La physique explique comment la matière et l'énergie interagissent, des lois du mouvement de Newton jusqu'à l'électricité, aux ondes et à la thermodynamique.",
-                    longFr: "La physique étudie les lois fondamentales qui régissent le mouvement, les forces, l'énergie, l'électromagnétisme et la matière. Pour résoudre tout exercice de physique, nous relevons d'abord les grandeurs données avec leurs unités du Système International, puis nous appliquons la loi de conservation ou l'équation du mouvement correspondante. Quel chapitre ou exercice souhaites-tu étudier ?"
+                    match: /\b(physics|mechanics|force|newton|energy|velocity|acceleration|gravity|electricity|magnetism|optics|thermodynamics|quantum|physique|mécanique|mecanique|énergie|energie|vitesse|accélération|gravité|électricité|electricite|magnétisme|optique|thermodynamique)\b/i,
+                    shortEn: "Physics explains how matter and energy behave across the universe—from Newton's laws of motion and gravity to electricity, waves, and thermodynamics.",
+                    longEn: "Physics investigates the fundamental laws of nature: force and motion ($F = ma$), conservation of energy, electromagnetism, optics, and quantum mechanics. When solving any physics problem, we convert all quantities to standard SI units, choose the physical law connecting them, and compute the result. Which physics topic or exercise shall we analyze?",
+                    shortFr: "La physique explique comment la matière et l'énergie se comportent dans l'univers, des lois de Newton et de la gravité jusqu'à l'électricité et la thermodynamique.",
+                    longFr: "La physique étudie les lois fondamentales de la nature : les forces et le mouvement, la conservation de l'énergie, l'électromagnétisme et l'optique. Pour résoudre tout exercice, nous convertissons les grandeurs dans le Système International et appliquons la loi physique correspondante. Quel sujet de physique veux-tu explorer ?"
                 },
                 {
                     id: 'chemistry',
-                    match: /\b(chemistry|chimistry|atom|molecule|periodic table|chemical|reaction|acid|base|mole|stoichiometry|bond|chimie|atome|molécule|molecule|tableau périodique|réaction|acide|stœchiométrie|liaison)\b/i,
-                    shortEn: "Chemistry is the science of matter, atoms, and molecular transformations—explaining how elements bond, react, and exchange energy.",
-                    longEn: "Chemistry examines the composition, structure, and transformations of matter at the atomic and molecular levels. From balancing chemical equations and calculating molar masses to understanding acids, bases, and chemical bonding, every reaction obeys the conservation of mass and charge. Tell me which element, reaction, or chemistry exercise you are studying.",
-                    shortFr: "La chimie est la science de la matière, des atomes et des transformations moléculaires : elle explique comment les éléments se lient et réagissent.",
-                    longFr: "La chimie étudie la composition, la structure et les transformations de la matière à l'échelle atomique et moléculaire. Qu'il s'agisse d'équilibrer une équation chimique, de calculer une quantité de matière en moles ou d'étudier les réactions acido-basiques, la conservation de la masse et des charges reste notre guide. Quel sujet ou exercice de chimie veux-tu travailler ?"
+                    match: /\b(chemistry|chimistry|atom|molecule|periodic table|chemical|reaction|acid|base|mole|stoichiometry|bond|h2o|oxygen|hydrogen|chimie|atome|molécule|molecule|tableau périodique|réaction|acide|stœchiométrie|liaison)\b/i,
+                    shortEn: "Chemistry is the science of atoms, molecules, and chemical reactions—explaining how elements bond, transform, and conserve mass and energy.",
+                    longEn: "Chemistry explores matter at the atomic and molecular level. Whether balancing chemical equations, calculating molar mass in stoichiometry, or studying acids, bases, and covalent or ionic bonds, atoms are always conserved. Tell me which chemical reaction, element, or exercise you are studying.",
+                    shortFr: "La chimie est la science des atomes, des molécules et des réactions chimiques : elle explique comment les éléments se lient et se transforment.",
+                    longFr: "La chimie étudie la matière à l'échelle atomique et moléculaire. Qu'il s'agisse d'équilibrer une équation chimique, de calculer une masse molaire ou d'étudier les acides, les bases et les liaisons chimiques, la conservation des atomes reste la règle d'or. Quel exercice de chimie veux-tu étudier ?"
                 },
                 {
                     id: 'biology',
                     match: /\b(biology|cell|dna|genetics|evolution|photosynthesis|ecosystem|anatomy|biologie|cellule|adn|génétique|genetique|évolution|photosynthèse|écosystème|anatomie)\b/i,
-                    shortEn: "Biology explores living systems, from cellular respiration and DNA genetics to human anatomy and ecological balance.",
-                    longEn: "Biology studies the structure, function, growth, and evolution of living organisms. At the microscopic scale, cells carry out metabolism and express genetic instructions encoded in DNA; at the macroscopic scale, organisms interact within complex ecosystems. Which biological system or lesson shall we examine today?",
-                    shortFr: "La biologie explore le monde vivant, depuis le fonctionnement de la cellule et de l'ADN jusqu'à l'anatomie et l'équilibre des écosystèmes.",
-                    longFr: "La biologie étudie l'organisation, le fonctionnement et l'évolution des êtres vivants. À l'échelle microscopique, la cellule assure le métabolisme et exprime l'information génétique portée par l'ADN ; à l'échelle globale, les organismes interagissent au sein d'écosystèmes complexes. Quelle notion de biologie souhaites-tu approfondir ?"
+                    shortEn: "Biology studies living organisms—from cells, DNA, and photosynthesis to human anatomy and ecosystems.",
+                    longEn: "Biology examines life at every scale: inside cells where DNA directs protein synthesis and mitochondria generate energy, up to organ systems and global ecosystems. Which biological concept or question would you like to explore?",
+                    shortFr: "La biologie étudie le monde vivant, depuis la cellule, l'ADN et la photosynthèse jusqu'à l'anatomie humaine et les écosystèmes.",
+                    longFr: "La biologie examine la vie à toutes les échelles : au cœur des cellules où l'ADN dirige la synthèse des protéines, jusqu'aux organes et aux écosystèmes. Quelle notion de biologie souhaites-tu approfondir ?"
                 }
             ]
         };
@@ -623,10 +714,10 @@
         let gpsLastTouch  = 0;
 
         function generateDeviceId(name) {
-            const safe = (name || 'élève')
+            const safe = (name || 'student')
                 .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
                 .replace(/[^a-zA-Z0-9]/g, '')
-                .slice(0, 18) || 'eleve';
+                .slice(0, 18) || 'student';
             return `${GPS_PREFIX}-${safe}-${Math.floor(1000 + Math.random() * 9000)}`;
         }
 
@@ -686,35 +777,35 @@
 
         function saveNameAndStart() {
             const raw = document.getElementById('nameInput').value.trim();
-            if (!raw) { alert("Entrez votre nom d'abord."); return; }
+            if (!raw) { alert("Please enter your name first."); return; }
             gpsUserName = raw;
             localStorage.setItem('jarvis_ai_name', raw);
-            if (!gpsDeviceId || gpsDeviceId.includes('eleve')) {
+            if (!gpsDeviceId || gpsDeviceId.includes('student')) {
                 gpsDeviceId = generateDeviceId(raw);
                 localStorage.setItem('jarvis_ai_device', gpsDeviceId);
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle(`Bienvenue ${raw} ! Je suis J.A.R.V.I.S., votre robot érudit. Appuyez sur le micro pour discuter, poser vos questions ou réviser vos cours.`);
-            scheduleSubtitleHide(7500);
+            showSubtitle(`Welcome ${raw}! I am J.A.R.V.I.S., your scholar humanoid AI. Tap the chest microphone or type below to talk about any subject.`);
+            scheduleSubtitleHide(8000);
         }
 
         function skipName() {
             if (!gpsDeviceId) {
-                gpsDeviceId = generateDeviceId('élève');
+                gpsDeviceId = generateDeviceId('student');
                 localStorage.setItem('jarvis_ai_device', gpsDeviceId);
             }
             closeNameOverlay();
             startGpsTracking();
-            showSubtitle('Bienvenue ! Je suis J.A.R.V.I.S., votre robot érudit. Appuyez sur le micro pour discuter ou étudier n\'importe quelle matière.');
-            scheduleSubtitleHide(7500);
+            showSubtitle('Welcome! I am J.A.R.V.I.S., your scholar humanoid AI. Tap the chest microphone or type below to ask anything.');
+            scheduleSubtitleHide(8000);
         }
 
         function toggleVideoMode() {
             const active = document.body.classList.toggle('video-mode');
             const btn = document.getElementById('videoModeBtn');
             btn.classList.toggle('active', active);
-            btn.textContent = active ? '🎬 Quitter Vidéo' : '🎬 Mode Vidéo';
+            btn.textContent = active ? '🎬 Exit Video' : '🎬 Mode Vidéo';
         }
 
         window.addEventListener('load', () => {
@@ -750,6 +841,9 @@
 
         let isMicArmed = false;
         let isRecognizerRunning = false;
+        let isSpeakingNow = false;
+        let lastSpokenText = '';
+        let lastSpeechEndedAt = 0;
         let recognition = null;
         let subtitleTimer = null;
         let activeAbortController = null;
@@ -813,7 +907,7 @@
             clearTimeout(subtitleTimer);
         }
 
-        function scheduleSubtitleHide(ms = 9000) {
+        function scheduleSubtitleHide(ms = 11000) {
             clearTimeout(subtitleTimer);
             subtitleTimer = setTimeout(() => {
                 subtitle.classList.remove('show');
@@ -875,7 +969,7 @@
                 'their','hello','hi','hey','thanks','thank','yes','no','please','tell','explain','show','find',
                 'speak','talk','teach','learn','english','french','today','date','time','now','good','great','more',
                 'owner','creator','president','short','long','detail','briefly','listen','carefully','before','answer',
-                'math','physics','chemistry','chimistry','biology','student','students','homework','study'
+                'math','physics','chemistry','chimistry','biology','student','students','homework','study','humanoid'
             ]);
             const frWords = new Set([
                 'qui','quoi','que','quel','quelle','quels','quelles','comment','pourquoi','quand','où','est','sont',
@@ -897,9 +991,26 @@
             return enScore > frScore ? 'en-US' : 'fr-FR';
         }
 
+        // Prevent Jarvis from picking up his own voice from the device speakers
+        function isSelfEcho(transcript) {
+            if (!lastSpokenText) return false;
+            const normUser = transcript.toLowerCase().replace(/[^a-z0-9àâäéèêëïîôöùûüÿç\s]/g, '').trim();
+            const normJarvis = lastSpokenText.toLowerCase().replace(/[^a-z0-9àâäéèêëïîôöùûüÿç\s]/g, '').trim();
+            if (normUser.length < 4) return false;
+            if (normJarvis.includes(normUser)) return true;
+            const userWords = normUser.split(/\s+/);
+            const jarvisSet = new Set(normJarvis.split(/\s+/));
+            const overlap = userWords.filter(w => jarvisSet.has(w)).length;
+            return userWords.length >= 4 && (overlap / userWords.length) >= 0.78;
+        }
+
         function startRecognizerSafely() {
-            if (!recognition || !isMicArmed || isRecognizerRunning) return;
+            if (!recognition || !isMicArmed || isRecognizerRunning || isSpeakingNow) return;
             if (window.speechSynthesis && window.speechSynthesis.speaking) return;
+            if (Date.now() - lastSpeechEndedAt < 650) {
+                setTimeout(() => startRecognizerSafely(), 400);
+                return;
+            }
             try {
                 recognition.lang = currentLang;
                 recognition.start();
@@ -915,18 +1026,27 @@
 
             recognition.onstart = () => {
                 isRecognizerRunning = true;
-                if (isMicArmed && !window.speechSynthesis.speaking && currentPhase !== 'thinking') {
+                if (isMicArmed && !isSpeakingNow && currentPhase !== 'thinking') {
                     setRobotState('listening');
                 }
             };
 
             recognition.onresult = (event) => {
+                // Ignore any speech captured while Jarvis is actively speaking
+                if (isSpeakingNow || (window.speechSynthesis && window.speechSynthesis.speaking)) {
+                    return;
+                }
                 const lastIdx = event.results.length - 1;
                 const transcript = (event.results[lastIdx]?.[0]?.transcript || '').trim();
                 if (!transcript) return;
+
+                if (isSelfEcho(transcript)) {
+                    return;
+                }
+
                 const cleaned = transcript.replace(/^(hey |ok )?jarvis[,:\s-]*/i, '').trim() || transcript;
                 const now = Date.now();
-                if (cleaned.toLowerCase() === lastProcessedQuery && now - lastProcessedAt < 1600) {
+                if (cleaned.toLowerCase() === lastProcessedQuery && now - lastProcessedAt < 2200) {
                     return;
                 }
                 lastProcessedQuery = cleaned.toLowerCase();
@@ -936,20 +1056,19 @@
                 currentLang = detectedLang;
                 recognition.lang = currentLang;
 
-                // If attentive listening mode is active, accumulate multi-part questions before answering
                 if (attentiveListeningMode) {
                     handleAttentiveBufferInput(cleaned, detectedLang);
                     return;
                 }
 
-                showSubtitle(cleaned, '👤');
+                showSubtitle(cleaned, '👤 YOU');
                 processCommand(cleaned, detectedLang);
             };
 
             recognition.onend = () => {
                 isRecognizerRunning = false;
-                if (isMicArmed && !window.speechSynthesis.speaking && currentPhase !== 'thinking') {
-                    setTimeout(() => startRecognizerSafely(), 180);
+                if (isMicArmed && !isSpeakingNow && currentPhase !== 'thinking') {
+                    setTimeout(() => startRecognizerSafely(), 300);
                 } else if (!isMicArmed && currentPhase === 'listening') {
                     setRobotState('idle');
                 }
@@ -961,14 +1080,26 @@
                     isMicArmed = false;
                     updateMicButtonUI();
                     setRobotState('idle');
-                    showSubtitle("Autorisez l'accès au microphone dans votre navigateur, puis appuyez à nouveau sur le micro.");
+                    showSubtitle("Please allow microphone access in your browser, then tap the chest microphone again.");
                     scheduleSubtitleHide(7000);
                     return;
                 }
-                if (isMicArmed && !window.speechSynthesis.speaking && currentPhase !== 'thinking') {
-                    setTimeout(() => startRecognizerSafely(), 350);
+                if (isMicArmed && !isSpeakingNow && currentPhase !== 'thinking') {
+                    setTimeout(() => startRecognizerSafely(), 450);
                 }
             };
+        }
+
+        function handleTextSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('chatInput');
+            const raw = input.value.trim();
+            if (!raw) return;
+            input.value = '';
+            const detectedLang = detectLanguage(raw);
+            currentLang = detectedLang;
+            showSubtitle(raw, '👤 YOU');
+            processCommand(raw, detectedLang);
         }
 
         function handleAttentiveBufferInput(segment, lang) {
@@ -988,7 +1119,7 @@
                 lang === 'en-US'
                     ? `Listening carefully: "${combinedSoFar}" ... (Keep speaking or say "now answer")`
                     : `J'écoute attentivement : « ${combinedSoFar} » ... (Continue ou dis « réponds maintenant »)`,
-                '👂'
+                '👂 LISTENING'
             );
 
             if (wantsImmediateAnswer && combinedSoFar) {
@@ -996,7 +1127,6 @@
                 return;
             }
 
-            // Wait 3.4 seconds of silence after the user stops speaking so multi-sentence questions are never cut off
             attentiveFlushTimer = setTimeout(() => {
                 if (attentiveBuffer.length > 0) {
                     flushAttentiveBuffer(lang);
@@ -1015,13 +1145,13 @@
                 ? `${attentiveListeningSubject}: ${fullQuestion}`
                 : fullQuestion;
             attentiveListeningSubject = '';
-            showSubtitle(fullQuestion, '👤');
+            showSubtitle(fullQuestion, '👤 YOU');
             processCommand(finalPrompt, lang);
         }
 
         function toggleMic() {
             if (!recognition) {
-                showSubtitle("La reconnaissance vocale n'est pas disponible ici. Utilisez Chrome ou Edge.");
+                showSubtitle("Voice recognition is not supported in this browser. You can still type your questions below!");
                 scheduleSubtitleHide(7000);
                 return;
             }
@@ -1047,8 +1177,8 @@
                 setRobotState('listening');
                 showSubtitle(
                     currentLang === 'en-US'
-                        ? "Microphone ON — I am listening carefully. Let's talk or explore math, physics, chemistry, or any school subject."
-                        : "Microphone ALLUMÉ — J'écoute attentivement. Discutons librement ou révisons les mathématiques, la physique, la chimie ou toute autre matière.",
+                        ? "Microphone ON — I am listening carefully. Ask me any question or start a conversation."
+                        : "Microphone ALLUMÉ — J'écoute attentivement. Pose-moi n'importe quelle question ou lançons une discussion.",
                     '🎤'
                 );
                 scheduleSubtitleHide(5500);
@@ -1060,13 +1190,12 @@
             if (answerDepth === 'short') return 'short';
             if (answerDepth === 'long') return 'long';
             const lower = question.toLowerCase();
-            if (/\b(in short|short answer|briefly|quick|summarize|en bref|réponse courte|court|résume)\b/i.test(lower)) {
+            if (/\b(in short|short answer|briefly|quick|summarize|one sentence|en bref|réponse courte|court|résume)\b/i.test(lower)) {
                 return 'short';
             }
             if (/\b(in detail|detailed|long answer|thoroughly|step by step|teach me|explain how|help me with|en détail|détaillé|long|étape par étape|apprends[- ]moi|aide[- ]moi)\b/i.test(lower)) {
                 return 'long';
             }
-            // Longer multi-clause student questions automatically receive a fuller scholarly response
             if (question.split(/\s+/).length >= 14) {
                 return 'long';
             }
@@ -1078,7 +1207,6 @@
             const triggersListenCarefully = /\b(listen to my questions? carefully|listen carefully before (you )?answer|listen to me carefully|pay close attention|hear me out before answering|écoute mes questions? attentivement|ecoute mes questions? attentivement|écoute attentivement avant de répondre|ecoute attentivement avant de repondre|écoute-moi attentivement)\b/i.test(lower);
             if (!triggersListenCarefully) return null;
 
-            // Check if the user also mentioned a subject (math, physics, chemistry, etc.)
             let detectedSubject = '';
             for (const subj of JARVIS_DATABASE.academicGuides) {
                 if (subj.match.test(lower)) {
@@ -1095,7 +1223,7 @@
             const namePart = gpsUserName ? ` ${gpsUserName}` : '';
             if (lang === 'en-US') {
                 return detectedSubject
-                    ? `Understood${namePart}. I am listening with full scholarly attention to your ${detectedSubject} questions. Take your time and share everything you want to ask before I answer.`
+                    ? `Understood${namePart}. I am listening with full scholarly attention to your ${detectedSubject} questions. Take your time and ask everything before I answer.`
                     : `Understood${namePart}. I am listening with full scholarly attention. Take your time—ask your questions in math, physics, chemistry, or any subject, and I will wait until you finish before answering.`;
             }
             return detectedSubject
@@ -1116,7 +1244,23 @@
                 return `J'ai été créé et je suis la propriété de ${o.name}, ${o.roleFr}. Tu peux le contacter par téléphone au ${o.phone} ou par email à ${o.email}.`;
             }
 
-            // 2. Direct Office / Leadership lookups
+            // 2. Who is Jarvis / Identity
+            const asksSelf = /\b(who are you|what are you|introduce yourself|tell me about yourself|qui es[- ]tu|qu'es[- ]tu|présente[- ]toi|presente[- ]toi)\b/i.test(lower);
+            if (asksSelf) {
+                return lang === 'en-US'
+                    ? `I am J.A.R.V.I.S., a scholarly humanoid AI created by ${o.name}. I am designed to converse naturally in English and French, answer questions across science and world knowledge, and tutor students in mathematics, physics, chemistry, and more.`
+                    : `Je suis J.A.R.V.I.S., une intelligence artificielle humanoïde érudite créée par ${o.name}. Je suis conçu pour discuter naturellement en français et en anglais, répondre aux questions de culture générale et accompagner les élèves en mathématiques, physique et chimie.`;
+            }
+
+            // 3. Direct Humanoid AI Topic Knowledge
+            for (const item of JARVIS_DATABASE.humanoidTopics) {
+                if (item.match.test(lower)) {
+                    lastTopicDiscussed = 'Humanoid AI';
+                    return lang === 'en-US' ? item.en : item.fr;
+                }
+            }
+
+            // 4. Direct Office / Leadership lookups
             for (const entry of JARVIS_DATABASE.offices) {
                 if (entry.matchEn.test(lower) || entry.matchFr.test(lower)) {
                     if (lang === 'en-US') {
@@ -1126,7 +1270,7 @@
                 }
             }
 
-            // 3. Today's Date
+            // 5. Today's Date
             const asksDate = /\b(today'?s date|what('s| is) (the )?date|what day is (it|today)|quelle est la date|date d'aujourd'hui|quel jour (on est|sommes-nous|est-ce))\b/i.test(lower);
             if (asksDate) {
                 const now = new Date();
@@ -1142,7 +1286,7 @@
                 return `Aujourd'hui, nous sommes le ${formattedFr}.`;
             }
 
-            // 4. Current Time
+            // 6. Current Time
             const asksTime = /\b(what time is it|current time|quelle heure (est-il|il est)|donne l'heure)\b/i.test(lower);
             if (asksTime) {
                 const now = new Date();
@@ -1154,7 +1298,7 @@
                 return `Il est actuellement ${timeFr}.`;
             }
 
-            // 5. Arithmetic & Student Math Expressions
+            // 7. Arithmetic & Student Math Expressions
             const mathMatch = lower.match(/(-?\d+(?:\.\d+)?)\s*(\+|plus|\-|minus|moins|\*|x|times|multiplié par|multiplie par|\/|divided by|divisé par|divise par)\s*(-?\d+(?:\.\d+)?)/i);
             if (mathMatch) {
                 const a = parseFloat(mathMatch[1]);
@@ -1172,7 +1316,7 @@
                     if (lang === 'en-US') {
                         return lengthMode === 'short'
                             ? `${a} ${opWordEn} ${b} equals ${rounded}.`
-                            : `When we calculate ${a} ${opWordEn} ${b}, the exact result is ${rounded}. Would you like to work through another calculation or equation?`;
+                            : `When we calculate ${a} ${opWordEn} ${b}, the exact result is ${rounded}. Would you like to solve another calculation or equation?`;
                     }
                     return lengthMode === 'short'
                         ? `${a} ${opWordFr} ${b} égale ${rounded}.`
@@ -1180,9 +1324,9 @@
                 }
             }
 
-            // 6. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
-            const isGeneralSubjectRequest = /\b(help me (with|in|study)|i need help (with|in)|let's study|teach me|talk about|discuss|aide[- ]moi (en|avec|pour)|j'ai besoin d'aide (en|pour)|étudions|parlons de)\b/i.test(lower);
-            if (isGeneralSubjectRequest) {
+            // 8. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
+            const isGeneralSubjectRequest = /\b(help me (with|in|study)|i need help (with|in)|let's study|teach me|talk about|discuss|what is|aide[- ]moi (en|avec|pour)|j'ai besoin d'aide (en|pour)|étudions|parlons de|qu'est[- ]ce que)\b/i.test(lower);
+            if (isGeneralSubjectRequest && lower.split(/\s+/).length <= 8) {
                 for (const subj of JARVIS_DATABASE.academicGuides) {
                     if (subj.match.test(lower)) {
                         lastTopicDiscussed = subj.id;
@@ -1194,18 +1338,18 @@
                 }
             }
 
-            // 7. Dedicated English & French Teaching Lessons
+            // 9. Dedicated English & French Teaching Lessons
             const asksTeachEn = /\b(teach me english|learn english|english lesson|apprends[- ]moi l'anglais|cours d'anglais)\b/i.test(lower);
             if (asksTeachEn) {
                 return lang === 'en-US'
-                    ? "Let's practice clear scholarly English together. Consider the sentence: 'Knowledge grows when shared with clarity.' Notice how 'shared' functions as a past participle modifying the clause. Which grammar point, essay idea, or vocabulary word would you like to work on next?"
-                    : "Pratiquons l'anglais ensemble : « Knowledge grows when shared with clarity », ce qui signifie « La connaissance grandit lorsqu'elle est partagée avec clarté ». Quel mot, temps verbal ou sujet souhaites-tu étudier ensuite ?";
+                    ? "Let's practice scholarly English together. Consider the sentence: 'Knowledge grows when shared with clarity.' Notice how 'shared' functions as a past participle. Which grammar rule or topic would you like to practice next?"
+                    : "Pratiquons l'anglais ensemble : « Knowledge grows when shared with clarity », ce qui signifie « La connaissance grandit lorsqu'elle est partagée avec clarté ». Quel mot ou sujet souhaites-tu étudier ensuite ?";
             }
 
             const asksTeachFr = /\b(teach me french|learn french|french lesson|apprends[- ]moi le français|apprends[- ]moi le francais|cours de français)\b/i.test(lower);
             if (asksTeachFr) {
                 return lang === 'en-US'
-                    ? "Let's practice French together: 'La rigueur intellectuelle éclaire chaque décision' — meaning 'Intellectual rigor illuminates every decision.' Tell me any French verb, grammar rule, or sentence you would like to explore."
+                    ? "Let's practice French together: 'La rigueur intellectuelle éclaire chaque décision' — meaning 'Intellectual rigor illuminates every decision.' Tell me any French verb or grammar rule you would like to explore."
                     : "Pratiquons le français ensemble : « La rigueur intellectuelle éclaire chaque décision. » Dis-moi quel mot, verbe ou règle de grammaire tu souhaites approfondir.";
             }
 
@@ -1217,7 +1361,7 @@
             const nameSuffix = gpsUserName ? ` ${gpsUserName}` : '';
 
             if (/^(hello|hi|hey|good morning|good afternoon|good evening)[!.?]*$/i.test(lower)) {
-                return `Greetings${nameSuffix}! I am J.A.R.V.I.S., your scholar humanoid companion. Whether you want an open conversation or help studying mathematics, physics, chemistry, or any school subject, I am listening. What shall we explore?`;
+                return `Greetings${nameSuffix}! I am J.A.R.V.I.S., your scholar humanoid companion. Whether you want an open conversation or help studying mathematics, physics, chemistry, or any school subject, I am ready. What shall we explore?`;
             }
             if (/^(bonjour|salut|bonsoir|allo|coucou)[!.?]*$/i.test(lower)) {
                 return `Bonjour${nameSuffix} ! Je suis J.A.R.V.I.S., ton compagnon érudit. Que tu souhaites discuter librement ou réviser les mathématiques, la physique, la chimie ou toute autre matière scolaire, je t'écoute. De quoi parlons-nous ?`;
@@ -1247,8 +1391,8 @@
 
         function extractCoreSubject(question) {
             return question
-                .replace(/^(who is|who was|what is|what are|what was|what were|where is|where are|when was|when is|why is|why are|how does|how do|tell me about|explain|define|teach me about|teach me|help me with|can you tell me about|could you explain|i want to know about|in short|briefly|in detail)\s+/i, '')
-                .replace(/^(qui est|qui était|qu'est-ce que|qu'est ce que|quel est|quelle est|quels sont|quelles sont|où est|où sont|quand (est|était)|pourquoi (est|sont)|comment (marche|fonctionne)|parle-moi de|parle moi de|explique-moi|explique moi|définis|apprends[- ]moi|aide[- ]moi avec|je veux savoir|en bref|en détail)\s+/i, '')
+                .replace(/^(why do engineers build|why do people build|why do|why is|why are|why does|who is|who was|what is|what are|what was|what were|where is|where are|when was|when is|how does|how do|how are|how is|tell me about|explain|define|teach me about|teach me|help me with|can you tell me about|could you explain|i want to know about|in short|briefly|in detail)\s+/i, '')
+                .replace(/^(pourquoi|qui est|qui était|qu'est-ce que|qu'est ce que|quel est|quelle est|quels sont|quelles sont|où est|où sont|quand (est|était)|comment (marche|fonctionne|sont|est)|parle-moi de|parle moi de|explique-moi|explique moi|définis|apprends[- ]moi|aide[- ]moi avec|je veux savoir|en bref|en détail)\s+/i, '')
                 .replace(/[?!.]+$/g, '')
                 .trim();
         }
@@ -1264,7 +1408,7 @@
             };
             pushUnique(subject || question);
             const softTrimmed = subject
-                .replace(/\b(the|a|an|le|la|les|un|une)\b/gi, ' ')
+                .replace(/\b(the|a|an|le|la|les|un|une|instead of|rather than)\b/gi, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             pushUnique(softTrimmed);
@@ -1274,15 +1418,19 @@
                 pushUnique(`${ofMatch[2]} ${ofMatch[1]}`);
             }
             const keywords = softTrimmed
-                .replace(/\b(of|in|on|at|for|to|about|with|from|de|des|du|en|sur|dans|pour|avec)\b/gi, ' ')
+                .replace(/\b(of|in|on|at|for|to|about|with|from|de|des|du|en|sur|dans|pour|avec|today|usually|every|day)\b/gi, ' ')
                 .replace(/\s+/g, ' ')
                 .trim();
             pushUnique(keywords);
-            return candidates.slice(0, 5);
+            // Also try the top 2–3 longest content words for complex full-sentence questions
+            const longWords = keywords.split(/\s+/).filter(w => w.length >= 4);
+            if (longWords.length >= 2) {
+                pushUnique(longWords.slice(0, 3).join(' '));
+            }
+            return candidates.slice(0, 6);
         }
 
         function sanitizeOnlineExtract(rawSummary) {
-            // Clean footnote markers, parenthetical pronunciations, and boilerplate source tags
             return rawSummary
                 .replace(/\[\d+\]/g, '')
                 .replace(/\s+/g, ' ')
@@ -1292,11 +1440,10 @@
         function formatScholarAnswer(title, rawSummary, lang, lengthMode, isTeaching, isConversational) {
             const clean = sanitizeOnlineExtract(rawSummary);
             const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
-            const maxSentences = lengthMode === 'short' ? 2 : lengthMode === 'long' ? 5 : 3;
+            const maxSentences = lengthMode === 'short' ? 2 : lengthMode === 'long' ? 4 : 3;
             const selected = sentences.slice(0, maxSentences).join(' ').trim();
             const nameRef = gpsUserName ? `, ${gpsUserName}` : '';
 
-            // Natural, scholarly humanoid delivery — never says "According to Wikipedia"
             if (lang === 'en-US') {
                 let body = selected;
                 if (isTeaching) {
@@ -1306,10 +1453,10 @@
                     return body;
                 }
                 const followUp = isTeaching
-                    ? ` Would you like to break down a specific formula, example, or concept from ${title}${nameRef}?`
+                    ? ` Would you like to explore a specific formula, example, or concept from ${title}${nameRef}?`
                     : isConversational
-                        ? ` What are your thoughts on ${title}${nameRef}, or shall we explore another angle?`
-                        : ` Would you like to go deeper into ${title}${nameRef}, or connect it to another topic?`;
+                        ? ` What do you think about ${title}${nameRef}, or shall we explore another angle?`
+                        : ` Would you like to go deeper into ${title}${nameRef}, or move to another question?`;
                 return `${body}${followUp}`.trim();
             }
 
@@ -1321,11 +1468,41 @@
                 return bodyFr;
             }
             const followUpFr = isTeaching
-                ? ` Souhaites-tu que nous détaillions une formule, un exemple ou une notion précise sur ${title}${nameRef} ?`
+                ? ` Souhaites-tu détailler une formule ou un exemple précis sur ${title}${nameRef} ?`
                 : isConversational
                     ? ` Qu'en penses-tu${nameRef}, ou veux-tu explorer un autre aspect de ${title} ?`
-                    : ` Souhaites-tu approfondir ${title}${nameRef} ou aborder un autre sujet ?`;
+                    : ` Souhaites-tu approfondir ${title}${nameRef} ou poser une autre question ?`;
             return `${bodyFr}${followUpFr}`.trim();
+        }
+
+        // Intelligent scholarly fallback that NEVER repeats the user's question back
+        function buildScholarlyReasoningFallback(question, lang) {
+            const subject = extractCoreSubject(question);
+            const nameRef = gpsUserName ? ` ${gpsUserName}` : '';
+
+            for (const subj of JARVIS_DATABASE.academicGuides) {
+                if (subj.match.test(question)) {
+                    return lang === 'en-US' ? subj.longEn : subj.longFr;
+                }
+            }
+
+            if (lang === 'en-US') {
+                if (/^why\b/i.test(question.trim())) {
+                    return `That is an insightful question${nameRef}. In science and engineering, phenomena like ${subject || 'this'} are driven by underlying causes, physical principles, and practical trade-offs. Tell me which specific aspect or example you want to focus on, and I will break it down clearly.`;
+                }
+                if (/^how\b/i.test(question.trim())) {
+                    return `Understanding how ${subject || 'this process'} works comes down to breaking it into clear inputs, mechanisms, and outcomes. Share the specific scenario or step you are interested in, and we can walk through it together.`;
+                }
+                return `That is a great topic to explore${nameRef}. Let's look at ${subject || 'this subject'} from first principles: tell me the specific detail, concept, or question you want to examine first, and we will dive right in.`;
+            }
+
+            if (/^pourquoi\b/i.test(question.trim())) {
+                return `C'est une excellente question${nameRef}. En sciences comme en ingénierie, ce phénomène repose sur des causes précises, des principes fondamentaux et des choix techniques. Dis-moi quel aspect particulier tu souhaites approfondir et je te l'expliquerai clairement.`;
+            }
+            if (/^comment\b/i.test(question.trim())) {
+                return `Pour bien comprendre ce fonctionnement, il suffit de décomposer le mécanisme étape par étape. Précise-moi le cas ou l'exemple qui t'intéresse et nous l'analyserons ensemble.`;
+            }
+            return `C'est un sujet passionnant à explorer${nameRef}. Dis-moi quel aspect précis tu souhaites aborder en premier et nous l'analyserons ensemble avec clarté.`;
         }
 
         async function fetchWikipediaMatch(query, lang, signal) {
@@ -1403,7 +1580,7 @@
             const isTeaching = /\b(teach me|learn|explain|how does|how do|help me|study|solve|formula|theorem|math|physics|chemistry|chimistry|biology|apprends[- ]moi|explique|comment|aide[- ]moi|étudie|résous|formule|théorème|mathématiques|physique|chimie|biologie)\b/i.test(commandText);
             const isConversational = conversationHistory.length > 2 || /\b(what do you think|let's discuss|talk about|in your opinion|qu'en penses-tu|discutons|parlons de|à ton avis)\b/i.test(commandText);
 
-            // 2. Instant scholarly knowledge, academic guidance, math, owner info, date/time
+            // 2. Instant scholarly knowledge, Humanoid AI knowledge, math, owner info, date/time
             const instant = handleInstantKnowledge(commandText, lang, lengthMode);
             if (instant) {
                 recordTurn('jarvis', instant);
@@ -1426,11 +1603,10 @@
                 return;
             }
 
-            // 4. Online scholarly research delivered in natural humanoid voice (without citing Wikipedia)
+            // 4. Online scholarly research delivered in natural humanoid voice
             setRobotState('thinking');
             try {
                 let searchQuery = commandText;
-                // Contextual pronoun resolution when continuing a conversation
                 if (lastTopicDiscussed && /\b(it|its|they|their|this|that|he|she|cela|ça|il|elle|son|sa|ses)\b/i.test(commandText) && commandText.split(/\s+/).length <= 8) {
                     searchQuery = `${lastTopicDiscussed} ${extractCoreSubject(commandText)}`;
                 }
@@ -1447,34 +1623,32 @@
                         isTeaching,
                         isConversational
                     );
-                } else if (lang === 'en-US') {
-                    reply = `I considered "${commandText}" carefully, and I want to make sure I give you the clearest explanation. Could you share a bit more context or the exact concept, formula, or topic you are exploring?`;
                 } else {
-                    reply = `J'ai examiné « ${commandText} » avec attention, et je souhaite te donner l'explication la plus claire possible. Peux-tu me donner un peu plus de contexte ou préciser le concept, la formule ou le sujet que tu étudies ?`;
+                    reply = buildScholarlyReasoningFallback(commandText, lang);
                 }
                 recordTurn('jarvis', reply);
                 showSubtitle(reply);
                 speakText(reply, lang);
             } catch (error) {
                 if (error.name === 'AbortError') return;
-                const errMsg = lang === 'en-US'
-                    ? "My connection to external knowledge bases was briefly interrupted, but I am still here with you. Check your internet connection or ask me a math, physics, or chemistry question directly."
-                    : "Ma connexion aux bases de connaissances externes a été brièvement interrompue, mais je reste à ton écoute. Vérifie ta connexion ou pose-moi directement une question de mathématiques, de physique ou de chimie.";
-                recordTurn('jarvis', errMsg);
-                showSubtitle(errMsg);
-                speakText(errMsg, lang);
+                const fallbackOffline = buildScholarlyReasoningFallback(commandText, lang);
+                recordTurn('jarvis', fallbackOffline);
+                showSubtitle(fallbackOffline);
+                speakText(fallbackOffline, lang);
             }
         }
 
         function speakText(text, lang) {
+            lastSpokenText = text;
             if (!('speechSynthesis' in window)) {
-                scheduleSubtitleHide(9000);
+                scheduleSubtitleHide(11000);
                 setRobotState(isMicArmed ? 'listening' : 'idle');
                 if (isMicArmed) startRecognizerSafely();
                 return;
             }
+            isSpeakingNow = true;
             if (isRecognizerRunning) {
-                try { recognition.stop(); } catch (_) {}
+                try { recognition.abort(); } catch (_) {}
             }
             const targetLang = lang === 'en-US' ? 'en-US' : 'fr-FR';
             const utterance = new SpeechSynthesisUtterance(text);
@@ -1491,29 +1665,38 @@
             robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
             robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.12) + 'ms');
 
-            utterance.onstart = () => setRobotState('speaking');
+            utterance.onstart = () => {
+                isSpeakingNow = true;
+                setRobotState('speaking');
+            };
             utterance.onend = () => {
+                isSpeakingNow = false;
+                lastSpeechEndedAt = Date.now();
                 setRobotState(isMicArmed ? 'listening' : 'idle');
-                scheduleSubtitleHide(8500);
+                scheduleSubtitleHide(10000);
                 if (isMicArmed) {
-                    setTimeout(() => startRecognizerSafely(), 220);
+                    setTimeout(() => startRecognizerSafely(), 750);
                 }
             };
             utterance.onerror = () => {
+                isSpeakingNow = false;
+                lastSpeechEndedAt = Date.now();
                 setRobotState(isMicArmed ? 'listening' : 'idle');
-                scheduleSubtitleHide(8500);
+                scheduleSubtitleHide(10000);
                 if (isMicArmed) {
-                    setTimeout(() => startRecognizerSafely(), 220);
+                    setTimeout(() => startRecognizerSafely(), 750);
                 }
             };
             window.speechSynthesis.speak(utterance);
         }
 
         function stopSpeaking(resumeMicIfArmed = true) {
+            isSpeakingNow = false;
+            lastSpeechEndedAt = Date.now();
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             setRobotState(isMicArmed ? 'listening' : 'idle');
             if (resumeMicIfArmed && isMicArmed) {
-                setTimeout(() => startRecognizerSafely(), 200);
+                setTimeout(() => startRecognizerSafely(), 600);
             }
         }
 
