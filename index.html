@@ -1519,3 +1519,291 @@
             return question
                 .replace(/^(why do engineers build|why do people build|why do|why is|why are|why does|who is|who was|what is|what are|what was|what were|where is|where are|when was|when is|how does|how do|how are|how is|tell me about|explain|define|teach me about|teach me|help me with|can you tell me about|could you explain|i want to know about|in short|briefly|in detail)\s+/i, '')
                 .replace(/^(pourquoi|qui est|qui était|qu'est-ce que|qu'est ce que|quel est|quelle est|quels sont|quelles sont|où est|où sont|quand (est|était)|comment (marche|fonctionne|sont|est)|parle-moi de|parle moi de|explique-moi|explique moi|définis|apprends[- ]moi|aide[- ]moi avec|je veux savoir|en bref|en détail)\s+/i, '')
+                .replace(/[?!.]+$/g, '')
+                .trim();
+        }
+
+        function buildReformulatedQueries(question) {
+            const subject = extractCoreSubject(question);
+            const candidates = [];
+            const pushUnique = (q) => {
+                const c = q.replace(/\s+/g, ' ').trim();
+                if (c && c.length >= 2 && !candidates.includes(c)) {
+                    candidates.push(c);
+                }
+            };
+            pushUnique(subject || question);
+            const softTrimmed = subject
+                .replace(/\b(the|a|an|le|la|les|un|une|instead of|rather than)\b/gi, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            pushUnique(softTrimmed);
+            const ofMatch = softTrimmed.match(/^(.+?)\s+(?:of|de|des|du)\s+(.+)$/i);
+            if (ofMatch) {
+                pushUnique(`${ofMatch[1]} ${ofMatch[2]}`);
+                pushUnique(`${ofMatch[2]} ${ofMatch[1]}`);
+            }
+            const keywords = softTrimmed
+                .replace(/\b(of|in|on|at|for|to|about|with|from|de|des|du|en|sur|dans|pour|avec|today|usually|every|day)\b/gi, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            pushUnique(keywords);
+            const longWords = keywords.split(/\s+/).filter(w => w.length >= 4);
+            if (longWords.length >= 2) {
+                pushUnique(longWords.slice(0, 3).join(' '));
+            }
+            return candidates.slice(0, 6);
+        }
+
+        function sanitizeOnlineExtract(rawSummary) {
+            return rawSummary
+                .replace(/\[\d+\]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function formatScholarAnswer(title, rawSummary, lang, lengthMode, isTeaching, isConversational) {
+            const clean = sanitizeOnlineExtract(rawSummary);
+            const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
+            const maxSentences = lengthMode === 'short' ? 2 : lengthMode === 'long' ? 4 : 3;
+            const selected = sentences.slice(0, maxSentences).join(' ').trim();
+            const nameRef = gpsUserName ? `, ${gpsUserName}` : '';
+            if (lang === 'en-US') {
+                let body = isTeaching ? `Let's examine ${title} carefully. ${selected}` : selected;
+                if (lengthMode === 'short') return body;
+                const followUp = isTeaching
+                    ? ` Would you like to explore a specific formula, example, or concept from ${title}${nameRef}?`
+                    : isConversational
+                        ? ` What do you think about ${title}${nameRef}, or shall we explore another angle?`
+                        : ` Would you like to go deeper into ${title}${nameRef}, or move to another question?`;
+                return `${body}${followUp}`.trim();
+            }
+            let bodyFr = isTeaching ? `Examinons ${title} avec méthode. ${selected}` : selected;
+            if (lengthMode === 'short') return bodyFr;
+            const followUpFr = isTeaching
+                ? ` Souhaites-tu détailler une formule ou un exemple précis sur ${title}${nameRef} ?`
+                : isConversational
+                    ? ` Qu'en penses-tu${nameRef}, ou veux-tu explorer un autre aspect de ${title} ?`
+                    : ` Souhaites-tu approfondir ${title}${nameRef} ou poser une autre question ?`;
+            return `${bodyFr}${followUpFr}`.trim();
+        }
+
+        function buildScholarlyReasoningFallback(question, lang) {
+            const subject = extractCoreSubject(question) || question.trim();
+            for (const subj of JARVIS_DATABASE.academicGuides) {
+                if (subj.match.test(question)) {
+                    return lang === 'en-US' ? subj.longEn : subj.longFr;
+                }
+            }
+
+            if (lang === 'en-US') {
+                if (/^why\b/i.test(question.trim())) {
+                    return `Regarding ${subject}: the reason comes down to cause-and-effect mechanics, practical constraints, and trade-offs between cost, speed, reliability, and usability. When systems are built for real people or real environments, those trade-offs shape every design choice.`;
+                }
+                if (/^how\b/i.test(question.trim())) {
+                    return `Regarding ${subject}: it works through a clear pipeline of inputs, processing or decision rules, execution, and feedback. Each stage checks the outcome and adjusts the next step so the system stays accurate and dependable.`;
+                }
+                if (/^(when|where|who)\b/i.test(question.trim())) {
+                    return `Regarding ${subject}: the exact answer depends on the specific context, region, or timeline involved, so sharing a concrete example or time frame will let me narrow it down directly.`;
+                }
+                return `Regarding ${subject}: this centers on how core principles apply in real practice, where strengths come from clear structure and limitations come from edge cases or real-world variability. Say "Jarvis" and ask about any specific part of ${subject} to go deeper.`;
+            }
+
+            if (/^pourquoi\b/i.test(question.trim())) {
+                return `Au sujet de ${subject} : cela s'explique par des facteurs de causalité, des contraintes concrètes et un équilibre entre performance, coût, fiabilité et simplicité d'usage sur le terrain.`;
+            }
+            if (/^comment\b/i.test(question.trim())) {
+                return `Au sujet de ${subject} : le mécanisme repose sur des entrées, un traitement ou une logique de décision, une exécution et une vérification continue pour corriger les écarts.`;
+            }
+            return `Au sujet de ${subject} : l'enjeu principal est d'appliquer les principes fondamentaux tout en gérant les cas particuliers du terrain. Dites « Jarvis » et précisez l'aspect à approfondir.`;
+        }
+
+        async function fetchWikipediaMatch(query, lang, signal) {
+            const wikiLang = lang === 'en-US' ? 'en' : 'fr';
+            const searchUrl = `https://${wikiLang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=1&utf8=1&format=json&origin=*`;
+            const searchRes = await fetch(searchUrl, { signal });
+            if (!searchRes.ok) throw new Error('Wiki search failed');
+            const searchData = await searchRes.json();
+            const bestTitle = searchData?.query?.search?.[0]?.title;
+            if (!bestTitle) return null;
+            const summaryUrl = `https://${wikiLang}.wikipedia.org/api/restv1/page/summary/${encodeURIComponent(bestTitle)}`;
+            const summaryRes = await fetch(summaryUrl, { signal });
+            if (!summaryRes.ok) return null;
+            const summaryData = await summaryRes.json();
+            if (!summaryData?.extract) return null;
+            return {
+                title: summaryData.title || bestTitle,
+                text: summaryData.extract
+            };
+        }
+
+        async function fetchDuckDuckGoFact(query, signal) {
+            const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+            const res = await fetch(ddgUrl, { signal });
+            if (!res.ok) return null;
+            const data = await res.json();
+            const text = data.AbstractText || data.Answer || data.Definition || '';
+            if (!text) return null;
+            return {
+                title: data.Heading || query,
+                text
+            };
+        }
+
+        async function searchWithReformulation(question, lang, signal) {
+            const queries = buildReformulatedQueries(question);
+            const altLang = lang === 'en-US' ? 'fr-FR' : 'en-US';
+            for (const q of queries) {
+                const wikiPrimary = await fetchWikipediaMatch(q, lang, signal);
+                if (wikiPrimary && wikiPrimary.text) return wikiPrimary;
+                const ddgRes = await fetchDuckDuckGoFact(q, signal);
+                if (ddgRes && ddgRes.text) return ddgRes;
+                const wikiAlt = await fetchWikipediaMatch(q, altLang, signal);
+                if (wikiAlt && wikiAlt.text) return wikiAlt;
+            }
+            return null;
+        }
+
+        function recordTurn(role, text) {
+            conversationHistory.push({ role, text, time: Date.now() });
+            if (conversationHistory.length > 10) {
+                conversationHistory.shift();
+            }
+        }
+
+        async function processCommand(commandText, lang) {
+            stopSpeaking(false);
+            if (activeAbortController) activeAbortController.abort();
+            activeAbortController = new AbortController();
+            recordTurn('user', commandText);
+
+            const attentiveReply = detectCarefulListeningCommand(commandText, lang);
+            if (attentiveReply) {
+                recordTurn('jarvis', attentiveReply);
+                showSubtitle(attentiveReply);
+                speakText(attentiveReply, lang);
+                return;
+            }
+
+            const lengthMode = resolveDesiredLength(commandText);
+            const isTeaching = /\b(teach me|learn|explain|how does|how do|help me|study|solve|formula|theorem|math|physics|chemistry|chimistry|biology|apprends[- ]moi|explique|comment|aide[- ]moi|étudie|résous|formule|théorème|mathématiques|physique|chimie|biologie)\b/i.test(commandText);
+            const isConversational = conversationHistory.length > 2 || /\b(what do you think|let's discuss|talk about|in your opinion|qu'en penses-tu|discutons|parlons de|à ton avis)\b/i.test(commandText);
+
+            const instant = handleInstantKnowledge(commandText, lang, lengthMode);
+            if (instant) {
+                recordTurn('jarvis', instant);
+                showSubtitle(instant);
+                speakText(instant, lang);
+                return;
+            }
+
+            let convo = handleConversationalTurn(commandText, lang);
+            if (convo && convo.startsWith('__CONTINUE__:')) {
+                const prevTopic = convo.slice('__CONTINUE__:'.length);
+                commandText = lang === 'en-US' ? `Explain more details about ${prevTopic}` : `Explique plus en détail ${prevTopic}`;
+                convo = null;
+            }
+            if (convo) {
+                recordTurn('jarvis', convo);
+                showSubtitle(convo);
+                speakText(convo, lang);
+                return;
+            }
+
+            setRobotState('thinking');
+            try {
+                let searchQuery = commandText;
+                if (lastTopicDiscussed && /\b(it|its|they|their|this|that|he|she|cela|ça|il|elle|son|sa|ses)\b/i.test(commandText) && commandText.split(/\s+/).length <= 8) {
+                    searchQuery = `${lastTopicDiscussed} ${extractCoreSubject(commandText)}`;
+                }
+                const onlineResult = await searchWithReformulation(searchQuery, lang, activeAbortController.signal);
+                let reply;
+                if (onlineResult && onlineResult.text) {
+                    lastTopicDiscussed = onlineResult.title;
+                    reply = formatScholarAnswer(
+                        onlineResult.title,
+                        onlineResult.text,
+                        lang,
+                        lengthMode,
+                        isTeaching,
+                        isConversational
+                    );
+                } else {
+                    reply = buildScholarlyReasoningFallback(commandText, lang);
+                }
+                recordTurn('jarvis', reply);
+                showSubtitle(reply);
+                speakText(reply, lang);
+            } catch (error) {
+                if (error.name === 'AbortError') return;
+                const fallbackOffline = buildScholarlyReasoningFallback(commandText, lang);
+                recordTurn('jarvis', fallbackOffline);
+                showSubtitle(fallbackOffline);
+                speakText(fallbackOffline, lang);
+            }
+        }
+
+        function speakText(text, lang) {
+            lastSpokenText = text;
+            if (!('speechSynthesis' in window)) {
+                scheduleSubtitleHide(12000);
+                setRobotState(isMicArmed ? 'listening' : 'idle');
+                if (isMicArmed) startRecognizerSafely();
+                return;
+            }
+            isSpeakingNow = true;
+            if (isRecognizerRunning) {
+                try { recognition.abort(); } catch (_) {}
+            }
+            const targetLang = lang === 'en-US' ? 'en-US' : 'fr-FR';
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = targetLang;
+            const voices = window.speechSynthesis.getVoices();
+            const prefix = targetLang.split('-')[0];
+            const bestVoice = voices.find(v => v.lang === targetLang) || voices.find(v => v.lang.startsWith(prefix));
+            if (bestVoice) utterance.voice = bestVoice;
+            utterance.rate = 1.03;
+            const charsPerSec = targetLang === 'en-US' ? 15 : 13;
+            const estimatedSeconds = text.length / charsPerSec;
+            const armCycleMs = Math.max(2000, Math.min(3800, estimatedSeconds * 1000 / 2));
+            robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
+            robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.12) + 'ms');
+            utterance.onstart = () => {
+                isSpeakingNow = true;
+                setRobotState('speaking');
+            };
+            utterance.onend = () => {
+                isSpeakingNow = false;
+                lastSpeechEndedAt = Date.now();
+                setRobotState(isMicArmed ? 'listening' : 'idle');
+                scheduleSubtitleHide(11000);
+                if (isMicArmed) {
+                    setTimeout(() => startRecognizerSafely(), 750);
+                }
+            };
+            utterance.onerror = () => {
+                isSpeakingNow = false;
+                lastSpeechEndedAt = Date.now();
+                setRobotState(isMicArmed ? 'listening' : 'idle');
+                scheduleSubtitleHide(11000);
+                if (isMicArmed) {
+                    setTimeout(() => startRecognizerSafely(), 750);
+                }
+            };
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function stopSpeaking(resumeMicIfArmed = true) {
+            isSpeakingNow = false;
+            lastSpeechEndedAt = Date.now();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            setRobotState(isMicArmed ? 'listening' : 'idle');
+            if (resumeMicIfArmed && isMicArmed) {
+                setTimeout(() => startRecognizerSafely(), 600);
+            }
+        }
+
+        document.getElementById('micBtn').addEventListener('click', (e) => e.stopPropagation());
+    </script>
+</body>
+</html>
