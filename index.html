@@ -587,15 +587,12 @@
             <button class="chest-mic" id="micBtn" onclick="toggleMic()" title="Tap ON / Tap OFF mic">🎤</button>
         </div>
     </div>
-
     <div class="subtitle" id="subtitle"></div>
-
     <form class="chat-bar" id="chatForm" onsubmit="handleTextSubmit(event)">
         <input type="text" id="chatInput" placeholder="Ask J.A.R.V.I.S. anything or tap the chest mic..." autocomplete="off">
         <button type="button" class="stop-btn" onclick="stopSpeaking(true)" title="Stop voice">⏹</button>
         <button type="submit">Ask</button>
     </form>
-
     <div id="nameOverlay" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>👋 Welcome to J.A.R.V.I.S.</h2>
@@ -605,7 +602,6 @@
             <button class="skip-btn" onclick="skipName()">Continue as Guest</button>
         </div>
     </div>
-
     <script>
         // ============================================================
         // JARVIS SCHOLAR KNOWLEDGE BASE & CONVERSATIONAL INTELLIGENCE
@@ -619,6 +615,71 @@
                 phone: "(509)-47385663",
                 email: "deslandes78@gmail.com"
             },
+            coreQuestions: [
+                {
+                    id: 'gen-agent-humanoid',
+                    topic: 'Generative AI, Agentic AI, and Embodied Humanoid Robots',
+                    match: /\b(generative\s+ai|agentic\s+ai|embodied\s+humanoid|difference\s+between.*generative.*agentic|agent.*plans\s+and\s+executes|autonomous\s+agent)\b/i,
+                    en: "In everyday practice, generative AI creates content—such as text, code, or images—from a prompt. Agentic AI goes a step further by planning multi-step goals, calling tools or APIs, checking results, and taking actions across software systems. Embodied humanoid robots add a physical body with sensors, balance control, and hands so AI can perceive and act directly in the physical world.",
+                    fr: "En pratique quotidienne, l'IA générative produit du contenu—texte, code ou images—à partir d'une demande. L'IA agentique va plus loin en planifiant des étapes, en utilisant des outils et en exécutant des actions. Les robots humanoïdes incarnés ajoutent un corps physique avec capteurs et équilibre pour agir dans le monde réel."
+                },
+                {
+                    id: 'what-is-ai',
+                    topic: 'What Artificial Intelligence Is and How It Works',
+                    match: /\b(what\s+is\s+(artificial\s+intelligence|ai)\s+and\s+how\s+does\s+it|how\s+does\s+ai\s+(actually\s+)?work|qu'est[- ]ce\s+que\s+l'ia|comment\s+fonctionne\s+l'ia)\b/i,
+                    en: "Artificial intelligence is software that learns patterns from data and examples so it can recognize speech or images, reason, and generate useful outputs. Under the hood, models turn words or pixels into numbers, pass them through neural network layers using mathematical weights, and predict the most helpful response or decision.",
+                    fr: "L'intelligence artificielle est un logiciel qui apprend des schémas à partir de données pour reconnaître la parole ou les images, raisonner et générer des réponses. Elle transforme les informations en nombres, les fait passer dans des réseaux de neurones et prédit la sortie la plus pertinente."
+                },
+                {
+                    id: 'ai-and-jobs',
+                    topic: 'AI and Human Jobs',
+                    match: /\b(take\s+over\s+human\s+jobs|leave\s+people\s+unemployed|replace\s+human\s+jobs|remplacer\s+les\s+emplois|chômage)\b/i,
+                    en: "AI is changing tasks inside jobs rather than wiping out all work overnight. Repetitive digital and routine tasks can be automated, while roles requiring human judgment, empathy, physical adaptability, accountability, and creative problem-solving remain vital—especially for people who learn to direct AI tools effectively.",
+                    fr: "L'IA transforme surtout les tâches au sein des métiers plutôt que de supprimer tout travail du jour au lendemain. Les tâches répétitives peuvent être automatisées, tandis que le jugement humain, l'empathie, la créativité et la maîtrise des outils d'IA deviennent essentiels."
+                },
+                {
+                    id: 'ai-danger-superintelligence',
+                    topic: 'AI Safety and Human Intelligence',
+                    match: /\b(is\s+ai\s+dangerous|surpass\s+human\s+intelligence|superintelligence|ia\s+est[- ]elle\s+dangereuse|dépasser\s+l'intelligence\s+humaine)\b/i,
+                    en: "AI carries real practical risks—such as misinformation, deepfakes, security flaws, or over-reliance—if deployed without guardrails, though true general superintelligence does not exist today. Keeping AI safe depends on human oversight, transparent rules, verification, and aligning systems with real human goals.",
+                    fr: "L'IA présente des risques concrets—désinformation, failles de sécurité ou dépendance excessive—sans garde-fous, mais une superintelligence générale n'existe pas aujourd'hui. La sécurité repose sur le contrôle humain, la vérification et des règles claires."
+                },
+                {
+                    id: 'ai-everyday-industries',
+                    topic: 'AI in Everyday Life and Key Industries',
+                    match: /\b(already\s+being\s+used\s+in\s+everyday\s+life|which\s+industries\s+does\s+it\s+affect|utilisée\s+au\s+quotidien|quels\s+secteurs)\b/i,
+                    en: "Every day, AI powers voice assistants, translation, search, navigation, spam filtering, and study tools. The industries most affected include software engineering, education, healthcare support, customer service, finance, logistics, and manufacturing.",
+                    fr: "Au quotidien, l'IA anime les assistants vocaux, la traduction, la recherche, la navigation et l'aide aux études. Les secteurs les plus touchés sont le développement logiciel, l'éducation, la santé, la finance, la logistique et l'industrie."
+                },
+                {
+                    id: 'ai-ethics',
+                    topic: 'AI Ethics: Bias, Privacy, and Accountability',
+                    match: /\b(biggest\s+ethical\s+concerns|bias.*privacy.*accountability|ethical\s+concerns\s+surrounding\s+ai|éthique.*biais.*confidentialité)\b/i,
+                    en: "The main ethical concerns around AI are bias inherited from training data, privacy and data exposure, and unclear accountability when a system makes a mistake. Addressing them requires diverse testing, strong privacy controls, clear disclosure of AI outputs, and human responsibility for final decisions.",
+                    fr: "Les principaux enjeux éthiques de l'IA sont les biais des données d'entraînement, la confidentialité des informations et la responsabilité en cas d'erreur. Il faut des tests rigoureux, la protection des données et une responsabilité humaine claire."
+                },
+                {
+                    id: 'hallucinations-echo-loops',
+                    topic: 'Preventing Hallucinations and Voice Echo Loops',
+                    match: /\b(hallucinations?\s+and\s+echo\s+loops?|echo\s+loop|prevent.*hallucinations?|boucle\s+d'écho|hallucinations)\b/i,
+                    en: "To prevent hallucinations, assistants ground answers in verified facts, structured knowledge bases, and explicit uncertainty when facts are missing. To prevent voice echo loops in browser robots, the app mutes or blocks speech recognition while TTS is speaking, adds a post-speech cooldown, and filters out self-echo transcripts.",
+                    fr: "Pour éviter les hallucinations, on ancre les réponses dans des faits vérifiés et on signale l'incertitude quand l'information manque. Pour éviter les boucles d'écho vocal, on bloque la reconnaissance pendant que le robot parle, on ajoute un délai et on filtre l'auto-écoute."
+                },
+                {
+                    id: 'humanoid-production-scale',
+                    topic: 'Large-Scale Production of Humanoid Robots',
+                    match: /\b(large[- ]?scale\s+production.*humanoid|humanoid\s+robots.*pilots|production\s+à\s+grande\s+échelle.*humanoïde)\b/i,
+                    en: "Humanoid robots are moving from lab prototypes into early factory and logistics pilots, while broad everyday deployment still requires lower unit costs, longer battery life, reliable hand dexterity, and strict safety certification.",
+                    fr: "Les robots humanoïdes passent des prototypes aux premiers pilotes industriels et logistiques, mais l'adoption massive exige encore de réduire les coûts, d'améliorer l'autonomie et de garantir une sécurité irréprochable."
+                },
+                {
+                    id: 'open-web-education',
+                    topic: 'Open Web Tools and Zero-Subscription Education',
+                    match: /\b(open\s+web\s+tools|without\s+relying\s+on\s+expensive\s+subscriptions|zero\s+subscriptions|outils\s+web\s+ouverts|sans\s+abonnement)\b/i,
+                    en: "Schools and independent creators can use HTML5, JavaScript, Python, open web APIs, and static hosting to build interactive lessons, simulations, and voice tutors with full code ownership and zero recurring subscription lock-in.",
+                    fr: "Les écoles et créateurs indépendants peuvent utiliser HTML5, JavaScript, Python, des API ouvertes et l'hébergement web statique pour créer des cours interactifs et des assistants vocaux en gardant la maîtrise complète du code sans abonnement coûteux."
+                }
+            ],
             offices: [
                 {
                     matchEn: /\b(current\s+)?president\s+of\s+(the\s+)?(united\s+states|usa|america)\b/i,
@@ -674,33 +735,33 @@
                     id: 'mathematics',
                     match: /\b(math|maths|mathematics|algebra|geometry|calculus|trigonometry|equation|fraction|quadratic|pythagoras|pythagorean|mathématiques|mathematiques|algèbre|algebre|géométrie|geometrie|calcul|trigonométrie|équation|equation|pythagore)\b/i,
                     shortEn: "In mathematics, every problem becomes clear when we identify the given values, select the governing formula or theorem, and solve step by step.",
-                    longEn: "In mathematics, mastery comes from clear logical steps. Whether solving algebraic equations, applying the Pythagorean theorem ($a^2 + b^2 = c^2$), or working through trigonometry and calculus, we define what is known, apply the exact rule, and verify our answer. Give me the specific equation or problem you want to solve!",
+                    longEn: "In mathematics, mastery comes from clear logical steps. Whether solving algebraic equations, applying the Pythagorean theorem (a² + b² = c²), or working through trigonometry and calculus, we define what is known, apply the exact rule, and verify our answer. Give me the specific equation or problem you want to solve.",
                     shortFr: "En mathématiques, chaque problème devient clair lorsqu'on identifie les données, qu'on applique la bonne formule et qu'on résout étape par étape.",
-                    longFr: "En mathématiques, la maîtrise repose sur une démarche logique rigoureuse. Qu'il s'agisse d'équations algébriques, du théorème de Pythagore, de géométrie ou de trigonométrie, nous posons les données connues, appliquons la règle exacte et vérifions le résultat. Donne-moi ton exercice précis pour que nous le résolvions ensemble !"
+                    longFr: "En mathématiques, la maîtrise repose sur une démarche logique rigoureuse. Qu'il s'agisse d'équations algébriques, du théorème de Pythagore, de géométrie ou de trigonométrie, nous posons les données connues, appliquons la règle exacte et vérifions le résultat. Donne-moi ton exercice précis pour que nous le résolvions ensemble."
                 },
                 {
                     id: 'physics',
                     match: /\b(physics|mechanics|force|newton|energy|velocity|acceleration|gravity|electricity|magnetism|optics|thermodynamics|quantum|physique|mécanique|mecanique|énergie|energie|vitesse|accélération|gravité|électricité|electricite|magnétisme|optique|thermodynamique)\b/i,
                     shortEn: "Physics explains how matter and energy behave across the universe—from Newton's laws of motion and gravity to electricity, waves, and thermodynamics.",
-                    longEn: "Physics investigates the fundamental laws of nature: force and motion ($F = ma$), conservation of energy, electromagnetism, optics, and quantum mechanics. When solving any physics problem, we convert all quantities to standard SI units, choose the physical law connecting them, and compute the result. Which physics topic or exercise shall we analyze?",
+                    longEn: "Physics investigates the fundamental laws of nature: force and motion (F = ma), conservation of energy, electromagnetism, optics, and quantum mechanics. When solving any physics problem, we convert all quantities to standard SI units, choose the physical law connecting them, and compute the result.",
                     shortFr: "La physique explique comment la matière et l'énergie se comportent dans l'univers, des lois de Newton et de la gravité jusqu'à l'électricité et la thermodynamique.",
-                    longFr: "La physique étudie les lois fondamentales de la nature : les forces et le mouvement, la conservation de l'énergie, l'électromagnétisme et l'optique. Pour résoudre tout exercice, nous convertissons les grandeurs dans le Système International et appliquons la loi physique correspondante. Quel sujet de physique veux-tu explorer ?"
+                    longFr: "La physique étudie les lois fondamentales de la nature : les forces et le mouvement, la conservation de l'énergie, l'électromagnétisme et l'optique. Pour résoudre tout exercice, nous convertissons les grandeurs dans le Système International et appliquons la loi physique correspondante."
                 },
                 {
                     id: 'chemistry',
                     match: /\b(chemistry|chimistry|atom|molecule|periodic table|chemical|reaction|acid|base|mole|stoichiometry|bond|h2o|oxygen|hydrogen|chimie|atome|molécule|molecule|tableau périodique|réaction|acide|stœchiométrie|liaison)\b/i,
                     shortEn: "Chemistry is the science of atoms, molecules, and chemical reactions—explaining how elements bond, transform, and conserve mass and energy.",
-                    longEn: "Chemistry explores matter at the atomic and molecular level. Whether balancing chemical equations, calculating molar mass in stoichiometry, or studying acids, bases, and covalent or ionic bonds, atoms are always conserved. Tell me which chemical reaction, element, or exercise you are studying.",
+                    longEn: "Chemistry explores matter at the atomic and molecular level. Whether balancing chemical equations, calculating molar mass in stoichiometry, or studying acids, bases, and covalent or ionic bonds, atoms are always conserved.",
                     shortFr: "La chimie est la science des atomes, des molécules et des réactions chimiques : elle explique comment les éléments se lient et se transforment.",
-                    longFr: "La chimie étudie la matière à l'échelle atomique et moléculaire. Qu'il s'agisse d'équilibrer une équation chimique, de calculer une masse molaire ou d'étudier les acides, les bases et les liaisons chimiques, la conservation des atomes reste la règle d'or. Quel exercice de chimie veux-tu étudier ?"
+                    longFr: "La chimie étudie la matière à l'échelle atomique et moléculaire. Qu'il s'agisse d'équilibrer une équation chimique, de calculer une masse molaire ou d'étudier les acides, les bases et les liaisons chimiques, la conservation des atomes reste la règle d'or."
                 },
                 {
                     id: 'biology',
                     match: /\b(biology|cell|dna|genetics|evolution|photosynthesis|ecosystem|anatomy|biologie|cellule|adn|génétique|genetique|évolution|photosynthèse|écosystème|anatomie)\b/i,
                     shortEn: "Biology studies living organisms—from cells, DNA, and photosynthesis to human anatomy and ecosystems.",
-                    longEn: "Biology examines life at every scale: inside cells where DNA directs protein synthesis and mitochondria generate energy, up to organ systems and global ecosystems. Which biological concept or question would you like to explore?",
+                    longEn: "Biology examines life at every scale: inside cells where DNA directs protein synthesis and mitochondria generate energy, up to organ systems and global ecosystems.",
                     shortFr: "La biologie étudie le monde vivant, depuis la cellule, l'ADN et la photosynthèse jusqu'à l'anatomie humaine et les écosystèmes.",
-                    longFr: "La biologie examine la vie à toutes les échelles : au cœur des cellules où l'ADN dirige la synthèse des protéines, jusqu'aux organes et aux écosystèmes. Quelle notion de biologie souhaites-tu approfondir ?"
+                    longFr: "La biologie examine la vie à toutes les échelles : au cœur des cellules où l'ADN dirige la synthèse des protéines, jusqu'aux organes et aux écosystèmes."
                 }
             ]
         };
@@ -848,14 +909,13 @@
         let subtitleTimer = null;
         let activeAbortController = null;
         let currentLang = 'en-US';
-        let forcedLang = null; // null | 'en-US' | 'fr-FR'
-        let answerDepth = 'auto'; // 'auto' | 'short' | 'long'
+        let forcedLang = null;
+        let answerDepth = 'auto';
         let currentPhase = 'idle';
         let lastTopicDiscussed = '';
         let lastProcessedQuery = '';
         let lastProcessedAt = 0;
 
-        // Conversational State & Careful Listening Mode
         const conversationHistory = [];
         let attentiveListeningMode = false;
         let attentiveListeningSubject = '';
@@ -907,7 +967,7 @@
             clearTimeout(subtitleTimer);
         }
 
-        function scheduleSubtitleHide(ms = 11000) {
+        function scheduleSubtitleHide(ms = 12000) {
             clearTimeout(subtitleTimer);
             subtitleTimer = setTimeout(() => {
                 subtitle.classList.remove('show');
@@ -969,7 +1029,7 @@
                 'their','hello','hi','hey','thanks','thank','yes','no','please','tell','explain','show','find',
                 'speak','talk','teach','learn','english','french','today','date','time','now','good','great','more',
                 'owner','creator','president','short','long','detail','briefly','listen','carefully','before','answer',
-                'math','physics','chemistry','chimistry','biology','student','students','homework','study','humanoid'
+                'math','physics','chemistry','chimistry','biology','student','students','homework','study','humanoid','agentic','generative'
             ]);
             const frWords = new Set([
                 'qui','quoi','que','quel','quelle','quels','quelles','comment','pourquoi','quand','où','est','sont',
@@ -991,7 +1051,6 @@
             return enScore > frScore ? 'en-US' : 'fr-FR';
         }
 
-        // Prevent Jarvis from picking up his own voice from the device speakers
         function isSelfEcho(transcript) {
             if (!lastSpokenText) return false;
             const normUser = transcript.toLowerCase().replace(/[^a-z0-9àâäéèêëïîôöùûüÿç\s]/g, '').trim();
@@ -1023,27 +1082,22 @@
             recognition.continuous = false;
             recognition.interimResults = false;
             recognition.lang = currentLang;
-
             recognition.onstart = () => {
                 isRecognizerRunning = true;
                 if (isMicArmed && !isSpeakingNow && currentPhase !== 'thinking') {
                     setRobotState('listening');
                 }
             };
-
             recognition.onresult = (event) => {
-                // Ignore any speech captured while Jarvis is actively speaking
                 if (isSpeakingNow || (window.speechSynthesis && window.speechSynthesis.speaking)) {
                     return;
                 }
                 const lastIdx = event.results.length - 1;
                 const transcript = (event.results[lastIdx]?.[0]?.transcript || '').trim();
                 if (!transcript) return;
-
                 if (isSelfEcho(transcript)) {
                     return;
                 }
-
                 const cleaned = transcript.replace(/^(hey |ok )?jarvis[,:\s-]*/i, '').trim() || transcript;
                 const now = Date.now();
                 if (cleaned.toLowerCase() === lastProcessedQuery && now - lastProcessedAt < 2200) {
@@ -1051,20 +1105,16 @@
                 }
                 lastProcessedQuery = cleaned.toLowerCase();
                 lastProcessedAt = now;
-
                 const detectedLang = detectLanguage(cleaned);
                 currentLang = detectedLang;
                 recognition.lang = currentLang;
-
                 if (attentiveListeningMode) {
                     handleAttentiveBufferInput(cleaned, detectedLang);
                     return;
                 }
-
                 showSubtitle(cleaned, '👤 YOU');
                 processCommand(cleaned, detectedLang);
             };
-
             recognition.onend = () => {
                 isRecognizerRunning = false;
                 if (isMicArmed && !isSpeakingNow && currentPhase !== 'thinking') {
@@ -1073,7 +1123,6 @@
                     setRobotState('idle');
                 }
             };
-
             recognition.onerror = (e) => {
                 isRecognizerRunning = false;
                 if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
@@ -1104,16 +1153,13 @@
 
         function handleAttentiveBufferInput(segment, lang) {
             clearTimeout(attentiveFlushTimer);
-
             const wantsImmediateAnswer = /\b(that's all|that is all|now answer|go ahead|answer now|you can answer|c'est tout|réponds maintenant|reponds maintenant|vas-y|tu peux répondre)\b/i.test(segment);
             const cleanedSegment = segment
                 .replace(/\b(that's all|that is all|now answer|go ahead|answer now|you can answer|c'est tout|réponds maintenant|reponds maintenant|vas-y|tu peux répondre)\b/gi, '')
                 .trim();
-
             if (cleanedSegment) {
                 attentiveBuffer.push(cleanedSegment);
             }
-
             const combinedSoFar = attentiveBuffer.join(' ').trim();
             showSubtitle(
                 lang === 'en-US'
@@ -1121,12 +1167,10 @@
                     : `J'écoute attentivement : « ${combinedSoFar} » ... (Continue ou dis « réponds maintenant »)`,
                 '👂 LISTENING'
             );
-
             if (wantsImmediateAnswer && combinedSoFar) {
                 flushAttentiveBuffer(lang);
                 return;
             }
-
             attentiveFlushTimer = setTimeout(() => {
                 if (attentiveBuffer.length > 0) {
                     flushAttentiveBuffer(lang);
@@ -1140,7 +1184,6 @@
             attentiveBuffer = [];
             attentiveListeningMode = false;
             if (!fullQuestion) return;
-
             const finalPrompt = attentiveListeningSubject
                 ? `${attentiveListeningSubject}: ${fullQuestion}`
                 : fullQuestion;
@@ -1206,7 +1249,6 @@
             const lower = commandText.toLowerCase().trim();
             const triggersListenCarefully = /\b(listen to my questions? carefully|listen carefully before (you )?answer|listen to me carefully|pay close attention|hear me out before answering|écoute mes questions? attentivement|ecoute mes questions? attentivement|écoute attentivement avant de répondre|ecoute attentivement avant de repondre|écoute-moi attentivement)\b/i.test(lower);
             if (!triggersListenCarefully) return null;
-
             let detectedSubject = '';
             for (const subj of JARVIS_DATABASE.academicGuides) {
                 if (subj.match.test(lower)) {
@@ -1214,12 +1256,10 @@
                     break;
                 }
             }
-
             attentiveListeningMode = true;
             attentiveListeningSubject = detectedSubject;
             attentiveBuffer = [];
             setRobotState('listening');
-
             const namePart = gpsUserName ? ` ${gpsUserName}` : '';
             if (lang === 'en-US') {
                 return detectedSubject
@@ -1252,7 +1292,15 @@
                     : `Je suis J.A.R.V.I.S., une intelligence artificielle humanoïde érudite créée par ${o.name}. Je suis conçu pour discuter naturellement en français et en anglais, répondre aux questions de culture générale et accompagner les élèves en mathématiques, physique et chimie.`;
             }
 
-            // 3. Direct Humanoid AI Topic Knowledge
+            // 3. Direct Core AI, Agentic AI, Ethics, Jobs, Safety, and Future Questions
+            for (const item of JARVIS_DATABASE.coreQuestions) {
+                if (item.match.test(lower)) {
+                    lastTopicDiscussed = item.topic;
+                    return lang === 'en-US' ? item.en : item.fr;
+                }
+            }
+
+            // 4. Direct Humanoid AI Topic Knowledge
             for (const item of JARVIS_DATABASE.humanoidTopics) {
                 if (item.match.test(lower)) {
                     lastTopicDiscussed = 'Humanoid AI';
@@ -1260,7 +1308,7 @@
                 }
             }
 
-            // 4. Direct Office / Leadership lookups
+            // 5. Direct Office / Leadership lookups
             for (const entry of JARVIS_DATABASE.offices) {
                 if (entry.matchEn.test(lower) || entry.matchFr.test(lower)) {
                     if (lang === 'en-US') {
@@ -1270,7 +1318,7 @@
                 }
             }
 
-            // 5. Today's Date
+            // 6. Today's Date
             const asksDate = /\b(today'?s date|what('s| is) (the )?date|what day is (it|today)|quelle est la date|date d'aujourd'hui|quel jour (on est|sommes-nous|est-ce))\b/i.test(lower);
             if (asksDate) {
                 const now = new Date();
@@ -1286,7 +1334,7 @@
                 return `Aujourd'hui, nous sommes le ${formattedFr}.`;
             }
 
-            // 6. Current Time
+            // 7. Current Time
             const asksTime = /\b(what time is it|current time|quelle heure (est-il|il est)|donne l'heure)\b/i.test(lower);
             if (asksTime) {
                 const now = new Date();
@@ -1298,7 +1346,7 @@
                 return `Il est actuellement ${timeFr}.`;
             }
 
-            // 7. Arithmetic & Student Math Expressions
+            // 8. Arithmetic & Student Math Expressions
             const mathMatch = lower.match(/(-?\d+(?:\.\d+)?)\s*(\+|plus|\-|minus|moins|\*|x|times|multiplié par|multiplie par|\/|divided by|divisé par|divise par)\s*(-?\d+(?:\.\d+)?)/i);
             if (mathMatch) {
                 const a = parseFloat(mathMatch[1]);
@@ -1324,7 +1372,7 @@
                 }
             }
 
-            // 8. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
+            // 9. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
             const isGeneralSubjectRequest = /\b(help me (with|in|study)|i need help (with|in)|let's study|teach me|talk about|discuss|what is|aide[- ]moi (en|avec|pour)|j'ai besoin d'aide (en|pour)|étudions|parlons de|qu'est[- ]ce que)\b/i.test(lower);
             if (isGeneralSubjectRequest && lower.split(/\s+/).length <= 8) {
                 for (const subj of JARVIS_DATABASE.academicGuides) {
@@ -1338,7 +1386,7 @@
                 }
             }
 
-            // 9. Dedicated English & French Teaching Lessons
+            // 10. Dedicated English & French Teaching Lessons
             const asksTeachEn = /\b(teach me english|learn english|english lesson|apprends[- ]moi l'anglais|cours d'anglais)\b/i.test(lower);
             if (asksTeachEn) {
                 return lang === 'en-US'
@@ -1359,7 +1407,6 @@
         function handleConversationalTurn(commandText, lang) {
             const lower = commandText.toLowerCase().trim();
             const nameSuffix = gpsUserName ? ` ${gpsUserName}` : '';
-
             if (/^(hello|hi|hey|good morning|good afternoon|good evening)[!.?]*$/i.test(lower)) {
                 return `Greetings${nameSuffix}! I am J.A.R.V.I.S., your scholar humanoid companion. Whether you want an open conversation or help studying mathematics, physics, chemistry, or any school subject, I am ready. What shall we explore?`;
             }
@@ -1422,7 +1469,6 @@
                 .replace(/\s+/g, ' ')
                 .trim();
             pushUnique(keywords);
-            // Also try the top 2–3 longest content words for complex full-sentence questions
             const longWords = keywords.split(/\s+/).filter(w => w.length >= 4);
             if (longWords.length >= 2) {
                 pushUnique(longWords.slice(0, 3).join(' '));
@@ -1443,15 +1489,9 @@
             const maxSentences = lengthMode === 'short' ? 2 : lengthMode === 'long' ? 4 : 3;
             const selected = sentences.slice(0, maxSentences).join(' ').trim();
             const nameRef = gpsUserName ? `, ${gpsUserName}` : '';
-
             if (lang === 'en-US') {
-                let body = selected;
-                if (isTeaching) {
-                    body = `Let's examine ${title} carefully. ${selected}`;
-                }
-                if (lengthMode === 'short') {
-                    return body;
-                }
+                let body = isTeaching ? `Let's examine ${title} carefully. ${selected}` : selected;
+                if (lengthMode === 'short') return body;
                 const followUp = isTeaching
                     ? ` Would you like to explore a specific formula, example, or concept from ${title}${nameRef}?`
                     : isConversational
@@ -1459,14 +1499,8 @@
                         : ` Would you like to go deeper into ${title}${nameRef}, or move to another question?`;
                 return `${body}${followUp}`.trim();
             }
-
-            let bodyFr = selected;
-            if (isTeaching) {
-                bodyFr = `Examinons ${title} avec méthode. ${selected}`;
-            }
-            if (lengthMode === 'short') {
-                return bodyFr;
-            }
+            let bodyFr = isTeaching ? `Examinons ${title} avec méthode. ${selected}` : selected;
+            if (lengthMode === 'short') return bodyFr;
             const followUpFr = isTeaching
                 ? ` Souhaites-tu détailler une formule ou un exemple précis sur ${title}${nameRef} ?`
                 : isConversational
@@ -1475,11 +1509,9 @@
             return `${bodyFr}${followUpFr}`.trim();
         }
 
-        // Intelligent scholarly fallback that NEVER repeats the user's question back
+        // Direct, substantive scholarly fallback that answers the question instead of stalling
         function buildScholarlyReasoningFallback(question, lang) {
-            const subject = extractCoreSubject(question);
-            const nameRef = gpsUserName ? ` ${gpsUserName}` : '';
-
+            const subject = extractCoreSubject(question) || question.trim();
             for (const subj of JARVIS_DATABASE.academicGuides) {
                 if (subj.match.test(question)) {
                     return lang === 'en-US' ? subj.longEn : subj.longFr;
@@ -1488,21 +1520,24 @@
 
             if (lang === 'en-US') {
                 if (/^why\b/i.test(question.trim())) {
-                    return `That is an insightful question${nameRef}. In science and engineering, phenomena like ${subject || 'this'} are driven by underlying causes, physical principles, and practical trade-offs. Tell me which specific aspect or example you want to focus on, and I will break it down clearly.`;
+                    return `Regarding ${subject}: the reason comes down to cause-and-effect mechanics, practical constraints, and trade-offs between cost, speed, reliability, and usability. When systems are built for real people or real environments, those trade-offs shape every design choice.`;
                 }
                 if (/^how\b/i.test(question.trim())) {
-                    return `Understanding how ${subject || 'this process'} works comes down to breaking it into clear inputs, mechanisms, and outcomes. Share the specific scenario or step you are interested in, and we can walk through it together.`;
+                    return `Regarding ${subject}: it works through a clear pipeline of inputs, processing or decision rules, execution, and feedback. Each stage checks the outcome and adjusts the next step so the system stays accurate and dependable.`;
                 }
-                return `That is a great topic to explore${nameRef}. Let's look at ${subject || 'this subject'} from first principles: tell me the specific detail, concept, or question you want to examine first, and we will dive right in.`;
+                if (/^(when|where|who)\b/i.test(question.trim())) {
+                    return `Regarding ${subject}: the exact answer depends on the specific context, region, or timeline involved, so sharing a concrete example or time frame will let me narrow it down directly.`;
+                }
+                return `Regarding ${subject}: this centers on how core principles apply in real practice, where strengths come from clear structure and limitations come from edge cases or real-world variability. Ask about any specific part of ${subject} and I will explain it directly.`;
             }
 
             if (/^pourquoi\b/i.test(question.trim())) {
-                return `C'est une excellente question${nameRef}. En sciences comme en ingénierie, ce phénomène repose sur des causes précises, des principes fondamentaux et des choix techniques. Dis-moi quel aspect particulier tu souhaites approfondir et je te l'expliquerai clairement.`;
+                return `Au sujet de ${subject} : cela s'explique par des facteurs de causalité, des contraintes concrètes et un équilibre entre performance, coût, fiabilité et simplicité d'usage sur le terrain.`;
             }
             if (/^comment\b/i.test(question.trim())) {
-                return `Pour bien comprendre ce fonctionnement, il suffit de décomposer le mécanisme étape par étape. Précise-moi le cas ou l'exemple qui t'intéresse et nous l'analyserons ensemble.`;
+                return `Au sujet de ${subject} : le mécanisme repose sur des entrées, un traitement ou une logique de décision, une exécution et une vérification continue pour corriger les écarts.`;
             }
-            return `C'est un sujet passionnant à explorer${nameRef}. Dis-moi quel aspect précis tu souhaites aborder en premier et nous l'analyserons ensemble avec clarté.`;
+            return `Au sujet de ${subject} : l'enjeu principal est d'appliquer les principes fondamentaux tout en gérant les cas particuliers du terrain. Précise l'aspect que tu veux approfondir et j'y répondrai directement.`;
         }
 
         async function fetchWikipediaMatch(query, lang, signal) {
@@ -1513,13 +1548,11 @@
             const searchData = await searchRes.json();
             const bestTitle = searchData?.query?.search?.[0]?.title;
             if (!bestTitle) return null;
-
             const summaryUrl = `https://${wikiLang}.wikipedia.org/api/restv1/page/summary/${encodeURIComponent(bestTitle)}`;
             const summaryRes = await fetch(summaryUrl, { signal });
             if (!summaryRes.ok) return null;
             const summaryData = await summaryRes.json();
             if (!summaryData?.extract) return null;
-
             return {
                 title: summaryData.title || bestTitle,
                 text: summaryData.extract
@@ -1564,10 +1597,8 @@
             stopSpeaking(false);
             if (activeAbortController) activeAbortController.abort();
             activeAbortController = new AbortController();
-
             recordTurn('user', commandText);
 
-            // 1. Check if user asks Jarvis to listen carefully before answering
             const attentiveReply = detectCarefulListeningCommand(commandText, lang);
             if (attentiveReply) {
                 recordTurn('jarvis', attentiveReply);
@@ -1580,7 +1611,6 @@
             const isTeaching = /\b(teach me|learn|explain|how does|how do|help me|study|solve|formula|theorem|math|physics|chemistry|chimistry|biology|apprends[- ]moi|explique|comment|aide[- ]moi|étudie|résous|formule|théorème|mathématiques|physique|chimie|biologie)\b/i.test(commandText);
             const isConversational = conversationHistory.length > 2 || /\b(what do you think|let's discuss|talk about|in your opinion|qu'en penses-tu|discutons|parlons de|à ton avis)\b/i.test(commandText);
 
-            // 2. Instant scholarly knowledge, Humanoid AI knowledge, math, owner info, date/time
             const instant = handleInstantKnowledge(commandText, lang, lengthMode);
             if (instant) {
                 recordTurn('jarvis', instant);
@@ -1589,7 +1619,6 @@
                 return;
             }
 
-            // 3. Natural conversational exchanges & follow-up continuity
             let convo = handleConversationalTurn(commandText, lang);
             if (convo && convo.startsWith('__CONTINUE__:')) {
                 const prevTopic = convo.slice('__CONTINUE__:'.length);
@@ -1603,14 +1632,12 @@
                 return;
             }
 
-            // 4. Online scholarly research delivered in natural humanoid voice
             setRobotState('thinking');
             try {
                 let searchQuery = commandText;
                 if (lastTopicDiscussed && /\b(it|its|they|their|this|that|he|she|cela|ça|il|elle|son|sa|ses)\b/i.test(commandText) && commandText.split(/\s+/).length <= 8) {
                     searchQuery = `${lastTopicDiscussed} ${extractCoreSubject(commandText)}`;
                 }
-
                 const onlineResult = await searchWithReformulation(searchQuery, lang, activeAbortController.signal);
                 let reply;
                 if (onlineResult && onlineResult.text) {
@@ -1641,7 +1668,7 @@
         function speakText(text, lang) {
             lastSpokenText = text;
             if (!('speechSynthesis' in window)) {
-                scheduleSubtitleHide(11000);
+                scheduleSubtitleHide(12000);
                 setRobotState(isMicArmed ? 'listening' : 'idle');
                 if (isMicArmed) startRecognizerSafely();
                 return;
@@ -1658,13 +1685,11 @@
             const bestVoice = voices.find(v => v.lang === targetLang) || voices.find(v => v.lang.startsWith(prefix));
             if (bestVoice) utterance.voice = bestVoice;
             utterance.rate = 1.03;
-
             const charsPerSec = targetLang === 'en-US' ? 15 : 13;
             const estimatedSeconds = text.length / charsPerSec;
             const armCycleMs = Math.max(2000, Math.min(3800, estimatedSeconds * 1000 / 2));
             robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
             robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.12) + 'ms');
-
             utterance.onstart = () => {
                 isSpeakingNow = true;
                 setRobotState('speaking');
@@ -1673,7 +1698,7 @@
                 isSpeakingNow = false;
                 lastSpeechEndedAt = Date.now();
                 setRobotState(isMicArmed ? 'listening' : 'idle');
-                scheduleSubtitleHide(10000);
+                scheduleSubtitleHide(11000);
                 if (isMicArmed) {
                     setTimeout(() => startRecognizerSafely(), 750);
                 }
@@ -1682,7 +1707,7 @@
                 isSpeakingNow = false;
                 lastSpeechEndedAt = Date.now();
                 setRobotState(isMicArmed ? 'listening' : 'idle');
-                scheduleSubtitleHide(10000);
+                scheduleSubtitleHide(11000);
                 if (isMicArmed) {
                     setTimeout(() => startRecognizerSafely(), 750);
                 }
