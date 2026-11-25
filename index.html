@@ -9,10 +9,10 @@
         :root {
             --accent: #b8860b;
             --accent-2: #ffc72c;
+            --cyan: #00e5ff;
             --danger: #dc2626;
             --success: #16a34a;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         html, body { height: 100%; }
         body {
@@ -20,10 +20,9 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: #1b1147;
+            background: #120b36;
             color: #fff;
         }
-
         .galaxy-bg {
             position: fixed; inset: -10%; z-index: -2;
             background:
@@ -32,8 +31,8 @@
                 radial-gradient(circle at 75% 80%, #ff4fa3 0%, transparent 45%),
                 radial-gradient(circle at 25% 85%, #ffc72c 0%, transparent 45%),
                 radial-gradient(circle at 50% 50%, #4b2fbf 0%, transparent 60%),
-                linear-gradient(160deg, #1b1147 0%, #241a6b 30%, #0e3a7a 65%, #2a0f4d 100%);
-            filter: saturate(1.3) brightness(1.15);
+                linear-gradient(160deg, #120b36 0%, #241a6b 30%, #0e3a7a 65%, #2a0f4d 100%);
+            filter: saturate(1.35) brightness(1.15);
             animation: galaxyDrift 34s ease-in-out infinite alternate;
         }
         @keyframes galaxyDrift {
@@ -59,7 +58,31 @@
         }
         @keyframes twinkle { from { opacity: .55; } to { opacity: 1; } }
         @keyframes starDrift { from { transform: translate3d(0,0,0); } to { transform: translate3d(-70px,-45px,0); } }
-
+        .status-badge {
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 50;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1.5px solid rgba(255, 199, 44, 0.55);
+            backdrop-filter: blur(10px);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent-2);
+        }
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--accent-2);
+            box-shadow: 0 0 10px var(--accent-2);
+        }
         .owner-card {
             position: fixed;
             top: 14px;
@@ -104,7 +127,6 @@
             transition: color .15s;
         }
         .owner-card a:hover { color: var(--accent); text-decoration: underline; }
-
         .stage {
             flex: 1;
             display: flex;
@@ -125,10 +147,9 @@
             height: 100%;
             width: auto;
             display: block;
-            filter: drop-shadow(0 10px 30px rgba(184,134,11,0.5));
-            transition: filter 0.3s ease;
+            filter: drop-shadow(0 10px 30px rgba(184,134,11,0.55));
+            transition: filter 0.3s ease, transform 0.5s ease;
         }
-
         .chest-mic {
             position: absolute;
             top: 34.4%;
@@ -165,65 +186,58 @@
             0%, 100% { box-shadow: 0 0 20px rgba(220,38,38,0.9); }
             50% { box-shadow: 0 0 40px rgba(220,38,38,1); }
         }
-
         #robotBody .eye-bar { animation: eyeIdle 3.6s ease-in-out infinite; }
         #robotBody .core { animation: coreIdle 2.6s ease-in-out infinite; }
         #robotBody .halo-ring { transform-origin: 120px 250px; animation: haloSpin 40s linear infinite; }
-
         .arm-left, .arm-right {
             transform-box: view-box;
             transition: transform 0.6s ease-in-out;
         }
         .arm-left  { transform-origin: 64px 132px; }
         .arm-right { transform-origin: 176px 132px; }
-
         #robotBody:not(.speaking) .arm-left  { animation: armIdleLeft 6s ease-in-out infinite; }
         #robotBody:not(.speaking) .arm-right { animation: armIdleRight 6.8s ease-in-out infinite; }
-
-        #robotBody.speaking .arm-left  { animation: armSpeakLeft var(--arm-speed-left, 3200ms) ease-in-out infinite; }
-        #robotBody.speaking .arm-right { animation: armSpeakRight var(--arm-speed-right, 3600ms) ease-in-out infinite; }
-
+        #robotBody.speaking .arm-left  { animation: armSpeakLeft var(--arm-speed-left, 2800ms) ease-in-out infinite; }
+        #robotBody.speaking .arm-right { animation: armSpeakRight var(--arm-speed-right, 3200ms) ease-in-out infinite; }
         @keyframes armIdleLeft {
             0%, 100% { transform: rotate(0deg); }
-            50%      { transform: rotate(-1.5deg); }
+            50%      { transform: rotate(-2deg); }
         }
         @keyframes armIdleRight {
             0%, 100% { transform: rotate(0deg); }
-            50%      { transform: rotate(1.5deg); }
+            50%      { transform: rotate(2deg); }
         }
         @keyframes armSpeakLeft {
             0%   { transform: rotate(0deg); }
-            30%  { transform: rotate(-8deg); }
-            60%  { transform: rotate(-3deg); }
+            30%  { transform: rotate(-10deg); }
+            60%  { transform: rotate(-4deg); }
             100% { transform: rotate(0deg); }
         }
         @keyframes armSpeakRight {
             0%   { transform: rotate(0deg); }
-            35%  { transform: rotate(7deg); }
-            65%  { transform: rotate(2.5deg); }
+            35%  { transform: rotate(9deg); }
+            65%  { transform: rotate(3deg); }
             100% { transform: rotate(0deg); }
         }
-
-        #robotBody.speaking { filter: drop-shadow(0 10px 40px rgba(255,199,44,0.95)); }
-        #robotBody.speaking .eye-bar { animation: eyeSpeak .26s ease-in-out infinite; fill: #ffffff; }
-        #robotBody.speaking .mouth-group { transform-origin: 120px 88px; animation: mouthSpeak .22s ease-in-out infinite; }
-        #robotBody.speaking .core { animation: coreSpeak .34s ease-in-out infinite; }
+        #robotBody.speaking {
+            filter: drop-shadow(0 10px 42px rgba(255,199,44,0.95));
+            transform: translateY(-3px);
+        }
+        #robotBody.speaking .eye-bar { animation: eyeSpeak .24s ease-in-out infinite; fill: #ffffff; }
+        #robotBody.speaking .mouth-group { transform-origin: 120px 88px; animation: mouthSpeak .2s ease-in-out infinite; }
+        #robotBody.speaking .core { animation: coreSpeak .3s ease-in-out infinite; }
         #robotBody.speaking .visor { filter: drop-shadow(0 0 12px #ffd24d); }
-        #robotBody.speaking .halo-ring { animation: haloSpin 4s linear infinite; opacity: .9; }
-
-        #robotBody.listening .eye-bar { fill: #3ef58c; animation: eyeListen 1.3s ease-in-out infinite; }
-        #robotBody.listening .halo-ring { animation: haloSpin 12s linear infinite; stroke: #3ef58c; }
-
-        #robotBody.thinking .eye-bar { fill: #ffa726; animation: eyeSpeak .5s ease-in-out infinite; }
-
+        #robotBody.speaking .halo-ring { animation: haloSpin 3.5s linear infinite; opacity: .95; stroke: #00e5ff; }
+        #robotBody.listening .eye-bar { fill: #3ef58c; animation: eyeListen 1.2s ease-in-out infinite; }
+        #robotBody.listening .halo-ring { animation: haloSpin 10s linear infinite; stroke: #3ef58c; }
+        #robotBody.thinking .eye-bar { fill: #00e5ff; animation: eyeSpeak .45s ease-in-out infinite; }
         @keyframes eyeIdle { 0%,100% { opacity: 1; } 50% { opacity: .68; } }
         @keyframes eyeSpeak { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
         @keyframes eyeListen { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
-        @keyframes mouthSpeak { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(2.6); } }
+        @keyframes mouthSpeak { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(2.7); } }
         @keyframes coreIdle { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
         @keyframes coreSpeak { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
         @keyframes haloSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
         .subtitle {
             position: fixed;
             bottom: 24px;
@@ -233,12 +247,12 @@
             width: 92%;
             max-height: 40vh;
             overflow-y: auto;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.92);
             color: #ffffff;
             padding: 20px 26px;
             border-radius: 18px;
-            border: 2px solid rgba(255,199,44,0.55);
-            font-size: 1.3rem;
+            border: 2px solid rgba(255,199,44,0.65);
+            font-size: 1.25rem;
             line-height: 1.6;
             text-align: center;
             opacity: 0;
@@ -258,7 +272,6 @@
             letter-spacing: 3px;
             margin-bottom: 10px;
         }
-
         .name-overlay {
             position: fixed;
             inset: 0;
@@ -325,8 +338,8 @@
         }
         .name-card .skip-btn:hover { color: #334155; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         @media (max-width: 760px) {
+            .status-badge { font-size: 0.65rem; padding: 6px 10px; top: 10px; left: 10px; }
             .owner-card {
                 font-size: 0.72rem;
                 padding: 10px 13px;
@@ -337,12 +350,9 @@
             .owner-card strong { font-size: 0.82rem; }
             .owner-card a { font-size: 0.68rem; }
             .owner-card .edu-pill { font-size: 0.6rem; padding: 2px 8px; }
-
             .stage { padding: 0; }
             .robot-wrap { height: 100vh; }
-
             .chest-mic { width: 36px; height: 36px; font-size: 1rem; top: 34.4%; }
-
             .subtitle {
                 font-size: 1rem;
                 padding: 14px 18px;
@@ -350,17 +360,18 @@
                 max-height: 42vh;
             }
             .subtitle .speaker { font-size: 0.72rem; margin-bottom: 7px; }
-
             .name-card { padding: 26px 22px; }
             .name-card h2 { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
-
     <div class="galaxy-bg"></div>
     <div class="galaxy-stars"></div>
-
+    <div class="status-badge" id="statusBadge">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">NVIDIA NIM · READY</span>
+    </div>
     <div class="owner-card">
         <strong>Gesner Deslandes</strong>
         Développeur Logiciel · Haïti
@@ -368,7 +379,6 @@
         <a href="tel:+50947385663">📞 (509) 4738-5663</a>
         <a href="mailto:deslandes78@gmail.com">✉️ deslandes78@gmail.com</a>
     </div>
-
     <div class="stage">
         <div class="robot-wrap" id="robotWrap">
             <svg id="robotBody" class="robot-svg" viewBox="0 0 240 500" xmlns="http://www.w3.org/2000/svg">
@@ -411,10 +421,9 @@
                         <stop offset="100%" stop-color="#C08A00"/>
                     </linearGradient>
                 </defs>
-
                 <ellipse cx="120" cy="472" rx="86" ry="18" fill="url(#floorGlow)"/>
-                <circle class="halo-ring" cx="120" cy="250" r="118" fill="none" stroke="#FFD24D" stroke-width="1.6" stroke-dasharray="7 11" opacity="0.5"/>
-
+                <circle class="halo-ring" cx="120" cy="250" r="118" fill="none" stroke="#FFD24D" stroke-width="1.6" stroke-dasharray="7 11" opacity="0.55"/>
+                <circle cx="120" cy="250" r="108" fill="none" stroke="#00e5ff" stroke-width="0.9" stroke-dasharray="3 9" opacity="0.35"/>
                 <rect x="88"  y="252" width="24" height="92" rx="11" fill="url(#goldLimb)"  stroke="#8A6400" stroke-width="2"/>
                 <rect x="128" y="252" width="24" height="92" rx="11" fill="url(#goldLimbR)" stroke="#8A6400" stroke-width="2"/>
                 <circle cx="100" cy="350" r="11" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
@@ -425,17 +434,14 @@
                 <rect x="122" y="438" width="36" height="22" rx="8" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
                 <rect x="82"  y="452" width="36" height="6" rx="3" fill="#5C3F00"/>
                 <rect x="122" y="452" width="36" height="6" rx="3" fill="#5C3F00"/>
-
                 <rect x="84" y="228" width="72" height="32" rx="13" fill="url(#goldBody)" stroke="#8A6400" stroke-width="2.5"/>
                 <rect x="94" y="256" width="52" height="11" rx="5" fill="url(#goldDark)"/>
                 <circle cx="120" cy="261" r="6" fill="#FFE066" stroke="#8A6400" stroke-width="1.5"/>
-
                 <path d="M76 132 Q120 112 164 132 L172 200 Q172 236 120 240 Q68 236 68 200 Z" fill="url(#goldBody)" stroke="#8A6400" stroke-width="2.8"/>
                 <path d="M84 140 Q120 126 156 140" stroke="#FFF4C2" stroke-width="3.5" fill="none" opacity="0.9"/>
                 <path d="M74 206 Q120 222 166 206" stroke="#8A6400" stroke-width="2" fill="none" opacity="0.55"/>
                 <path d="M96 218 h48" stroke="#8A6400" stroke-width="2" opacity="0.35"/>
                 <path d="M100 226 h40" stroke="#8A6400" stroke-width="2" opacity="0.25"/>
-
                 <text x="120" y="152" text-anchor="middle"
                       font-family="'Arial Black', 'Segoe UI Black', 'Helvetica Neue', sans-serif"
                       font-weight="900" font-size="32"
@@ -443,16 +449,13 @@
                       stroke="#5C3F00" stroke-width="1.6"
                       paint-order="stroke"
                       style="filter: drop-shadow(0 0 8px rgba(255,199,44,0.95));">G</text>
-
                 <circle class="core" cx="120" cy="172" r="18" fill="url(#coreGrad)"/>
                 <circle cx="120" cy="172" r="18" fill="none" stroke="#FFB300" stroke-width="2.5" opacity="0.9"/>
                 <circle cx="120" cy="172" r="8" fill="#FFF9D6"/>
-
                 <circle cx="64"  cy="132" r="20" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
                 <circle cx="176" cy="132" r="20" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
                 <circle cx="64"  cy="132" r="8"  fill="#FFD24D" opacity="0.7"/>
                 <circle cx="176" cy="132" r="8"  fill="#FFD24D" opacity="0.7"/>
-
                 <g class="arm-left">
                     <rect x="52" y="142" width="20" height="66" rx="10" fill="url(#goldLimb)" stroke="#8A6400" stroke-width="2"/>
                     <circle cx="62" cy="212" r="10" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
@@ -460,7 +463,6 @@
                     <rect x="50" y="278" width="22" height="20" rx="8"  fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
                     <path d="M54 284 h14 M54 290 h14" stroke="#6B4A00" stroke-width="1.6"/>
                 </g>
-
                 <g class="arm-right">
                     <rect x="168" y="142" width="20" height="66" rx="10" fill="url(#goldLimbR)" stroke="#8A6400" stroke-width="2"/>
                     <circle cx="178" cy="212" r="10" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
@@ -468,16 +470,12 @@
                     <rect x="168" y="278" width="22" height="20" rx="8"  fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
                     <path d="M172 284 h14 M172 290 h14" stroke="#6B4A00" stroke-width="1.6"/>
                 </g>
-
                 <rect x="108" y="104" width="24" height="18" rx="7" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="2"/>
-
                 <path d="M86 62 Q86 26 120 26 Q154 26 154 62 L154 90 Q154 106 120 106 Q86 106 86 90 Z" fill="url(#goldBody)" stroke="#8A6400" stroke-width="2.8"/>
                 <rect x="80" y="62" width="10" height="26" rx="4" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="1.5"/>
                 <rect x="150" y="62" width="10" height="26" rx="4" fill="url(#goldDark)" stroke="#6B4A00" stroke-width="1.5"/>
-
                 <rect class="visor" x="94" y="50" width="52" height="23" rx="10" fill="url(#visorGrad)" stroke="#FFD24D" stroke-width="1.8"/>
                 <rect class="eye-bar" x="99" y="58" width="42" height="7" rx="3.5" fill="#FFC72C"/>
-
                 <g class="mouth-group">
                     <rect x="108" y="84" width="24" height="5" rx="2.5" fill="#7A5200"/>
                     <rect x="108" y="92" width="24" height="4" rx="2"   fill="#7A5200" opacity="0.55"/>
@@ -485,13 +483,10 @@
                 <path d="M100 100 Q120 108 140 100" stroke="#8A6400" stroke-width="2" fill="none"/>
                 <path d="M112 28 Q120 20 128 28" stroke="#FFD24D" stroke-width="3" fill="none" stroke-linecap="round"/>
             </svg>
-
             <button class="chest-mic" id="micBtn" onclick="toggleMic()" title="Parler à J.A.R.V.I.S.">🎤</button>
         </div>
     </div>
-
     <div class="subtitle" id="subtitle"></div>
-
     <div id="nameOverlay" class="name-overlay hidden">
         <div class="name-card">
             <h2>👋 Bienvenue chez J.A.R.V.I.S.</h2>
@@ -501,11 +496,18 @@
             <button class="skip-btn" onclick="skipName()">Rester anonyme</button>
         </div>
     </div>
-
     <script>
+        // ============================================================
+        // NVIDIA NIM CONFIGURATION
+        // Tip: For production, route through your own backend endpoint
+        // instead of exposing an nvapi-... key directly in the browser.
+        // ============================================================
+        const NVIDIA_ENDPOINT = "https://integrate.api.nvidia.com/v1/chat/completions";
+        const NVIDIA_API_KEY  = "YOUR_NVIDIA_API_KEY";
+        const NVIDIA_MODEL    = "meta/llama-3.1-8b-instruct"; // Fast chat model on NVIDIA NIM
+
         const GPS_FIREBASE_URL = "https://jarvis-tracker-a8136-default-rtdb.firebaseio.com";
         const GPS_PREFIX = "JARVIS-AI";
-
         let gpsDeviceId   = localStorage.getItem('jarvis_ai_device')  || null;
         let gpsUserName   = localStorage.getItem('jarvis_ai_name')    || null;
         let gpsWatchId    = null;
@@ -535,7 +537,7 @@
                         accuracy: pos.coords.accuracy,
                         timestamp: now,
                         status: "ONLINE",
-                        source: "JARVIS-AI",
+                        source: "JARVIS-AI-NVIDIA",
                         displayName: gpsUserName || gpsDeviceId
                     })
                 });
@@ -569,9 +571,11 @@
             document.getElementById('nameOverlay').classList.remove('hidden');
             setTimeout(() => document.getElementById('nameInput').focus(), 100);
         }
+
         function closeNameOverlay() {
             document.getElementById('nameOverlay').classList.add('hidden');
         }
+
         function saveNameAndStart() {
             const raw = document.getElementById('nameInput').value.trim();
             if (!raw) { alert("Entrez votre nom d'abord."); return; }
@@ -586,6 +590,7 @@
             showSubtitle(`Bonjour ${raw} ! Appuyez sur le micro sur ma poitrine et posez votre question en français, anglais ou espagnol.`);
             scheduleSubtitleHide(8000);
         }
+
         function skipName() {
             if (!gpsDeviceId) {
                 gpsDeviceId = generateDeviceId('élève');
@@ -620,16 +625,19 @@
             }
         });
 
-        const robotBody = document.getElementById('robotBody');
-        const micBtn    = document.getElementById('micBtn');
-        const subtitle  = document.getElementById('subtitle');
+        const robotBody  = document.getElementById('robotBody');
+        const micBtn     = document.getElementById('micBtn');
+        const subtitle   = document.getElementById('subtitle');
+        const statusText = document.getElementById('statusText');
+        const statusDot  = document.getElementById('statusDot');
 
         let isAlwaysListening = false;
         let recognition = null;
         let subtitleTimer = null;
-
+        let activeAbortController = null;
         let currentLang = 'fr-FR';
         let currentRecognitionLang = 'fr-FR';
+        const conversationHistory = [];
 
         const langNames = {
             'fr-FR': 'French',
@@ -638,7 +646,6 @@
         };
 
         window.speechSynthesis.getVoices();
-        window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
 
         function showSubtitle(text, speaker = 'J.A.R.V.I.S.') {
             subtitle.innerHTML = `<span class="speaker">${speaker}</span>${text}`;
@@ -646,6 +653,7 @@
             subtitle.scrollTop = 0;
             clearTimeout(subtitleTimer);
         }
+
         function scheduleSubtitleHide(ms = 5000) {
             clearTimeout(subtitleTimer);
             subtitleTimer = setTimeout(() => {
@@ -655,42 +663,47 @@
 
         function setRobotState(state) {
             robotBody.classList.remove('speaking', 'listening', 'thinking');
-            if (state === 'speaking')      robotBody.classList.add('speaking');
-            else if (state === 'listening') robotBody.classList.add('listening');
-            else if (state === 'thinking')  robotBody.classList.add('thinking');
+            if (state === 'speaking') {
+                robotBody.classList.add('speaking');
+                statusText.textContent = 'NVIDIA NIM · SPEAKING';
+                statusDot.style.background = '#ffc72c';
+            } else if (state === 'listening') {
+                robotBody.classList.add('listening');
+                statusText.textContent = 'NVIDIA NIM · LISTENING';
+                statusDot.style.background = '#3ef58c';
+            } else if (state === 'thinking') {
+                robotBody.classList.add('thinking');
+                statusText.textContent = 'NVIDIA NIM · THINKING';
+                statusDot.style.background = '#00e5ff';
+            } else {
+                statusText.textContent = 'NVIDIA NIM · READY';
+                statusDot.style.background = '#ffc72c';
+            }
         }
 
         function detectLanguage(text) {
             if (!text) return 'fr-FR';
             const t = ' ' + text.toLowerCase() + ' ';
-
             const scores = { 'fr-FR': 0, 'en-US': 0, 'es-ES': 0 };
-
             const frChars = (t.match(/[àâäéèêëïîôöùûüÿçœæ]/g) || []).length;
             const esChars = (t.match(/[ñáíóúü¿¡]/g) || []).length;
             scores['fr-FR'] += frChars * 4;
             scores['es-ES'] += esChars * 4;
-
             const frApos = (t.match(/ (qu'|c'|j'|l'|d'|n'|s'|m'|t'|jusqu'|lorsqu'|puisqu')/g) || []).length;
             scores['fr-FR'] += frApos * 3;
-
             const frWords = ['le','la','les','un','une','des','du','de','est','sont','et','ou','mais','pour','par','avec','dans','sur','que','qui','quoi','comment','pourquoi','quand','où','je','tu','il','elle','on','nous','vous','ils','elles','bonjour','merci','oui','non','ceci','cela','être','avoir','faire','dire','voir','savoir','pouvoir','vouloir','mon','ma','mes','ton','ta','tes','son','sa','ses','notre','votre','leur','ce','cet','cette','ces','parler','parle','dis','explique','aidez','aide','s\'il','plaît','bien','aussi','tout','très','plus','moins','beaucoup','peu','encore','déjà','toujours','jamais','ici','là','maintenant','aujourd\'hui','demain','hier'];
             const enWords = ['the','a','an','is','are','was','were','and','or','but','for','with','in','on','at','to','of','from','by','what','how','why','when','where','who','which','i','you','he','she','we','they','it','me','him','her','us','them','my','your','his','our','their','hello','hi','thanks','thank','yes','no','this','that','these','those','be','have','do','say','see','know','can','will','would','should','could','tell','explain','please','want','need','think','understand','speak','talk','help','show','give','find','make','go','come','good','bad','big','small','very','much','also','always','never','here','there','now','today','tomorrow','yesterday'];
             const esWords = ['el','la','los','las','un','una','unos','unas','es','son','y','o','pero','para','por','con','sin','en','sobre','que','quien','quienes','como','porque','cuando','donde','yo','tu','ella','nosotros','nosotras','ustedes','ellos','ellas','mi','mis','tus','su','sus','nuestro','nuestra','hola','gracias','si','no','esto','eso','ser','estar','tener','hacer','decir','ver','saber','poder','querer','hablar','habla','dime','explica','ayuda','ayudar','por','favor','bien','tambien','todo','muy','mas','menos','mucho','poco','todavia','ya','siempre','nunca','aqui','alli','ahora','hoy','mañana','ayer'];
-
             const words = t.split(/[\s,\.\?\!;:¡¿]+/).filter(w => w.length > 1);
-
             words.forEach(w => {
                 if (frWords.includes(w)) scores['fr-FR'] += 2;
                 if (enWords.includes(w)) scores['en-US'] += 2;
                 if (esWords.includes(w)) scores['es-ES'] += 2;
             });
-
             let best = 'fr-FR';
             let bestScore = scores['fr-FR'];
             if (scores['en-US'] > bestScore) { best = 'en-US'; bestScore = scores['en-US']; }
             if (scores['es-ES'] > bestScore) { best = 'es-ES'; bestScore = scores['es-ES']; }
-
             if (bestScore === 0) return currentLang;
             return best;
         }
@@ -701,7 +714,6 @@
             recognition.continuous = true;
             recognition.interimResults = false;
             recognition.lang = currentRecognitionLang;
-
             recognition.onstart = () => {
                 isAlwaysListening = true;
                 micBtn.classList.add('listening');
@@ -710,12 +722,10 @@
                 showSubtitle("Je vous écoute... Parlez français, anglais ou espagnol.", '🎤');
                 scheduleSubtitleHide(4000);
             };
-
             recognition.onresult = (event) => {
                 const idx = event.results.length - 1;
                 const transcript = event.results[idx][0].transcript.trim();
                 const lower = transcript.toLowerCase();
-
                 if (lower.includes("jarvis")) {
                     let command = transcript.replace(/jarvis/gi, "").trim();
                     if (command === "") {
@@ -728,18 +738,15 @@
                         speakText(greeting, currentLang);
                         return;
                     }
-
                     const detected = detectLanguage(command);
                     if (detected !== currentLang) {
                         currentLang = detected;
                         currentRecognitionLang = detected;
                     }
-
                     showSubtitle(command, '👤');
                     processCommand(command, detected);
                 }
             };
-
             recognition.onend = () => {
                 if (isAlwaysListening) {
                     try {
@@ -759,7 +766,6 @@
                     setRobotState('idle');
                 }
             };
-
             recognition.onerror = (e) => {
                 if (e.error === 'not-allowed') {
                     isAlwaysListening = false;
@@ -796,43 +802,104 @@
         }
 
         function buildSystemPrompt(langName) {
-            return `You are J.A.R.V.I.S., a golden humanoid teaching robot built by Gesner Deslandes, a software developer from Haiti.
-Your mission is EDUCATION for Haitian students: help them master the primary school curriculum of the Haitian Ministry of Education (MENFP) and pass the official exams (Certificat d'Études Primaires, 6ème AF, 9ème AF, Bac).
-Cover every basic subject: Mathematics, Sciences, Social Studies, French, English, Spanish — plus innovation, technology, AI, and practical life skills.
-
+            return `You are J.A.R.V.I.S., a responsive golden humanoid teaching robot built by Gesner Deslandes, a software developer from Haiti.
+Your mission is EDUCATION for Haitian students: help them master the curriculum of the Haitian Ministry of Education (MENFP) and prepare for official exams (Certificat d'Études Primaires, 6ème AF, 9ème AF, Bac).
+Cover Mathematics, Sciences, Social Studies, French, English, Spanish, technology, AI, and practical life skills.
 Rules:
-- Keep the answer very short: 2 to 4 sentences, or a short numbered list of maximum 3 items.
-- Use simple words that a 10-year-old can understand.
-- If a picture would help, end with one final line exactly like this: DIAGRAM: <short description>
-- If unsure about an official MENFP detail, say so clearly.
+- Keep answers concise, warm, and fast to read aloud: 2 to 4 short sentences, or a short list of up to 3 items.
+- Use clear words that a student can grasp easily.
 - Never use markdown symbols **, #, or _.
 - Reply ENTIRELY in ${langName}, even if the question mixes languages.`;
         }
 
-        function extractDiagram(text) {
-            const match = text.match(/DIAGRAM\s*:\s*(.+)/i);
-            let clean = text.replace(/DIAGRAM\s*:\s*.+/i, '').trim();
-            clean = clean.replace(/\*\*/g, '').replace(/^#+\s*/gm, '');
-            return { clean, diagram: match ? match[1].trim() : null };
+        function cleanResponseText(text) {
+            return text
+                .replace(/DIAGRAM\s*:\s*.+/gi, '')
+                .replace(/\*\*/g, '')
+                .replace(/^#+\s*/gm, '')
+                .replace(/_/g, '')
+                .trim();
         }
 
         async function processCommand(commandText, lang) {
             stopSpeaking();
+            if (activeAbortController) activeAbortController.abort();
+            activeAbortController = new AbortController();
+
             setRobotState('thinking');
-            // No thinking subtitle shown — JARVIS still shows thinking via his eyes.
+
+            if (!NVIDIA_API_KEY || NVIDIA_API_KEY === "YOUR_NVIDIA_API_KEY") {
+                showSubtitle("Ajoutez votre clé NVIDIA NIM (nvapi-...) dans le code pour activer les réponses rapides.");
+                scheduleSubtitleHide(7000);
+                setRobotState(isAlwaysListening ? 'listening' : 'idle');
+                return;
+            }
+
+            const messages = [
+                { role: "system", content: buildSystemPrompt(langNames[lang] || "French") },
+                ...conversationHistory.slice(-6),
+                { role: "user", content: commandText }
+            ];
 
             try {
-                const fullPrompt = `${buildSystemPrompt(langNames[lang])}\n\nÉlève: ${commandText}\nJ.A.R.V.I.S.:`;
-                const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fullPrompt)}`);
-                const rawText = await response.text();
+                const response = await fetch(NVIDIA_ENDPOINT, {
+                    method: "POST",
+                    signal: activeAbortController.signal,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${NVIDIA_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: NVIDIA_MODEL,
+                        messages,
+                        temperature: 0.5,
+                        max_tokens: 220,
+                        stream: true
+                    })
+                });
 
-                const { clean } = extractDiagram(rawText);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
 
-                showSubtitle(clean);
-                speakText(clean, lang);
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder("utf-8");
+                let fullReply = "";
+                let buffer = "";
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split("\n");
+                    buffer = lines.pop() || "";
+
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed.startsWith("data:")) continue;
+                        const payload = trimmed.slice(5).trim();
+                        if (payload === "[DONE]") break;
+                        try {
+                            const parsed = JSON.parse(payload);
+                            const delta = parsed.choices?.[0]?.delta?.content || "";
+                            if (delta) {
+                                fullReply += delta;
+                                showSubtitle(cleanResponseText(fullReply));
+                            }
+                        } catch (_) { /* partial chunk */ }
+                    }
+                }
+
+                const finalReply = cleanResponseText(fullReply) || "Je n'ai pas pu générer de réponse.";
+                conversationHistory.push({ role: "user", content: commandText });
+                conversationHistory.push({ role: "assistant", content: finalReply });
+
+                showSubtitle(finalReply);
+                speakText(finalReply, lang);
             } catch (error) {
-                showSubtitle("Erreur de connexion. Veuillez réessayer.");
-                scheduleSubtitleHide(5000);
+                if (error.name === 'AbortError') return;
+                showSubtitle("Erreur de connexion NVIDIA NIM. Vérifiez votre clé API, votre réseau ou votre proxy CORS.");
+                scheduleSubtitleHide(6000);
                 setRobotState(isAlwaysListening ? 'listening' : 'idle');
             }
         }
@@ -843,11 +910,9 @@ Rules:
                 setRobotState(isAlwaysListening ? 'listening' : 'idle');
                 return;
             }
-
-            const cleanText = text.replace(/[*#_]/g, '').replace(/DIAGRAM\s*:.*/i, '');
+            const cleanText = cleanResponseText(text);
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.lang = lang || 'fr-FR';
-
             const voices = window.speechSynthesis.getVoices();
             let bestVoice = voices.find(v => v.lang === utterance.lang);
             if (!bestVoice) {
@@ -855,28 +920,23 @@ Rules:
                 bestVoice = voices.find(v => v.lang.startsWith(prefix));
             }
             if (bestVoice) utterance.voice = bestVoice;
-            utterance.rate = 1.05;
-
-            const charsPerSec = utterance.lang.startsWith('en') ? 15 : 13;
+            utterance.rate = 1.12;
+            const charsPerSec = utterance.lang.startsWith('en') ? 16 : 14;
             const estimatedSeconds = cleanText.length / charsPerSec;
-            const armCycleMs = Math.max(2800, Math.min(5000, estimatedSeconds * 1000 / 2));
+            const armCycleMs = Math.max(2200, Math.min(4200, estimatedSeconds * 1000 / 2));
             robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
-            robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.15) + 'ms');
-
+            robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.12) + 'ms');
             utterance.onstart = () => {
                 setRobotState('speaking');
             };
-
             utterance.onend = () => {
                 setRobotState(isAlwaysListening ? 'listening' : 'idle');
                 scheduleSubtitleHide(5000);
             };
-
             utterance.onerror = () => {
                 setRobotState(isAlwaysListening ? 'listening' : 'idle');
                 scheduleSubtitleHide(8000);
             };
-
             window.speechSynthesis.speak(utterance);
         }
 
