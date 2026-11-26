@@ -480,7 +480,7 @@
         </div>
         <div class="owner-card">
             <strong>Gesner Deslandes</strong>
-            Software Developer · Haïti
+            Software Architect & AI Solutions Engineer · Haïti
             <br><span class="edu-pill">🎓 SCHOLAR & ÉDUCATION</span>
             <a href="tel:+50947385663">📞 (509)-47385663</a>
             <a href="mailto:deslandes78@gmail.com">✉️ deslandes78@gmail.com</a>
@@ -609,13 +609,158 @@
         const JARVIS_DATABASE = {
             assistantName: "Jarvis",
             fullTitle: "J.A.R.V.I.S.",
+
+            // --------------------------------------------------------
+            // OWNER PROFILE — Full CV of Gesner Deslandes
+            // --------------------------------------------------------
+            ownerProfile: {
+                name: "Gesner Deslandes",
+                title: "Software Architect & AI Solutions Engineer",
+                location: "Haiti",
+                phone: "+509 4738 5663",
+                email: "deslandes78@gmail.com",
+                website: "https://deslandes1.github.io/Let-s-Play-with-Jarvis/",
+                summary: "Results-driven Senior Software Architect and Technology Coordinator with 4+ years of experience designing, building, and deploying 37 custom enterprise and AI applications for global clients. Specialized in full-cycle product engineering, Python ecosystem, Streamlit engineering, LLM integration (Groq Llama 3.1), autonomous agent logic, and distributed real-time data pipelines. Complemented by over a decade of NGO fleet management, field logistics, and bilingual technical operations leadership. Fluent in English, French, Spanish, and Haitian Creole.",
+                competencies: {
+                    systemArchitecture: "Distributed real-time data pipelines, high-throughput observability platforms, microservices & REST API design.",
+                    aiMl: "LLM integration (Groq Llama 3.1), prompt engineering, anomaly detection, autonomous agent logic, predictive insights.",
+                    fullStack: "Python, Streamlit, Pandas, Plotly, Flask, FastAPI, asynchronous REST APIs.",
+                    cloudDevOps: "Streamlit Cloud infrastructure, GitHub version control & Codespaces, secrets management, CI/CD pipelines.",
+                    logisticsIT: "NGO field logistics, asset allocation, vehicle fleet routing, hardware availability matrices, IT infrastructure.",
+                    multilingual: "Cross-border UI/UX adaptation, internationalization, AI audio synthesis (edge-tts), medical and legal interpretation."
+                },
+                projects: [
+                    {
+                        name: "System Health AI Monitor",
+                        role: "Architect & Creator",
+                        url: "https://system-health-ai-monitor-important-9bemdyosmbfmtx4t8wygbv.streamlit.app/",
+                        description: "An enterprise-grade observability platform that simulates mission-critical server metrics, detects systemic anomalies, and generates AI-driven predictive insights via Groq Llama 3.1. Engineered a multilingual user interface (English, French, Spanish) along with synchronized AI vocal diagnostics leveraging edge-tts."
+                    },
+                    {
+                        name: "SafeHaven – Anti-Trafficking AI",
+                        role: "Lead Developer",
+                        url: "https://call-for-code-ai-global-challenge-2026-jimupcwzzyntghxdwxpbg9.streamlit.app/",
+                        description: "An AI-powered early warning intelligence system that processes user-submitted risk environments, flags human trafficking indicators, and handles anonymous data routing. Leveraged Groq LLM backends to generate granular risk matrices and automated situational action plans."
+                    },
+                    {
+                        name: "Hospital Management System",
+                        role: "Full-Stack Developer",
+                        url: "https://hospital-management-system-software-built-by-gesner-deslandes.streamlit.app/",
+                        description: "An all-in-one hospital management suite spanning modern patient intake, EMR logs, dynamic ledger billing, pharmacy tracking, and an integrated AI diagnostic core. Configured real-time system alerts and dynamic multilingual translation layers."
+                    }
+                ],
+                experience: [
+                    {
+                        company: "GlobalInternet.py",
+                        role: "Founder & Engineer-in-Chief",
+                        period: "2021 – Present",
+                        details: "Formulated and delivered 37 advanced Python applications ranging from biometric voting engines and custom business intelligence suites to interactive autonomous vehicle simulators. Directed all high-level operational phases: strategic architecture design, agile product coding, client discovery, and secure cloud system deployment. Maintained a production tech stack focused on Streamlit framework mastery, real-time data streaming, and deep API integrations (Groq, edge-tts)."
+                    },
+                    {
+                        company: "Be Like Brit Orphanage",
+                        role: "Technology Coordinator",
+                        period: "2021 – Present",
+                        details: "Supervise core IT infrastructure, cloud connectivity protocols, security firewalls, and hardware availability matrices for over 50 power users. Independently manage full-system troubleshooting and hardware asset management under dynamic infrastructure profiles. Instructed students across multiple grade levels in English language proficiency, digital literacy, and basic computer science."
+                    },
+                    {
+                        company: "J/P Haitian Relief Organization & CAN-DO",
+                        role: "Fleet Manager & Medical Interpreter",
+                        period: "Prior Years",
+                        details: "Coordinated complex fleet operations, vehicle maintenance schedules, fuel allocation, and logistics support for large-scale humanitarian emergency response teams. Provided accurate high-stakes medical and administrative interpretation between English-speaking medical staff, local personnel, and beneficiaries."
+                    }
+                ],
+                education: [
+                    "Senior-Level Software Architecture Portfolio (Continuous Practical Research)",
+                    "Vocational Training Certification – Advanced American English & Technical Communication",
+                    "Office Computing Specialist Certification",
+                    "High School Graduate"
+                ],
+                languages: [
+                    { language: "English", level: "Professional working proficiency (Full fluency)" },
+                    { language: "French", level: "Professional working proficiency" },
+                    { language: "Spanish", level: "Conversational proficiency" },
+                    { language: "Haitian Creole", level: "Native" }
+                ],
+                references: [
+                    { name: "Teresa Lang Ehlert", contact: "tbtrekkin@gmail.com" },
+                    { name: "Charles Zerr MD", contact: "+1 620 952 0074" }
+                ]
+            },
+
+            // --------------------------------------------------------
+            // OWNER Q&A — direct answers about Gesner Deslandes
+            // --------------------------------------------------------
+            ownerQuestions: [
+                {
+                    id: 'owner-who',
+                    match: /\b(who (is|was) (gesner|deslandes)|who (is|was) your (owner|creator|developer)|who (made|created|built|owns|developed) you|tell me about (gesner|deslandes|your (owner|creator|developer))|introduce (gesner|deslandes|your owner)|qui est (gesner|deslandes)|qui t'a (créé|creer|fait|développé|developper)|présente[- ]moi (gesner|deslandes|ton (créateur|createur|propriétaire|proprietaire)))\b/i,
+                    en: "Gesner Deslandes is a Software Architect and AI Solutions Engineer from Haiti. He is the founder of GlobalInternet.py and the creator of J.A.R.V.I.S. With 4+ years of experience, he has designed, built, and deployed 37 custom enterprise and AI applications for global clients, specializing in Python, Streamlit, LLM integration (Groq Llama 3.1), autonomous agent logic, and distributed real-time data pipelines. He is also a Technology Coordinator at Be Like Brit Orphanage and previously served as a Fleet Manager and Medical Interpreter for humanitarian organizations.",
+                    fr: "Gesner Deslandes est un architecte logiciel et ingénieur en solutions IA originaire d'Haïti. Il est le fondateur de GlobalInternet.py et le créateur de J.A.R.V.I.S. Avec plus de 4 ans d'expérience, il a conçu, développé et déployé 37 applications d'entreprise et d'IA pour des clients mondiaux, spécialisé en Python, Streamlit, intégration de LLM (Groq Llama 3.1), logique d'agents autonomes et pipelines de données en temps réel. Il est également coordinateur technologique à Be Like Brit Orphanage et a précédemment été gestionnaire de flotte et interprète médical pour des organisations humanitaires."
+                },
+                {
+                    id: 'owner-contact',
+                    match: /\b(contact (info|information|details)?|how (can|do) i (contact|reach) (him|gesner|deslandes)|phone number|email address|numéro de téléphone|adresse email|coordonnées)\b/i,
+                    en: "You can reach Gesner Deslandes by phone at +509 4738 5663 or by email at deslandes78@gmail.com. He is based in Haiti. You can also explore more of his projects at https://deslandes1.github.io/Let-s-Play-with-Jarvis/",
+                    fr: "Vous pouvez contacter Gesner Deslandes par téléphone au +509 4738 5663 ou par email à deslandes78@gmail.com. Il est basé en Haïti. Vous pouvez également explorer ses projets sur https://deslandes1.github.io/Let-s-Play-with-Jarvis/"
+                },
+                {
+                    id: 'owner-skills',
+                    match: /\b(what (are|is) (his|gesner'?s|deslandes'?) (skills|competencies|expertise|specialt|tech stack)|what (does|can) (he|gesner|deslandes) do|his (skills|competencies|expertise)|quelles sont (ses|les) compétences|son expertise|sa spécialité)\b/i,
+                    en: "Gesner Deslandes specializes in System Architecture (distributed real-time data pipelines, high-throughput observability platforms, microservices & REST API design), AI & Machine Learning (LLM integration with Groq Llama 3.1, prompt engineering, anomaly detection, autonomous agent logic, predictive insights), Full-Stack Development (Python, Streamlit, Pandas, Plotly, Flask, FastAPI, asynchronous REST APIs), Cloud & DevOps (Streamlit Cloud, GitHub, CI/CD pipelines), Logistics & IT Coordination (NGO field logistics, asset allocation, vehicle fleet routing, IT infrastructure), and Multilingual Solutions (cross-border UI/UX, internationalization, AI audio synthesis with edge-tts, medical and legal interpretation).",
+                    fr: "Gesner Deslandes est spécialisé en architecture système (pipelines de données en temps réel, plateformes d'observabilité à haut débit, microservices et API REST), IA et apprentissage automatique (intégration de LLM avec Groq Llama 3.1, ingénierie de prompts, détection d'anomalies, logique d'agents autonomes, insights prédictifs), développement full-stack (Python, Streamlit, Pandas, Plotly, Flask, FastAPI, API REST asynchrones), cloud et DevOps (Streamlit Cloud, GitHub, pipelines CI/CD), coordination logistique et IT (logistique terrain ONG, allocation d'actifs, routage de flottes, infrastructure IT) et solutions multilingues (UI/UX transfrontalière, internationalisation, synthèse audio IA avec edge-tts, interprétation médicale et juridique)."
+                },
+                {
+                    id: 'owner-projects',
+                    match: /\b(what (projects|apps|applications) (has|did) (he|gesner|deslandes) (built|created|developed|made)|his (projects|apps|applications)|quels (projets|applications) a[- ]t[- ]il (créés|crees|développés|developpes|faits)|ses (projets|applications))\b/i,
+                    en: "Gesner Deslandes has built 37 custom enterprise and AI applications. His key projects include: (1) System Health AI Monitor — an enterprise-grade observability platform that simulates mission-critical server metrics, detects anomalies, and generates AI-driven predictive insights via Groq Llama 3.1, with multilingual UI and AI vocal diagnostics using edge-tts; (2) SafeHaven – Anti-Trafficking AI — an AI-powered early warning intelligence system that processes risk environments, flags human trafficking indicators, and generates risk matrices and automated action plans using Groq LLM backends; (3) Hospital Management System — an all-in-one suite spanning patient intake, EMR logs, dynamic ledger billing, pharmacy tracking, and an integrated AI diagnostic core with real-time alerts and multilingual translation layers.",
+                    fr: "Gesner Deslandes a créé 37 applications d'entreprise et d'IA. Ses projets phares incluent : (1) System Health AI Monitor — une plateforme d'observabilité d'entreprise qui simule des métriques serveur critiques, détecte les anomalies et génère des insights prédictifs via Groq Llama 3.1, avec interface multilingue et diagnostics vocaux IA via edge-tts ; (2) SafeHaven – Anti-Trafficking AI — un système d'alerte précoce qui traite les environnements à risque, signale les indicateurs de traite humaine et génère des matrices de risque et des plans d'action automatisés via Groq LLM ; (3) Hospital Management System — une suite tout-en-un couvrant l'admission des patients, les dossiers EMR, la facturation dynamique, le suivi pharmacie et un noyau de diagnostic IA intégré avec alertes en temps réel et couches de traduction multilingues."
+                },
+                {
+                    id: 'owner-experience',
+                    match: /\b(what (is|was) (his|gesner'?s|deslandes'?) (experience|work experience|career|professional background)|where (has|does) (he|gesner|deslandes) work|his (experience|career)|son expérience|son parcours professionnel|où travaille[- ]t[- ]il)\b/i,
+                    en: "Gesner Deslandes has three main professional roles: (1) Founder & Engineer-in-Chief at GlobalInternet.py (2021–Present) — delivered 37 advanced Python applications, directed strategic architecture, agile coding, client discovery, and secure cloud deployment, with a production stack focused on Streamlit, real-time data streaming, and deep API integrations (Groq, edge-tts); (2) Technology Coordinator at Be Like Brit Orphanage (2021–Present) — supervises IT infrastructure, cloud connectivity, security firewalls, and hardware matrices for over 50 power users, manages troubleshooting and asset management, and teaches English, digital literacy, and basic computer science; (3) Fleet Manager & Medical Interpreter at J/P Haitian Relief Organization & CAN-DO (Prior Years) — coordinated fleet operations, maintenance, fuel allocation, and logistics for humanitarian emergency response teams, and provided high-stakes medical and administrative interpretation between English-speaking medical staff and local personnel.",
+                    fr: "Gesner Deslandes a trois rôles professionnels principaux : (1) Fondateur et ingénieur en chef chez GlobalInternet.py (2021–présent) — 37 applications Python avancées livrées, direction de l'architecture stratégique, codage agile, découverte client et déploiement cloud sécurisé, avec une stack de production axée sur Streamlit, le streaming de données en temps réel et les intégrations API profondes (Groq, edge-tts) ; (2) Coordinateur technologique à Be Like Brit Orphanage (2021–présent) — supervise l'infrastructure IT, la connectivité cloud, les pare-feux et les matrices matérielles pour plus de 50 utilisateurs, gère le dépannage et la gestion des actifs, et enseigne l'anglais, la littératie numérique et l'informatique de base ; (3) Gestionnaire de flotte et interprète médical à J/P Haitian Relief Organization & CAN-DO (années antérieures) — coordination des opérations de flotte, maintenance, allocation de carburant et logistique pour les équipes d'urgence humanitaire, et interprétation médicale et administrative à enjeux élevés entre le personnel médical anglophone et le personnel local."
+                },
+                {
+                    id: 'owner-education',
+                    match: /\b(what (is|was) (his|gesner'?s|deslandes'?) (education|degree|diploma|certification|qualification)|where (did|does) (he|gesner|deslandes) (study|learn)|his (education|degree|diploma|certification)|sa formation|ses diplômes|ses certifications|où a[- ]t[- ]il étudié)\b/i,
+                    en: "Gesner Deslandes's education and certifications include: Senior-Level Software Architecture Portfolio (Continuous Practical Research), Vocational Training Certification in Advanced American English & Technical Communication, Office Computing Specialist Certification, and High School Graduate.",
+                    fr: "La formation et les certifications de Gesner Deslandes incluent : un portfolio d'architecture logicielle de niveau senior (recherche pratique continue), une certification de formation professionnelle en anglais américain avancé et communication technique, une certification de spécialiste en bureautique, et le diplôme d'études secondaires."
+                },
+                {
+                    id: 'owner-languages',
+                    match: /\b(what languages (does|can) (he|gesner|deslandes) speak|his languages|is (he|gesner|deslandes) (bilingual|multilingual)|quelles langues parle[- ]t[- ]il|ses langues|est[- ]il (bilingue|multilingue))\b/i,
+                    en: "Gesner Deslandes is fluent in four languages: English (professional working proficiency, full fluency), French (professional working proficiency), Spanish (conversational proficiency), and Haitian Creole (native).",
+                    fr: "Gesner Deslandes parle couramment quatre langues : l'anglais (maîtrise professionnelle, fluidité complète), le français (maîtrise professionnelle), l'espagnol (niveau conversationnel) et le créole haïtien (langue maternelle)."
+                },
+                {
+                    id: 'owner-references',
+                    match: /\b(who (are|is) (his|gesner'?s|deslandes'?) (references|referees)|his references|références|qui sont ses références)\b/i,
+                    en: "Gesner Deslandes's references are: Teresa Lang Ehlert (tbtrekkin@gmail.com) and Charles Zerr MD (+1 620 952 0074).",
+                    fr: "Les références de Gesner Deslandes sont : Teresa Lang Ehlert (tbtrekkin@gmail.com) et Charles Zerr MD (+1 620 952 0074)."
+                },
+                {
+                    id: 'owner-location',
+                    match: /\b(where (is|does) (he|gesner|deslandes) (from|live|based)|his (location|country)|où (est|vit|habite)[- ]t[- ]il|son pays|sa localisation)\b/i,
+                    en: "Gesner Deslandes is from and based in Haiti.",
+                    fr: "Gesner Deslandes est originaire et basé en Haïti."
+                },
+                {
+                    id: 'owner-ai-work',
+                    match: /\b(what (does|did) (he|gesner|deslandes) (do|work on) (with|in) (ai|artificial intelligence)|his (ai|artificial intelligence) (work|projects|experience)|son travail (en|sur l')ia|ses projets (en|d')ia)\b/i,
+                    en: "Gesner Deslandes works extensively with AI: he integrates LLMs (Groq Llama 3.1), engineers prompts, builds anomaly detection systems, designs autonomous agent logic, and generates predictive insights. His AI projects include System Health AI Monitor (AI-driven predictive diagnostics), SafeHaven – Anti-Trafficking AI (risk matrices and automated action plans via Groq LLM), and Hospital Management System (integrated AI diagnostic core). He also uses AI audio synthesis (edge-tts) for multilingual vocal diagnostics.",
+                    fr: "Gesner Deslandes travaille intensivement avec l'IA : il intègre des LLM (Groq Llama 3.1), conçoit des prompts, construit des systèmes de détection d'anomalies, conçoit la logique d'agents autonomes et génère des insights prédictifs. Ses projets IA incluent System Health AI Monitor (diagnostics prédictifs par IA), SafeHaven – Anti-Trafficking AI (matrices de risque et plans d'action automatisés via Groq LLM) et Hospital Management System (noyau de diagnostic IA intégré). Il utilise également la synthèse audio IA (edge-tts) pour des diagnostics vocaux multilingues."
+                }
+            ],
+
             owner: {
                 name: "Gesner Deslandes",
-                roleEn: "Software Developer, Educator, and Technology Coordinator from Haiti",
-                roleFr: "Développeur Logiciel, Éducateur et Coordinateur Technologique d'Haïti",
-                phone: "(509)-47385663",
+                roleEn: "Software Architect & AI Solutions Engineer from Haiti",
+                roleFr: "Architecte Logiciel & Ingénieur en Solutions IA d'Haïti",
+                phone: "+509 4738 5663",
                 email: "deslandes78@gmail.com"
             },
+
             coreQuestions: [
                 {
                     id: 'gen-agent-humanoid',
@@ -1076,7 +1221,8 @@
                 'their','hello','hi','hey','thanks','thank','yes','no','please','tell','explain','show','find',
                 'speak','talk','teach','learn','english','french','today','date','time','now','good','great','more',
                 'owner','creator','president','short','long','detail','briefly','listen','carefully','before','answer',
-                'math','physics','chemistry','chimistry','biology','student','students','homework','study','humanoid','agentic','generative','name'
+                'math','physics','chemistry','chimistry','biology','student','students','homework','study','humanoid','agentic','generative','name',
+                'gesner','deslandes','resume','cv','profile','skills','projects','experience','education','languages','references','contact'
             ]);
             const frWords = new Set([
                 'qui','quoi','que','quel','quelle','quels','quelles','comment','pourquoi','quand','où','est','sont',
@@ -1087,7 +1233,8 @@
                 'sil','plaît','plait','dis','explique','parle','parler','enseigne','apprendre','français','francais',
                 'anglais','aujourd','hui','date','heure','aide','aidez','créateur','createur','propriétaire','proprietaire',
                 'président','president','court','long','détail','detail','bref','écoute','ecoute','attentivement','avant',
-                'répondre','repondre','mathématiques','mathematiques','physique','chimie','biologie','élève','étudiant','nom'
+                'répondre','repondre','mathématiques','mathematiques','physique','chimie','biologie','élève','étudiant','nom',
+                'gesner','deslandes','cv','compétences','projets','expérience','formation','langues','références','contact'
             ]);
             const tokens = raw.split(/[^a-zàâäéèêëîïôöùûüçœæ']+/).filter(Boolean);
             for (const word of tokens) {
@@ -1383,7 +1530,15 @@
                     : `Je m'appelle Jarvis, ou J.A.R.V.I.S. Lorsque vous ou un autre utilisateur souhaitez me parler, dites d'abord « Jarvis » afin que je sache que vous vous adressez directement à moi et que je puisse répondre immédiatement.`;
             }
 
-            // 2. Owner / Creator / Developer / Contact database
+            // 2. OWNER QUESTIONS — Full CV knowledge base
+            for (const item of JARVIS_DATABASE.ownerQuestions) {
+                if (item.match.test(lower)) {
+                    lastTopicDiscussed = 'Gesner Deslandes';
+                    return lang === 'en-US' ? item.en : item.fr;
+                }
+            }
+
+            // 3. Owner / Creator / Developer / Contact (fallback if ownerQuestions missed)
             const asksOwner = /\b(who (made|created|built|owns|developed) you|who is your (owner|creator|developer)|your owner|your creator|contact info|phone number|email address|qui t'a (créé|creer|fait|développé|developper)|ton (créateur|createur|propriétaire|proprietaire|développeur|developpeur)|contact de gesner|numéro de téléphone|adresse email)\b/i.test(lower);
             if (asksOwner) {
                 if (lang === 'en-US') {
@@ -1392,15 +1547,15 @@
                 return `Je m'appelle Jarvis, et j'ai été créé par ${o.name}, ${o.roleFr}. Tu peux le contacter par téléphone au ${o.phone} ou par email à ${o.email}.`;
             }
 
-            // 3. Who is Jarvis / Identity
+            // 4. Who is Jarvis / Identity
             const asksSelf = /\b(who are you|what are you|introduce yourself|tell me about yourself|qui es[- ]tu|qu'es[- ]tu|présente[- ]toi|presente[- ]toi)\b/i.test(lower);
             if (asksSelf) {
                 return lang === 'en-US'
-                    ? `I am Jarvis, a scholarly humanoid AI created by ${o.name}. Say "Jarvis" first anytime you want to talk, and I will answer your questions in English or French across science, AI, math, and world knowledge.`
-                    : `Je suis Jarvis, une intelligence artificielle humanoïde érudite créée par ${o.name}. Dites « Jarvis » en premier dès que vous voulez discuter, et je répondrai à vos questions en français ou en anglais.`;
+                    ? `I am Jarvis, a scholarly humanoid AI created by ${o.name}, a ${o.roleEn}. Say "Jarvis" first anytime you want to talk, and I will answer your questions in English or French across science, AI, math, and world knowledge—including detailed information about my creator's background, skills, projects, and experience.`
+                    : `Je suis Jarvis, une intelligence artificielle humanoïde érudite créée par ${o.name}, ${o.roleFr}. Dites « Jarvis » en premier dès que vous voulez discuter, et je répondrai à vos questions en français ou en anglais—y compris des informations détaillées sur le parcours, les compétences et les projets de mon créateur.`;
             }
 
-            // 4. Direct Core AI, Agentic AI, Ethics, Jobs, Safety, and Future Questions
+            // 5. Direct Core AI, Agentic AI, Ethics, Jobs, Safety, and Future Questions
             for (const item of JARVIS_DATABASE.coreQuestions) {
                 if (item.match.test(lower)) {
                     lastTopicDiscussed = item.topic;
@@ -1408,7 +1563,7 @@
                 }
             }
 
-            // 5. Direct Humanoid AI Topic Knowledge
+            // 6. Direct Humanoid AI Topic Knowledge
             for (const item of JARVIS_DATABASE.humanoidTopics) {
                 if (item.match.test(lower)) {
                     lastTopicDiscussed = 'Humanoid AI';
@@ -1416,7 +1571,7 @@
                 }
             }
 
-            // 5b. Direct NVIDIA product / company knowledge
+            // 7. Direct NVIDIA product / company knowledge
             if (JARVIS_DATABASE.nvidiaTopics) {
                 for (const item of JARVIS_DATABASE.nvidiaTopics) {
                     if (item.match.test(lower)) {
@@ -1426,7 +1581,7 @@
                 }
             }
 
-            // 6. Direct Office / Leadership lookups
+            // 8. Direct Office / Leadership lookups
             for (const entry of JARVIS_DATABASE.offices) {
                 if (entry.matchEn.test(lower) || entry.matchFr.test(lower)) {
                     if (lang === 'en-US') {
@@ -1436,7 +1591,7 @@
                 }
             }
 
-            // 7. Today's Date
+            // 9. Today's Date
             const asksDate = /\b(today'?s date|what('s| is) (the )?date|what day is (it|today)|quelle est la date|date d'aujourd'hui|quel jour (on est|sommes-nous|est-ce))\b/i.test(lower);
             if (asksDate) {
                 const now = new Date();
@@ -1452,7 +1607,7 @@
                 return `Aujourd'hui, nous sommes le ${formattedFr}.`;
             }
 
-            // 8. Current Time
+            // 10. Current Time
             const asksTime = /\b(what time is it|current time|quelle heure (est-il|il est)|donne l'heure)\b/i.test(lower);
             if (asksTime) {
                 const now = new Date();
@@ -1464,7 +1619,7 @@
                 return `Il est actuellement ${timeFr}.`;
             }
 
-            // 9. Arithmetic & Student Math Expressions
+            // 11. Arithmetic & Student Math Expressions
             const mathMatch = lower.match(/(-?\d+(?:\.\d+)?)\s*(\+|plus|\-|minus|moins|\*|x|times|multiplié par|multiplie par|\/|divided by|divisé par|divise par)\s*(-?\d+(?:\.\d+)?)/i);
             if (mathMatch) {
                 const a = parseFloat(mathMatch[1]);
@@ -1490,7 +1645,7 @@
                 }
             }
 
-            // 10. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
+            // 12. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
             const isGeneralSubjectRequest = /\b(help me (with|in|study)|i need help (with|in)|let's study|teach me|talk about|discuss|what is|aide[- ]moi (en|avec|pour)|j'ai besoin d'aide (en|pour)|étudions|parlons de|qu'est[- ]ce que)\b/i.test(lower);
             if (isGeneralSubjectRequest && lower.split(/\s+/).length <= 8) {
                 for (const subj of JARVIS_DATABASE.academicGuides) {
@@ -1504,7 +1659,7 @@
                 }
             }
 
-            // 11. Dedicated English & French Teaching Lessons
+            // 13. Dedicated English & French Teaching Lessons
             const asksTeachEn = /\b(teach me english|learn english|english lesson|apprends[- ]moi l'anglais|cours d'anglais)\b/i.test(lower);
             if (asksTeachEn) {
                 return lang === 'en-US'
@@ -1631,14 +1786,12 @@
             const subject = extractCoreSubject(question) || question.trim();
             const q = question.trim().toLowerCase();
 
-            // Subject-specific academic guides first
             for (const subj of JARVIS_DATABASE.academicGuides) {
                 if (subj.match.test(question)) {
                     return lang === 'en-US' ? subj.longEn : subj.longFr;
                 }
             }
 
-            // NVIDIA / known-topic recovery (in case a regex was missed)
             if (JARVIS_DATABASE.nvidiaTopics) {
                 for (const item of JARVIS_DATABASE.nvidiaTopics) {
                     if (item.match.test(question)) {
