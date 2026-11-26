@@ -764,6 +764,38 @@
                     shortFr: "La biologie étudie le monde vivant, depuis la cellule, l'ADN et la photosynthèse jusqu'à l'anatomie humaine et les écosystèmes.",
                     longFr: "La biologie examine la vie à toutes les échelles : au cœur des cellules où l'ADN dirige la synthèse des protéines, jusqu'aux organes et aux écosystèmes."
                 }
+            ],
+            nvidiaTopics: [
+                {
+                    match: /\b(geforce|rtx\s*pro|quadro|difference\s+between\s+geforce)\b/i,
+                    topic: 'GeForce vs RTX Pro',
+                    en: "GeForce cards are built for gamers and everyday users, prioritizing cost-effectiveness and gaming performance, while RTX Pro (formerly Quadro) cards target professional workflows such as 3D rendering, CAD, and scientific simulation, with larger memory buffers and ISV certifications. Choose GeForce for gaming, RTX Pro for certified professional applications.",
+                    fr: "Les cartes GeForce visent les joueurs et le grand public, en privilégiant le rapport qualité-prix et les performances de jeu, tandis que les cartes RTX Pro (ex-Quadro) ciblent les usages professionnels comme le rendu 3D, la CAO et la simulation scientifique, avec plus de mémoire et des certifications ISV. Choisissez GeForce pour le jeu, RTX Pro pour les applications professionnelles certifiées."
+                },
+                {
+                    match: /\b(is\s+nvidia'?s?\s+growth\s+sustainable|ai\s+infrastructure\s+spending|nvidia\s+growth\s+sustainable|nvidia\s+stock)\b/i,
+                    topic: "NVIDIA's growth sustainability",
+                    en: "NVIDIA management has guided to at least $1 trillion of AI infrastructure demand through 2027, and demand is broadening from hyperscalers to enterprises, sovereign AI, and edge AI, reducing reliance on a few large customers. Risks remain—cyclical capex, export controls, and competition—but the demand pipeline is wider than in prior cycles.",
+                    fr: "La direction de NVIDIA évoque au moins 1 000 milliards de dollars de demande d'infrastructure IA d'ici 2027, et la demande s'élargit des hyperscalers vers les entreprises, l'IA souveraine et l'IA en périphérie, réduisant la dépendance à quelques gros clients. Des risques subsistent—cycles d'investissement, contrôles à l'export, concurrence—mais le pipeline est plus large que lors des cycles précédents."
+                },
+                {
+                    match: /\b(rtx\s*spark|spark\s+chip|windows\s+on\s+arm\s+nvidia|local\s+ai\s+agents?\s+laptops?)\b/i,
+                    topic: 'RTX Spark chip',
+                    en: "RTX Spark is a Windows-on-Arm platform NVIDIA announced at Computex 2026, combining a Blackwell GPU, a Grace CPU, and up to 128GB of unified memory, designed to run AI agents locally on PCs. Partner laptops and compact desktops are expected in fall 2026.",
+                    fr: "RTX Spark est une plateforme Windows-on-Arm annoncée par NVIDIA au Computex 2026, combinant un GPU Blackwell, un CPU Grace et jusqu'à 128 Go de mémoire unifiée, conçue pour exécuter des agents IA localement sur PC. Des ordinateurs portables et desktops compacts partenaires sont attendus à l'automne 2026."
+                },
+                {
+                    match: /\b(what\s+is\s+dlss|how\s+much\s+does\s+dlss|dlss\s+improve)\b/i,
+                    topic: 'DLSS',
+                    en: "DLSS is NVIDIA's AI-driven image upscaling technology: the game renders at a lower resolution and AI reconstructs a higher-resolution frame, boosting frame rates. DLSS 4.5 adds ray reconstruction and multi-frame generation, letting even mid-range RTX 50-series cards hit smooth 4K high frame rates in supported games.",
+                    fr: "DLSS est la technologie de suréchantillonnage par IA de NVIDIA : le jeu est rendu à basse résolution et l'IA reconstruit une image haute résolution, augmentant les images par seconde. DLSS 4.5 ajoute la reconstruction des rayons et la génération multi-images, permettant même aux cartes RTX 50 de milieu de gamme d'atteindre un 4K fluide à haut framerate dans les jeux compatibles."
+                },
+                {
+                    match: /\b(work\s+at\s+nvidia|work-life\s+balance\s+(at\s+)?nvidia|nvidia\s+work\s+culture|nvidia\s+employee)\b/i,
+                    topic: 'Working at NVIDIA',
+                    en: "Employee reviews are mixed: compensation and benefits are excellent and the technology is cutting-edge, but work intensity is high—some roles require frequent overtime and weekend work. The overall rating is about 4.2/5, with work-life balance scoring relatively lower; teams closest to product launches and AI infrastructure tend to hit the edge cases where long hours become the norm.",
+                    fr: "Les avis des employés sont mitigés : la rémunération et les avantages sont excellents et la technologie de pointe, mais l'intensité de travail est élevée—certains postes exigent des heures supplémentaires fréquentes et du travail le week-end. La note globale est d'environ 4,2/5, avec un équilibre vie pro/perso relativement plus bas ; les équipes proches des lancements produits et de l'infrastructure IA sont les plus concernées par les heures longues."
+                }
             ]
         };
 
@@ -925,7 +957,6 @@
 
         window.speechSynthesis.getVoices();
 
-        // Wake-word parser: requires "Jarvis" at the beginning of speech or text
         const WAKE_WORD_REGEX = /^(?:hey\s+|ok\s+|okay\s+|hi\s+|hello\s+|bonjour\s+|salut\s+)?(?:j\.?\s*a\.?\s*r\.?\s*v\.?\s*i\.?\s*s\.?|jarvis|jarvice|jarviss)(?:[,:;.!?-]+|\s+|$)(.*)$/i;
 
         function parseJarvisWakeWord(rawInput) {
@@ -1033,7 +1064,7 @@
             const t = ' ' + raw + ' ';
             let enScore = 0;
             let frScore = 0;
-            const frAccents = (raw.match(/[àâäéèêëïîôöùûüÿçœæ]/g) || []).length;
+            const frAccents = (raw.match(/[àâäéèêëîïôöùûüçœæ]/g) || []).length;
             frScore += frAccents * 4;
             const frContractions = (t.match(/ (qu'|c'|j'|l'|d'|n'|s'|m'|t'|jusqu'|lorsqu'|puisqu')/g) || []).length;
             frScore += frContractions * 3;
@@ -1058,7 +1089,7 @@
                 'président','president','court','long','détail','detail','bref','écoute','ecoute','attentivement','avant',
                 'répondre','repondre','mathématiques','mathematiques','physique','chimie','biologie','élève','étudiant','nom'
             ]);
-            const tokens = raw.split(/[^a-zàâäéèêëïîôöùûüÿçœæ']+/).filter(Boolean);
+            const tokens = raw.split(/[^a-zàâäéèêëîïôöùûüçœæ']+/).filter(Boolean);
             for (const word of tokens) {
                 if (enWords.has(word)) enScore += 2;
                 if (frWords.has(word)) frScore += 2;
@@ -1069,8 +1100,8 @@
 
         function isSelfEcho(transcript) {
             if (!lastSpokenText) return false;
-            const normUser = transcript.toLowerCase().replace(/[^a-z0-9àâäéèêëïîôöùûüÿç\s]/g, '').trim();
-            const normJarvis = lastSpokenText.toLowerCase().replace(/[^a-z0-9àâäéèêëïîôöùûüÿç\s]/g, '').trim();
+            const normUser = transcript.toLowerCase().replace(/[^a-z0-9àâäéèêëîïôöùûüç\s]/g, '').trim();
+            const normJarvis = lastSpokenText.toLowerCase().replace(/[^a-z0-9àâäéèêëîïôöùûüç\s]/g, '').trim();
             if (normUser.length < 4) return false;
             if (normJarvis.includes(normUser)) return true;
             const userWords = normUser.split(/\s+/);
@@ -1125,20 +1156,18 @@
                     return;
                 }
 
-                // Enforce saying "Jarvis" first
                 const parsed = parseJarvisWakeWord(transcript);
                 if (!parsed.addressedToJarvis) {
                     showSubtitle(
                         detectedLang === 'en-US'
                             ? `Standby — please say "Jarvis" first before your question. (Heard: "${transcript}")`
                             : `En veille — dites « Jarvis » en premier avant votre question. (Entendu : « ${transcript} »)`,
-                        '🛡️ WAKE WORD REQUIRED'
+                        '🛑 WAKE WORD REQUIRED'
                     );
                     scheduleSubtitleHide(4500);
                     return;
                 }
 
-                // User only said "Jarvis"
                 if (!parsed.question) {
                     const namePart = gpsUserName ? ` ${gpsUserName}` : '';
                     const ack = detectedLang === 'en-US'
@@ -1201,7 +1230,7 @@
                 const reminder = detectedLang === 'en-US'
                     ? `Please start your message with "Jarvis" first (for example: "Jarvis, ${raw}").`
                     : `Veuillez commencer votre message par « Jarvis » (par exemple : « Jarvis, ${raw} »).`;
-                showSubtitle(reminder, '🛡️ SAY "JARVIS" FIRST');
+                showSubtitle(reminder, '🛑 SAY "JARVIS" FIRST');
                 scheduleSubtitleHide(6000);
                 return;
             }
@@ -1384,6 +1413,16 @@
                 if (item.match.test(lower)) {
                     lastTopicDiscussed = 'Humanoid AI';
                     return lang === 'en-US' ? item.en : item.fr;
+                }
+            }
+
+            // 5b. Direct NVIDIA product / company knowledge
+            if (JARVIS_DATABASE.nvidiaTopics) {
+                for (const item of JARVIS_DATABASE.nvidiaTopics) {
+                    if (item.match.test(lower)) {
+                        lastTopicDiscussed = item.topic;
+                        return lang === 'en-US' ? item.en : item.fr;
+                    }
                 }
             }
 
@@ -1590,32 +1629,51 @@
 
         function buildScholarlyReasoningFallback(question, lang) {
             const subject = extractCoreSubject(question) || question.trim();
+            const q = question.trim().toLowerCase();
+
+            // Subject-specific academic guides first
             for (const subj of JARVIS_DATABASE.academicGuides) {
                 if (subj.match.test(question)) {
                     return lang === 'en-US' ? subj.longEn : subj.longFr;
                 }
             }
 
-            if (lang === 'en-US') {
-                if (/^why\b/i.test(question.trim())) {
-                    return `Regarding ${subject}: the reason comes down to cause-and-effect mechanics, practical constraints, and trade-offs between cost, speed, reliability, and usability. When systems are built for real people or real environments, those trade-offs shape every design choice.`;
+            // NVIDIA / known-topic recovery (in case a regex was missed)
+            if (JARVIS_DATABASE.nvidiaTopics) {
+                for (const item of JARVIS_DATABASE.nvidiaTopics) {
+                    if (item.match.test(question)) {
+                        return lang === 'en-US' ? item.en : item.fr;
+                    }
                 }
-                if (/^how\b/i.test(question.trim())) {
-                    return `Regarding ${subject}: it works through a clear pipeline of inputs, processing or decision rules, execution, and feedback. Each stage checks the outcome and adjusts the next step so the system stays accurate and dependable.`;
-                }
-                if (/^(when|where|who)\b/i.test(question.trim())) {
-                    return `Regarding ${subject}: the exact answer depends on the specific context, region, or timeline involved, so sharing a concrete example or time frame will let me narrow it down directly.`;
-                }
-                return `Regarding ${subject}: this centers on how core principles apply in real practice, where strengths come from clear structure and limitations come from edge cases or real-world variability. Say "Jarvis" and ask about any specific part of ${subject} to go deeper.`;
             }
 
-            if (/^pourquoi\b/i.test(question.trim())) {
-                return `Au sujet de ${subject} : cela s'explique par des facteurs de causalité, des contraintes concrètes et un équilibre entre performance, coût, fiabilité et simplicité d'usage sur le terrain.`;
+            const why  = /^(why|pourquoi)\b/.test(q);
+            const how  = /^(how|comment)\b/.test(q);
+            const what = /^(what|qu'?est|que|quel|quelle)\b/.test(q);
+            const who  = /^(who|qui)\b/.test(q);
+            const when = /^(when|quand)\b/.test(q);
+            const where= /^(where|où|ou)\b/.test(q);
+            const isYesNo = /^(is|are|was|were|do|does|did|can|could|should|will|would|est-ce|peut|doit)\b/.test(q);
+
+            if (lang === 'en-US') {
+                if (why)  return `To answer why ${subject}: look at the underlying cause-and-effect chain—what triggers it, what constraints shape it, and which trade-offs between cost, speed, reliability, and usability drive the outcome. If you share the specific context, I can trace that chain with you step by step.`;
+                if (how)  return `To answer how ${subject} works: trace the pipeline—inputs, processing or decision rules, execution, and feedback. Each stage checks the result and adjusts the next step, which is what keeps the system accurate. Tell me which stage you want to unpack first.`;
+                if (what) return `On the question of ${subject}: start from its definition, then its main components, then how those components interact in practice. If you tell me which layer you care about most—concept, mechanism, or example—I can go deeper on exactly that part.`;
+                if (who)  return `For ${subject}, the key is identifying the specific person, team, or organization involved and their role in the context. Give me the setting (company, country, or field) and I can narrow it to the exact actor you mean.`;
+                if (when) return `For ${subject}, the answer depends on the timeline or version you mean, since the situation has changed over time. Share the year or release you're asking about and I'll give you a precise date.`;
+                if (where)return `For ${subject}, the location depends on the specific deployment or case. Tell me the region or product line you're asking about and I can point to the exact place.`;
+                if (isYesNo) return `On whether ${subject}: the honest answer is "it depends" on the criteria you care about—cost, performance, risk, or usability. If you tell me which criterion matters most, I can give you a clear yes/no with the reasoning behind it.`;
+                return `Let's take ${subject} one layer at a time: first the core idea, then how it behaves in practice, then where it breaks down. Which of those three would you like me to expand first?`;
             }
-            if (/^comment\b/i.test(question.trim())) {
-                return `Au sujet de ${subject} : le mécanisme repose sur des entrées, un traitement ou une logique de décision, une exécution et une vérification continue pour corriger les écarts.`;
-            }
-            return `Au sujet de ${subject} : l'enjeu principal est d'appliquer les principes fondamentaux tout en gérant les cas particuliers du terrain. Dites « Jarvis » et précisez l'aspect à approfondir.`;
+
+            if (why)  return `Pour répondre à pourquoi ${subject} : il faut suivre la chaîne de causalité—ce qui le déclenche, les contraintes qui le façonnent, et les compromis entre coût, vitesse, fiabilité et facilité d'usage. Donne-moi le contexte précis et nous la déroulerons ensemble.`;
+            if (how)  return `Pour expliquer comment ${subject} fonctionne : suivons le pipeline—entrées, règles de traitement ou de décision, exécution, puis retour d'information. Chaque étape vérifie le résultat et ajuste la suivante. Dis-moi quelle étape tu veux ouvrir en premier.`;
+            if (what) return `Sur la question de ${subject} : commençons par la définition, puis les composants principaux, puis leur interaction concrète. Dis-moi quel niveau t'intéresse—concept, mécanisme ou exemple—et j'irai plus loin sur ce point précis.`;
+            if (who)  return `Pour ${subject}, l'essentiel est d'identifier la personne, l'équipe ou l'organisation concernée et son rôle dans le contexte. Précise le cadre (entreprise, pays, domaine) et je ciblerai l'acteur exact.`;
+            if (when) return `Pour ${subject}, la réponse dépend de la période ou de la version visée, car la situation a évolué. Indique l'année ou la version et je donnerai une date précise.`;
+            if (where)return `Pour ${subject}, le lieu dépend du déploiement ou du cas précis. Précise la région ou la gamme de produit et je pointerai l'endroit exact.`;
+            if (isYesNo) return `Pour savoir si ${subject} : la réponse honnête est « cela dépend » du critère qui compte—coût, performance, risque ou facilité. Dis-moi quel critère prime et je donnerai un oui/non clair avec le raisonnement.`;
+            return `Prenons ${subject} couche par couche : d'abord l'idée de base, puis le comportement concret, puis les limites. Laquelle de ces trois veux-tu que je développe en premier ?`;
         }
 
         async function fetchWikipediaMatch(query, lang, signal) {
@@ -1652,6 +1710,7 @@
 
         async function searchWithReformulation(question, lang, signal) {
             const queries = buildReformulatedQueries(question);
+            console.info('[Jarvis] searching reformulated queries:', queries);
             const altLang = lang === 'en-US' ? 'fr-FR' : 'en-US';
             for (const q of queries) {
                 const wikiPrimary = await fetchWikipediaMatch(q, lang, signal);
@@ -1736,6 +1795,7 @@
                 speakText(reply, lang);
             } catch (error) {
                 if (error.name === 'AbortError') return;
+                console.warn('[Jarvis] web lookup failed, using offline reasoning:', error.message || error);
                 const fallbackOffline = buildScholarlyReasoningFallback(commandText, lang);
                 recordTurn('jarvis', fallbackOffline);
                 showSubtitle(fallbackOffline);
