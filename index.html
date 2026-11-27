@@ -123,6 +123,14 @@
             border-color: var(--cyan);
             color: var(--cyan);
         }
+        .hud-btn.train-btn {
+            border-color: rgba(34, 197, 94, 0.7);
+            color: #86efac;
+        }
+        .hud-btn.train-btn:hover {
+            border-color: #22c55e;
+            color: #ffffff;
+        }
         .memory-toast {
             display: none;
             align-items: center;
@@ -394,12 +402,12 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.84);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
             animation: fadeIn .25s ease;
         }
         .modal-overlay.hidden { display: none; }
@@ -407,38 +415,53 @@
             background: linear-gradient(180deg, #ffffff 0%, #fff8e1 100%);
             border: 3px solid var(--accent-2);
             border-radius: 20px;
-            padding: 28px 26px;
+            padding: 24px 22px;
             max-width: 440px;
             width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             text-align: center;
             color: #101828;
         }
-        .modal-card h2 { font-size: 1.45rem; color: #7a5200; margin-bottom: 10px; }
-        .modal-card p { font-size: 0.95rem; color: #475569; line-height: 1.5; margin-bottom: 16px; }
-        .modal-card input {
+        .modal-card.wide-modal {
+            max-width: 780px;
+            text-align: left;
+        }
+        .modal-card h2 { font-size: 1.38rem; color: #7a5200; margin-bottom: 8px; }
+        .modal-card p { font-size: 0.91rem; color: #475569; line-height: 1.45; margin-bottom: 14px; }
+        .modal-card input[type="text"],
+        .modal-card textarea,
+        .modal-card select {
             width: 100%;
-            padding: 12px 15px;
+            padding: 10px 13px;
             border-radius: 12px;
             border: 2px solid #d7cfb5;
             background: #fff;
             color: #101828;
-            font-size: 1rem;
+            font-size: 0.94rem;
             outline: none;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
-        .modal-card input:focus {
+        .modal-card textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.45;
+        }
+        .modal-card input:focus,
+        .modal-card textarea:focus,
+        .modal-card select:focus {
             border-color: var(--accent-2);
             box-shadow: 0 0 0 3px rgba(255,199,44,0.28);
         }
         .modal-card .go-btn {
             width: 100%;
-            padding: 13px;
+            padding: 12px;
             background: linear-gradient(135deg, #ffc72c, #ff9500);
             color: #2a1c00;
             border: none;
             border-radius: 12px;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(255,150,0,0.45);
@@ -456,7 +479,7 @@
         }
         .modal-card .skip-btn:hover { color: #334155; }
         .memory-list {
-            max-height: 240px;
+            max-height: 250px;
             overflow-y: auto;
             text-align: left;
             background: #fff;
@@ -468,7 +491,7 @@
             color: #1e293b;
         }
         .memory-item {
-            padding: 7px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #f1ece0;
         }
         .memory-item:last-child { border-bottom: none; }
@@ -477,6 +500,105 @@
             font-size: 0.7rem;
             color: #7a5200;
             font-weight: 700;
+        }
+        .train-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .train-stats-pill {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #78350f;
+            font-size: 0.76rem;
+            font-weight: 800;
+            padding: 4px 11px;
+            border-radius: 999px;
+        }
+        .train-toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .train-toolbar select {
+            flex: 1;
+            min-width: 190px;
+            margin-bottom: 0;
+        }
+        .train-save-btn {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
+        }
+        .train-save-btn:hover { filter: brightness(1.07); }
+        .train-secondary-btn {
+            background: #f1f5f9;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 6px 11px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .train-secondary-btn:hover { background: #e2e8f0; }
+        .train-danger-btn {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            border-radius: 10px;
+            padding: 6px 11px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .train-danger-btn:hover { background: #fecaca; }
+        .train-entry-card {
+            background: #fffbeb;
+            border: 1.5px solid #fde68a;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 9px;
+        }
+        .train-entry-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .train-entry-title {
+            font-weight: 800;
+            color: #78350f;
+            font-size: 0.9rem;
+        }
+        .train-entry-meta {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+        .train-entry-body {
+            font-size: 0.85rem;
+            color: #1e293b;
+            white-space: pre-wrap;
+            line-height: 1.45;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .train-entry-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @media (max-width: 760px) {
@@ -501,8 +623,8 @@
             .chat-bar { bottom: 12px; padding: 5px 6px 5px 12px; }
             .chat-bar input { font-size: 0.85rem; }
             .chat-bar button { padding: 7px 12px; font-size: 0.76rem; }
-            .modal-card { padding: 22px 20px; }
-            .modal-card h2 { font-size: 1.25rem; }
+            .modal-card { padding: 18px 16px; }
+            .modal-card h2 { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -518,7 +640,8 @@
             <div class="hud-actions">
                 <button class="hud-btn" id="langLockBtn" onclick="cycleLangLock()">🌐 Auto EN/FR</button>
                 <button class="hud-btn" id="depthBtn" onclick="cycleAnswerDepth()">📚 Auto Length</button>
-                <button class="hud-btn" id="memoryBtn" onclick="openMemoryModal()">🧠 Memory (0)</button>
+                <button class="hud-btn" id="memoryBtn" onclick="openMemoryModal()">🧠 Mic Memory (0)</button>
+                <button class="hud-btn train-btn" id="trainBtn" onclick="openTrainingModal()">📚 Train Jarvis (0)</button>
                 <button class="hud-btn" id="videoModeBtn" onclick="toggleVideoMode()">🎬 Mode Vidéo</button>
             </div>
             <div class="memory-toast" id="memoryToast"></div>
@@ -638,24 +761,63 @@
         <button type="button" class="stop-btn" onclick="stopSpeaking(true)" title="Stop voice">⏹</button>
         <button type="submit">Ask</button>
     </form>
+
+    <!-- Welcome Name Modal -->
     <div id="nameOverlay" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>👋 Welcome to J.A.R.V.I.S.</h2>
-            <p>Enter your name to begin. Always say <strong>"Jarvis"</strong> first before asking your question. Ambient speech heard on the mic is saved automatically for context.</p>
+            <p>Enter your name to begin. Always say <strong>"Jarvis"</strong> first before asking your question. Open <strong>📚 Train Jarvis</strong> anytime to paste large training texts.</p>
             <input type="text" id="nameInput" placeholder="Your name..." maxlength="24" autocomplete="off">
             <button class="go-btn" onclick="saveNameAndStart()">Start</button>
             <button class="skip-btn" onclick="skipName()">Continue as Guest</button>
         </div>
     </div>
+
+    <!-- Memory 1: Ambient Mic Memory Modal -->
     <div id="memoryOverlay" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>🧠 Ambient Mic Memory</h2>
             <p>Speech captured while the mic is active (even without saying "Jarvis") is saved here and used automatically when related to your questions.</p>
             <div class="memory-list" id="memoryListContainer"></div>
             <button class="go-btn" onclick="closeMemoryModal()">Close</button>
-            <button class="skip-btn" onclick="clearAmbientMemories()">Clear All Saved Memories</button>
+            <button class="skip-btn" onclick="clearAmbientMemories()">Clear All Mic Memories</button>
         </div>
     </div>
+
+    <!-- Memory 2: High-Capacity Training Knowledge Base Modal -->
+    <div id="trainingOverlay" class="modal-overlay hidden">
+        <div class="modal-card wide-modal">
+            <div class="train-header-row">
+                <h2>📚 Train J.A.R.V.I.S. · Knowledge Studio</h2>
+                <span class="train-stats-pill" id="trainStatsPill">0 Entries · 0 Chars</span>
+            </div>
+            <p>Copy &amp; paste large texts, study guides, manuals, or <strong>Q: / A:</strong> pairs below. Stored in IndexedDB so Jarvis can answer your questions accurately—and you can edit or delete any entry anytime.</p>
+
+            <input type="text" id="trainTitleInput" placeholder="Optional Topic / Title (e.g., Physics Chapter 4, Company Policy, History Notes)...">
+            <textarea id="trainTextInput" placeholder="Paste your training text here...&#10;&#10;Tip: You can paste huge texts! Choose 'Auto-Split Paragraphs & Q&A Pairs' below to turn long text into fast searchable knowledge blocks, or 'Save Entire Pasted Text as One Entry'."></textarea>
+
+            <div class="train-toolbar">
+                <select id="trainSplitMode">
+                    <option value="smart">✨ Auto-Split Paragraphs &amp; Q&amp;A Pairs (Best for Large Texts)</option>
+                    <option value="single">📄 Save Entire Pasted Text as One Entry</option>
+                </select>
+                <button type="button" class="train-save-btn" onclick="savePastedTrainingData()">💾 Save Training Data</button>
+            </div>
+
+            <div class="train-toolbar" style="margin-top: 6px; border-top: 1px solid #e2d9b8; padding-top: 10px;">
+                <input type="text" id="trainSearchInput" placeholder="🔍 Search saved training data..." oninput="renderTrainingList()" style="flex:1; min-width: 180px; margin-bottom:0;">
+                <button type="button" class="train-secondary-btn" onclick="exportTrainingBackup()">⬇️ Export JSON</button>
+                <button type="button" class="train-secondary-btn" onclick="document.getElementById('importTrainingFile').click()">⬆️ Import JSON/TXT</button>
+                <input type="file" id="importTrainingFile" accept=".json,.txt" style="display:none" onchange="importTrainingBackup(event)">
+                <button type="button" class="train-danger-btn" onclick="deleteAllTrainingData()">🗑️ Delete All</button>
+            </div>
+
+            <div class="memory-list" id="trainingListContainer" style="max-height: 280px;"></div>
+
+            <button class="go-btn" onclick="closeTrainingModal()">Done &amp; Return to Jarvis</button>
+        </div>
+    </div>
+
     <script>
         // ============================================================
         // JARVIS SCHOLAR KNOWLEDGE BASE & WAKE-WORD INTELLIGENCE
@@ -663,9 +825,6 @@
         const JARVIS_DATABASE = {
             assistantName: "Jarvis",
             fullTitle: "J.A.R.V.I.S.",
-            // --------------------------------------------------------
-            // OWNER PROFILE — Full CV of Gesner Deslandes
-            // --------------------------------------------------------
             ownerProfile: {
                 name: "Gesner Deslandes",
                 title: "Software Architect & AI Solutions Engineer",
@@ -739,9 +898,6 @@
                     { name: "Charles Zerr MD", contact: "+1 620 952 0074" }
                 ]
             },
-            // --------------------------------------------------------
-            // OWNER Q&A — direct answers about Gesner Deslandes
-            // --------------------------------------------------------
             ownerQuestions: [
                 {
                     id: 'owner-who',
@@ -923,7 +1079,7 @@
                 {
                     match: /\b(what\s+is\s+(a\s+)?humanoid(\s+ai|\s+robot)?|qu'est[- ]ce\s+qu'un\s+robot\s+humanoïde|ia\s+humanoïde)\b/i,
                     en: "A humanoid AI is an intelligent system embodied in a human-like form—complete with head, torso, arms, and conversational intelligence—designed to interact naturally with people through voice, vision, and reasoning.",
-                    fr: "Une IA humanoïde est un système intelligent doté d'une silhouette humaine—tête, torse, bras et intelligence conversationnelle—conçu pour interagir naturellement par la voix, la vision et le raisonnement."
+                    fr: "Une IA humanoïde est un système intelligent doté d'une silhouette humaine—tête, torse, bras et intelligence conversationnelle—conçu pour interagir naturellement avec les personnes par la voix, la vision et le raisonnement."
                 }
             ],
             academicGuides: [
@@ -948,7 +1104,7 @@
                     match: /\b(chemistry|chimistry|atom|molecule|periodic table|chemical|reaction|acid|base|mole|stoichiometry|bond|h2o|oxygen|hydrogen|chimie|atome|molécule|molecule|tableau périodique|réaction|acide|stœchiométrie|liaison)\b/i,
                     shortEn: "Chemistry is the science of atoms, molecules, and chemical reactions—explaining how elements bond, transform, and conserve mass and energy.",
                     longEn: "Chemistry explores matter at the atomic and molecular level. Whether balancing chemical equations, calculating molar mass in stoichiometry, or studying acids, bases, and covalent or ionic bonds, atoms are always conserved.",
-                    shortFr: "La chimie est la science des atomes, des molécules et des réactions chimiques : elle explique comment les éléments se lignent et se transforment.",
+                    shortFr: "La chimie est la science des atomes, des molécules et des réactions chimiques : elle explique comment les éléments se lient et se transforment.",
                     longFr: "La chimie étudie la matière à l'échelle atomique et moléculaire. Qu'il s'agisse d'équilibrer une équation chimique, de calculer une masse molaire ou d'étudier les acides, les bases et les liaisons chimiques, la conservation des atomes reste la règle d'or."
                 },
                 {
@@ -995,10 +1151,43 @@
         };
 
         // ============================================================
-        // PASSIVE AMBIENT MIC MEMORY STORE (SAVES ALL SPEECH HEARD)
+        // SHARED KEYWORD EXTRACTION & HTML ESCAPING
+        // ============================================================
+        const MEMORY_STOP_WORDS = new Set([
+            'the','and','for','are','but','not','you','all','any','can','had','her','was','one','our','out',
+            'day','get','has','him','his','how','man','new','now','old','see','two','way','who','boy','did',
+            'its','let','put','say','she','too','use','what','when','where','which','why','with','from','into',
+            'that','this','these','those','have','been','will','would','could','should','about','there','their',
+            'they','them','then','than','some','more','very','just','know','take','year','your','good',
+            'come','make','like','time','look','want','give','most','tell','remember','mentioned','heard','said',
+            'jarvis','please','question','answer','ask','asked','asking','talk','talking','spoke','speak',
+            'explain','define','meaning','les','des','une','pour','dans','avec','sur','par','plus','tout','tous',
+            'mais','comme','fait','faire','être','avoir','sont','était','cette','ces','mon','ton','son','notre',
+            'votre','leur','qui','que','quoi','dont','où','quand','comment','pourquoi','quel','quelle','quels',
+            'quelles','dit','dire','entendu','parlé','parler','souviens','rappelle','réponse','merci','explique'
+        ]);
+
+        function extractKeywords(text) {
+            return (text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9àâäéèêëîïôöùûüçœæ\s'-]/g, ' ')
+                .split(/\s+/)
+                .filter(w => w.length >= 3 && !MEMORY_STOP_WORDS.has(w));
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // ============================================================
+        // MEMORY 1: PASSIVE AMBIENT MIC MEMORY STORE
         // ============================================================
         const AMBIENT_MEMORY_KEY = 'jarvis_ambient_listening_memory_v1';
-        const MAX_AMBIENT_MEMORIES = 150;
+        const MAX_AMBIENT_MEMORIES = 200;
         let ambientListeningMemory = [];
         try {
             const rawSaved = localStorage.getItem(AMBIENT_MEMORY_KEY);
@@ -1010,41 +1199,19 @@
             ambientListeningMemory = [];
         }
 
-        const MEMORY_STOP_WORDS = new Set([
-            'the','and','for','are','but','not','you','all','any','can','had','her','was','one','our','out',
-            'day','get','has','him','his','how','man','new','now','old','see','two','way','who','boy','did',
-            'its','let','put','say','she','too','use','what','when','where','which','why','with','from','into',
-            'that','this','these','those','have','been','will','would','could','should','about','there','their',
-            'they','them','then','than','some','more','very','just','know','take','into','year','your','good',
-            'come','make','like','time','look','want','give','most','tell','remember','mentioned','heard','said',
-            'jarvis','please','question','answer','ask','asked','asking','talk','talking','spoke','speak',
-            'les','des','une','pour','dans','avec','sur','par','plus','tout','tous','mais','comme','fait',
-            'faire','être','avoir','sont','était','cette','ces','mon','ton','son','notre','votre','leur',
-            'qui','que','quoi','dont','où','quand','comment','pourquoi','quel','quelle','quels','quelles',
-            'dit','dire','entendu','parlé','parler','souviens','rappelle','question','réponse','merci'
-        ]);
-
-        function extractKeywords(text) {
-            return (text || '')
-                .toLowerCase()
-                .replace(/[^a-z0-9àâäéèêëîïôöùûüçœæ\s'-]/g, ' ')
-                .split(/\s+/)
-                .filter(w => w.length >= 3 && !MEMORY_STOP_WORDS.has(w));
-        }
-
         function updateMemoryCounterUI() {
             const btn = document.getElementById('memoryBtn');
             if (btn) {
-                btn.textContent = `🧠 Memory (${ambientListeningMemory.length})`;
+                btn.textContent = `🧠 Mic Memory (${ambientListeningMemory.length})`;
             }
         }
 
         let memoryToastTimer = null;
-        function showMemoryLoggedToast(text) {
+        function showMemoryLoggedToast(text, label = '🧠 Saved from mic') {
             const toast = document.getElementById('memoryToast');
             if (!toast) return;
-            const preview = text.length > 44 ? text.slice(0, 44) + '…' : text;
-            toast.textContent = `🧠 Saved from mic: "${preview}"`;
+            const preview = text.length > 42 ? text.slice(0, 42) + '…' : text;
+            toast.textContent = `${label}: "${preview}"`;
             toast.classList.add('show');
             clearTimeout(memoryToastTimer);
             memoryToastTimer = setTimeout(() => {
@@ -1075,7 +1242,7 @@
                 localStorage.setItem(AMBIENT_MEMORY_KEY, JSON.stringify(ambientListeningMemory));
             } catch (_) {}
             updateMemoryCounterUI();
-            showMemoryLoggedToast(cleaned);
+            showMemoryLoggedToast(cleaned, '🧠 Saved from mic');
         }
 
         function findRelatedAmbientMemories(question, maxResults = 3) {
@@ -1108,7 +1275,6 @@
                     }
                 }
                 if (overlap === 0) return { item, score: 0 };
-                // Slight recency boost (within last 30 minutes)
                 const ageMinutes = (now - item.timestamp) / 60000;
                 const recencyBonus = ageMinutes < 30 ? 0.5 : 0;
                 return { item, score: overlap + recencyBonus };
@@ -1156,12 +1322,495 @@
             openMemoryModal();
         }
 
-        function escapeHtml(str) {
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
+        // ============================================================
+        // MEMORY 2: HIGH-CAPACITY TRAINING STUDIO (INDEXEDDB + CRUD)
+        // ============================================================
+        const TRAIN_DB_NAME = 'jarvis_training_knowledge_db';
+        const TRAIN_STORE_NAME = 'training_entries';
+        const TRAIN_FALLBACK_KEY = 'jarvis_training_entries_fallback_v1';
+        let trainingKnowledgeCache = [];
+        let trainDbInstance = null;
+        let editingTrainingId = null;
+
+        async function requestPersistentBrowserStorage() {
+            try {
+                if (navigator.storage && navigator.storage.persist) {
+                    await navigator.storage.persist();
+                }
+            } catch (_) {}
+        }
+
+        function openTrainingDB() {
+            return new Promise((resolve) => {
+                if (!('indexedDB' in window)) {
+                    resolve(null);
+                    return;
+                }
+                if (trainDbInstance) {
+                    resolve(trainDbInstance);
+                    return;
+                }
+                const req = indexedDB.open(TRAIN_DB_NAME, 1);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(TRAIN_STORE_NAME)) {
+                        db.createObjectStore(TRAIN_STORE_NAME, { keyPath: 'id' });
+                    }
+                };
+                req.onsuccess = (e) => {
+                    trainDbInstance = e.target.result;
+                    resolve(trainDbInstance);
+                };
+                req.onerror = () => resolve(null);
+            });
+        }
+
+        async function loadAllTrainingEntries() {
+            const db = await openTrainingDB();
+            if (!db) {
+                try {
+                    const raw = localStorage.getItem(TRAIN_FALLBACK_KEY);
+                    trainingKnowledgeCache = raw ? JSON.parse(raw) : [];
+                } catch (_) {
+                    trainingKnowledgeCache = [];
+                }
+                updateTrainingCounterUI();
+                return trainingKnowledgeCache;
+            }
+            return new Promise((resolve) => {
+                const tx = db.transaction(TRAIN_STORE_NAME, 'readonly');
+                const store = tx.objectStore(TRAIN_STORE_NAME);
+                const req = store.getAll();
+                req.onsuccess = () => {
+                    trainingKnowledgeCache = (req.result || []).sort((a, b) => (b.updatedAt || b.createdAt) - (a.updatedAt || a.createdAt));
+                    updateTrainingCounterUI();
+                    resolve(trainingKnowledgeCache);
+                };
+                req.onerror = () => {
+                    trainingKnowledgeCache = [];
+                    updateTrainingCounterUI();
+                    resolve([]);
+                };
+            });
+        }
+
+        async function upsertTrainingEntries(entries) {
+            await requestPersistentBrowserStorage();
+            const db = await openTrainingDB();
+            if (!db) {
+                for (const item of entries) {
+                    const idx = trainingKnowledgeCache.findIndex(x => x.id === item.id);
+                    if (idx >= 0) trainingKnowledgeCache[idx] = item;
+                    else trainingKnowledgeCache.unshift(item);
+                }
+                try {
+                    localStorage.setItem(TRAIN_FALLBACK_KEY, JSON.stringify(trainingKnowledgeCache));
+                } catch (_) {}
+                updateTrainingCounterUI();
+                return;
+            }
+            return new Promise((resolve) => {
+                const tx = db.transaction(TRAIN_STORE_NAME, 'readwrite');
+                const store = tx.objectStore(TRAIN_STORE_NAME);
+                for (const item of entries) {
+                    store.put(item);
+                }
+                tx.oncomplete = async () => {
+                    await loadAllTrainingEntries();
+                    resolve();
+                };
+                tx.onerror = () => resolve();
+            });
+        }
+
+        async function removeTrainingEntryById(id) {
+            const db = await openTrainingDB();
+            if (!db) {
+                trainingKnowledgeCache = trainingKnowledgeCache.filter(x => x.id !== id);
+                try {
+                    localStorage.setItem(TRAIN_FALLBACK_KEY, JSON.stringify(trainingKnowledgeCache));
+                } catch (_) {}
+                updateTrainingCounterUI();
+                return;
+            }
+            return new Promise((resolve) => {
+                const tx = db.transaction(TRAIN_STORE_NAME, 'readwrite');
+                tx.objectStore(TRAIN_STORE_NAME).delete(id);
+                tx.oncomplete = async () => {
+                    await loadAllTrainingEntries();
+                    resolve();
+                };
+                tx.onerror = () => resolve();
+            });
+        }
+
+        async function clearAllTrainingDB() {
+            const db = await openTrainingDB();
+            if (!db) {
+                trainingKnowledgeCache = [];
+                try { localStorage.removeItem(TRAIN_FALLBACK_KEY); } catch (_) {}
+                updateTrainingCounterUI();
+                return;
+            }
+            return new Promise((resolve) => {
+                const tx = db.transaction(TRAIN_STORE_NAME, 'readwrite');
+                tx.objectStore(TRAIN_STORE_NAME).clear();
+                tx.oncomplete = async () => {
+                    await loadAllTrainingEntries();
+                    resolve();
+                };
+                tx.onerror = () => resolve();
+            });
+        }
+
+        function updateTrainingCounterUI() {
+            const btn = document.getElementById('trainBtn');
+            if (btn) {
+                btn.textContent = `📚 Train Jarvis (${trainingKnowledgeCache.length})`;
+            }
+            const statsPill = document.getElementById('trainStatsPill');
+            if (statsPill) {
+                const totalChars = trainingKnowledgeCache.reduce((sum, item) => sum + (item.content || '').length + (item.question || '').length, 0);
+                const formattedChars = totalChars >= 1000 ? `${(totalChars / 1000).toFixed(1)}k` : `${totalChars}`;
+                statsPill.textContent = `${trainingKnowledgeCache.length} Entries · ${formattedChars} Chars`;
+            }
+        }
+
+        function parseTrainingTextToEntries(rawText, customTitle, splitMode) {
+            const text = (rawText || '').trim();
+            if (!text) return [];
+            const now = Date.now();
+            const baseTitle = (customTitle || '').trim();
+
+            if (splitMode === 'single') {
+                const autoTitle = baseTitle || text.split(/\r?\n/)[0].slice(0, 64) || 'Trained Knowledge';
+                return [{
+                    id: 'tr-' + now + '-' + Math.random().toString(36).slice(2, 7),
+                    title: autoTitle,
+                    question: '',
+                    content: text,
+                    keywords: extractKeywords(`${autoTitle} ${text}`),
+                    createdAt: now,
+                    updatedAt: now
+                }];
+            }
+
+            const qaRegex = /(?:^|\n)\s*(?:Q|Question)\s*:\s*([\s\S]+?)\n\s*(?:A|Answer|R|Réponse|Reponse)\s*:\s*([\s\S]+?)(?=\n\s*(?:Q|Question)\s*:|$)/gi;
+            const qaMatches = [...text.matchAll(qaRegex)];
+            if (qaMatches.length > 0) {
+                return qaMatches.map((m, idx) => {
+                    const qPart = m[1].trim();
+                    const aPart = m[2].trim();
+                    const title = baseTitle ? `${baseTitle} #${idx + 1}` : qPart.slice(0, 72);
+                    return {
+                        id: 'tr-' + (now + idx) + '-' + Math.random().toString(36).slice(2, 7),
+                        title,
+                        question: qPart,
+                        content: aPart,
+                        keywords: extractKeywords(`${title} ${qPart} ${aPart}`),
+                        createdAt: now + idx,
+                        updatedAt: now + idx
+                    };
+                });
+            }
+
+            const rawBlocks = text
+                .split(/\n\s*\n+/)
+                .map(b => b.trim())
+                .filter(Boolean);
+
+            const chunks = [];
+            let buffer = '';
+            for (const block of rawBlocks) {
+                if (!buffer) {
+                    buffer = block;
+                } else if (buffer.length < 160 && (buffer.length + block.length) < 1200) {
+                    buffer += '\n' + block;
+                } else {
+                    chunks.push(buffer);
+                    buffer = block;
+                }
+            }
+            if (buffer) chunks.push(buffer);
+
+            return chunks.map((chunk, idx) => {
+                const firstLine = chunk.split(/\r?\n/)[0].trim();
+                const title = baseTitle
+                    ? (chunks.length > 1 ? `${baseTitle} (Part ${idx + 1})` : baseTitle)
+                    : firstLine.slice(0, 68);
+                return {
+                    id: 'tr-' + (now + idx) + '-' + Math.random().toString(36).slice(2, 7),
+                    title,
+                    question: '',
+                    content: chunk,
+                    keywords: extractKeywords(`${title} ${chunk}`),
+                    createdAt: now + idx,
+                    updatedAt: now + idx
+                };
+            });
+        }
+
+        async function savePastedTrainingData() {
+            const titleEl = document.getElementById('trainTitleInput');
+            const textEl = document.getElementById('trainTextInput');
+            const modeEl = document.getElementById('trainSplitMode');
+            const rawText = textEl.value.trim();
+            if (!rawText) {
+                alert('Please paste or type some training text first.');
+                return;
+            }
+            const entries = parseTrainingTextToEntries(rawText, titleEl.value, modeEl.value);
+            if (!entries.length) return;
+            await upsertTrainingEntries(entries);
+            titleEl.value = '';
+            textEl.value = '';
+            renderTrainingList();
+            showMemoryLoggedToast(
+                `${entries.length} training ${entries.length === 1 ? 'entry' : 'entries'} saved`,
+                '📚 Jarvis Trained'
+            );
+        }
+
+        function openTrainingModal() {
+            editingTrainingId = null;
+            renderTrainingList();
+            document.getElementById('trainingOverlay').classList.remove('hidden');
+        }
+
+        function closeTrainingModal() {
+            editingTrainingId = null;
+            document.getElementById('trainingOverlay').classList.add('hidden');
+        }
+
+        function startEditTrainingEntry(id) {
+            editingTrainingId = id;
+            renderTrainingList();
+        }
+
+        function cancelEditTrainingEntry() {
+            editingTrainingId = null;
+            renderTrainingList();
+        }
+
+        async function commitEditTrainingEntry(id) {
+            const existing = trainingKnowledgeCache.find(x => x.id === id);
+            if (!existing) return;
+            const newTitle = document.getElementById(`edit-title-${id}`).value.trim() || existing.title;
+            const newQuestion = document.getElementById(`edit-question-${id}`).value.trim();
+            const newContent = document.getElementById(`edit-content-${id}`).value.trim();
+            if (!newContent) {
+                alert('Content cannot be empty.');
+                return;
+            }
+            const updated = {
+                ...existing,
+                title: newTitle,
+                question: newQuestion,
+                content: newContent,
+                keywords: extractKeywords(`${newTitle} ${newQuestion} ${newContent}`),
+                updatedAt: Date.now()
+            };
+            editingTrainingId = null;
+            await upsertTrainingEntries([updated]);
+            renderTrainingList();
+            showMemoryLoggedToast(newTitle, '✏️ Training Updated');
+        }
+
+        async function deleteSingleTrainingEntry(id) {
+            await removeTrainingEntryById(id);
+            renderTrainingList();
+        }
+
+        async function deleteAllTrainingData() {
+            if (!trainingKnowledgeCache.length) return;
+            if (!confirm(`Delete all ${trainingKnowledgeCache.length} trained knowledge entries?`)) return;
+            await clearAllTrainingDB();
+            renderTrainingList();
+        }
+
+        function exportTrainingBackup() {
+            if (!trainingKnowledgeCache.length) {
+                alert('No training data to export yet.');
+                return;
+            }
+            const blob = new Blob([JSON.stringify(trainingKnowledgeCache, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `jarvis-training-knowledge-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importTrainingBackup(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const raw = String(e.target?.result || '').trim();
+                if (!raw) return;
+                try {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        const normalized = parsed
+                            .filter(item => item && (item.content || item.text))
+                            .map((item, i) => {
+                                const content = String(item.content || item.text).trim();
+                                const title = String(item.title || content.slice(0, 64)).trim();
+                                const question = String(item.question || '').trim();
+                                return {
+                                    id: item.id || ('tr-imp-' + Date.now() + '-' + i),
+                                    title,
+                                    question,
+                                    content,
+                                    keywords: extractKeywords(`${title} ${question} ${content}`),
+                                    createdAt: item.createdAt || Date.now(),
+                                    updatedAt: Date.now()
+                                };
+                            });
+                        await upsertTrainingEntries(normalized);
+                        renderTrainingList();
+                        showMemoryLoggedToast(`Imported ${normalized.length} entries`, '⬆️ Training Imported');
+                        event.target.value = '';
+                        return;
+                    }
+                } catch (_) {
+                    // Fallback: import as plain text document
+                }
+                const entries = parseTrainingTextToEntries(raw, file.name.replace(/\.[^.]+$/, ''), 'smart');
+                await upsertTrainingEntries(entries);
+                renderTrainingList();
+                showMemoryLoggedToast(`Imported ${entries.length} entries from text file`, '⬆️ Training Imported');
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function renderTrainingList() {
+            updateTrainingCounterUI();
+            const container = document.getElementById('trainingListContainer');
+            if (!container) return;
+            const query = (document.getElementById('trainSearchInput')?.value || '').trim().toLowerCase();
+            const filtered = query
+                ? trainingKnowledgeCache.filter(item =>
+                    (item.title || '').toLowerCase().includes(query) ||
+                    (item.question || '').toLowerCase().includes(query) ||
+                    (item.content || '').toLowerCase().includes(query)
+                )
+                : trainingKnowledgeCache;
+
+            if (!filtered.length) {
+                container.innerHTML = `<div style="color:#64748b;text-align:center;padding:18px;">${
+                    trainingKnowledgeCache.length
+                        ? 'No training entries match your search.'
+                        : 'No training text saved yet. Paste any text above and click "Save Training Data" to train Jarvis!'
+                }</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.slice(0, 100).map(item => {
+                const isEditing = editingTrainingId === item.id;
+                const dateStr = new Date(item.updatedAt || item.createdAt).toLocaleString();
+                if (isEditing) {
+                    return `
+                        <div class="train-entry-card">
+                            <div class="train-entry-meta">Editing Entry · ${dateStr}</div>
+                            <input type="text" id="edit-title-${item.id}" value="${escapeHtml(item.title)}" placeholder="Title...">
+                            <input type="text" id="edit-question-${item.id}" value="${escapeHtml(item.question || '')}" placeholder="Optional Question trigger (Q: ...)">
+                            <textarea id="edit-content-${item.id}" style="min-height:95px;">${escapeHtml(item.content)}</textarea>
+                            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                                <button type="button" class="train-secondary-btn" onclick="cancelEditTrainingEntry()">Cancel</button>
+                                <button type="button" class="train-save-btn" style="padding:6px 14px;font-size:0.82rem;" onclick="commitEditTrainingEntry('${item.id}')">Save Changes</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                return `
+                    <div class="train-entry-card">
+                        <div class="train-entry-top">
+                            <div>
+                                <div class="train-entry-title">${escapeHtml(item.title)}</div>
+                                <div class="train-entry-meta">${dateStr}${item.question ? ' · Q&A Pair' : ''}</div>
+                            </div>
+                            <div class="train-entry-actions">
+                                <button type="button" class="train-secondary-btn" onclick="startEditTrainingEntry('${item.id}')">✏️ Edit</button>
+                                <button type="button" class="train-danger-btn" onclick="deleteSingleTrainingEntry('${item.id}')">🗑️ Delete</button>
+                            </div>
+                        </div>
+                        ${item.question ? `<div style="font-size:0.8rem;font-weight:700;color:#0f172a;margin-bottom:4px;">Q: ${escapeHtml(item.question)}</div>` : ''}
+                        <div class="train-entry-body">${escapeHtml(item.content)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function searchTrainingKnowledge(question, maxResults = 2) {
+            if (!trainingKnowledgeCache.length) return [];
+            const qLower = question.toLowerCase().trim();
+            const qKeywords = extractKeywords(question);
+            const qSet = new Set(qKeywords);
+
+            const scored = trainingKnowledgeCache.map((item) => {
+                let score = 0;
+                const titleLower = (item.title || '').toLowerCase();
+                const qTriggerLower = (item.question || '').toLowerCase();
+                const contentLower = (item.content || '').toLowerCase();
+
+                if (qTriggerLower && (qTriggerLower.includes(qLower) || qLower.includes(qTriggerLower))) {
+                    score += 10;
+                }
+                if (titleLower && qLower.includes(titleLower) && titleLower.length >= 4) {
+                    score += 5;
+                }
+
+                const itemKeywords = item.keywords && item.keywords.length
+                    ? item.keywords
+                    : extractKeywords(`${item.title} ${item.question} ${item.content}`);
+                const itemSet = new Set(itemKeywords);
+
+                for (const qk of qSet) {
+                    if (itemSet.has(qk)) {
+                        score += 2.5;
+                    } else if (contentLower.includes(qk)) {
+                        score += 1.5;
+                    } else {
+                        for (const ik of itemSet) {
+                            if (qk.length >= 4 && ik.length >= 4 && (ik.startsWith(qk) || qk.startsWith(ik))) {
+                                score += 1.2;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return { item, score };
+            });
+
+            return scored
+                .filter(s => s.score >= 2.5)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, maxResults)
+                .map(s => s.item);
+        }
+
+        function formatTrainedAnswer(matches, lang, lengthMode) {
+            if (!matches || !matches.length) return '';
+            const best = matches[0];
+            let primaryText = best.content.trim();
+            if (lengthMode === 'short' && primaryText.length > 320) {
+                const sentences = primaryText.match(/[^.!?]+[.!?]+/g) || [primaryText];
+                primaryText = sentences.slice(0, 2).join(' ').trim();
+            }
+            if (matches.length === 1) {
+                return primaryText;
+            }
+            const second = matches[1];
+            const secondSnippet = second.content.length > 220
+                ? second.content.slice(0, 220).trim() + '…'
+                : second.content.trim();
+            return lang === 'en-US'
+                ? `${primaryText}\n\nRelated training note (${second.title}): ${secondSnippet}`
+                : `${primaryText}\n\nNote d'entraînement associée (${second.title}) : ${secondSnippet}`;
         }
 
         // ============================================================
@@ -1260,8 +1909,9 @@
             btn.classList.toggle('active', active);
             btn.textContent = active ? '🎬 Exit Video' : '🎬 Mode Vidéo';
         }
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
             updateMemoryCounterUI();
+            await loadAllTrainingEntries();
             if (gpsDeviceId && gpsUserName) {
                 startGpsTracking();
                 setTimeout(() => refreshGpsPosition(true), 800);
@@ -1503,7 +2153,6 @@
                 }
                 const parsed = parseJarvisWakeWord(transcript);
                 if (!parsed.addressedToJarvis) {
-                    // Save ambient microphone data silently even when "Jarvis" was NOT said
                     saveAmbientListeningEntry(transcript, detectedLang);
                     showSubtitle(
                         detectedLang === 'en-US'
@@ -1706,21 +2355,18 @@
         function handleInstantKnowledge(commandText, lang, lengthMode) {
             const lower = commandText.toLowerCase();
             const o = JARVIS_DATABASE.owner;
-            // 1. Name & Wake-Word Rule Awareness
             const asksNameOrWakeRule = /\b(what('s| is) your name|your name|do you know your name|say jarvis first|why.*say jarvis|quel est ton nom|comment tu t'appelles|dire jarvis)\b/i.test(lower);
             if (asksNameOrWakeRule) {
                 return lang === 'en-US'
                     ? `My name is Jarvis, or J.A.R.V.I.S. Whenever you or any other user want to speak with me, saying "Jarvis" first lets me know you are addressing me directly so I can answer your question right away.`
                     : `Je m'appelle Jarvis, ou J.A.R.V.I.S. Lorsque vous ou un autre utilisateur souhaitez me parler, dites d'abord « Jarvis » afin que je sache que vous vous adressez directement à moi et que je puisse répondre immédiatement.`;
             }
-            // 2. OWNER QUESTIONS — Full CV knowledge base
             for (const item of JARVIS_DATABASE.ownerQuestions) {
                 if (item.match.test(lower)) {
                     lastTopicDiscussed = 'Gesner Deslandes';
                     return lang === 'en-US' ? item.en : item.fr;
                 }
             }
-            // 3. Owner / Creator / Developer / Contact (fallback if ownerQuestions missed)
             const asksOwner = /\b(who (made|created|built|owns|developed) you|who is your (owner|creator|developer)|your owner|your creator|contact info|phone number|email address|qui t'a (créé|creer|fait|développé|developper)|ton (créateur|createur|propriétaire|proprietaire|développeur|developpeur)|contact de gesner|numéro de téléphone|adresse email)\b/i.test(lower);
             if (asksOwner) {
                 if (lang === 'en-US') {
@@ -1728,28 +2374,24 @@
                 }
                 return `Je m'appelle Jarvis, et j'ai été créé par ${o.name}, ${o.roleFr}. Tu peux le contacter par téléphone au ${o.phone} ou par email à ${o.email}.`;
             }
-            // 4. Who is Jarvis / Identity
             const asksSelf = /\b(who are you|what are you|introduce yourself|tell me about yourself|qui es[- ]tu|qu'es[- ]tu|présente[- ]toi|presente[- ]toi)\b/i.test(lower);
             if (asksSelf) {
                 return lang === 'en-US'
-                    ? `I am Jarvis, a scholarly humanoid AI created by ${o.name}, a ${o.roleEn}. Say "Jarvis" first anytime you want to talk, and I will answer your questions in English or French across science, AI, math, and world knowledge—including detailed information about my creator's background, skills, projects, and experience.`
-                    : `Je suis Jarvis, une intelligence artificielle humanoïde érudite créée par ${o.name}, ${o.roleFr}. Dites « Jarvis » en premier dès que vous voulez discuter, et je répondrai à vos questions en français ou en anglais—y compris des informations détaillées sur le parcours, les compétences et les projets de mon créateur.`;
+                    ? `I am Jarvis, a scholarly humanoid AI created by ${o.name}, a ${o.roleEn}. Say "Jarvis" first anytime you want to talk, and I will answer your questions in English or French across science, AI, math, your custom trained knowledge base, and world knowledge.`
+                    : `Je suis Jarvis, une intelligence artificielle humanoïde érudite créée par ${o.name}, ${o.roleFr}. Dites « Jarvis » en premier dès que vous voulez discuter, et je répondrai à vos questions en français ou en anglais en m'appuyant sur ma base de connaissances et vos textes d'entraînement.`;
             }
-            // 5. Direct Core AI, Agentic AI, Ethics, Jobs, Safety, and Future Questions
             for (const item of JARVIS_DATABASE.coreQuestions) {
                 if (item.match.test(lower)) {
                     lastTopicDiscussed = item.topic;
                     return lang === 'en-US' ? item.en : item.fr;
                 }
             }
-            // 6. Direct Humanoid AI Topic Knowledge
             for (const item of JARVIS_DATABASE.humanoidTopics) {
                 if (item.match.test(lower)) {
                     lastTopicDiscussed = 'Humanoid AI';
                     return lang === 'en-US' ? item.en : item.fr;
                 }
             }
-            // 7. Direct NVIDIA product / company knowledge
             if (JARVIS_DATABASE.nvidiaTopics) {
                 for (const item of JARVIS_DATABASE.nvidiaTopics) {
                     if (item.match.test(lower)) {
@@ -1758,7 +2400,6 @@
                     }
                 }
             }
-            // 8. Direct Office / Leadership lookups
             for (const entry of JARVIS_DATABASE.offices) {
                 if (entry.matchEn.test(lower) || entry.matchFr.test(lower)) {
                     if (lang === 'en-US') {
@@ -1767,7 +2408,6 @@
                     return lengthMode === 'short' ? entry.answerFr : `${entry.answerFr} ${entry.detailFr}`;
                 }
             }
-            // 9. Today's Date
             const asksDate = /\b(today'?s date|what('s| is) (the )?date|what day is (it|today)|quelle est la date|date d'aujourd'hui|quel jour (on est|sommes-nous|est-ce))\b/i.test(lower);
             if (asksDate) {
                 const now = new Date();
@@ -1782,7 +2422,6 @@
                 });
                 return `Aujourd'hui, nous sommes le ${formattedFr}.`;
             }
-            // 10. Current Time
             const asksTime = /\b(what time is it|current time|quelle heure (est-il|il est)|donne l'heure)\b/i.test(lower);
             if (asksTime) {
                 const now = new Date();
@@ -1793,7 +2432,6 @@
                 const timeFr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
                 return `Il est actuellement ${timeFr}.`;
             }
-            // 11. Arithmetic & Student Math Expressions
             const mathMatch = lower.match(/(-?\d+(?:\.\d+)?)\s*(\+|plus|\-|minus|moins|\*|x|times|multiplié par|multiplie par|\/|divided by|divisé par|divise par)\s*(-?\d+(?:\.\d+)?)/i);
             if (mathMatch) {
                 const a = parseFloat(mathMatch[1]);
@@ -1818,7 +2456,6 @@
                         : `Lorsque nous calculons ${a} ${opWordFr} ${b}, le résultat exact est ${rounded}. Souhaites-tu résoudre un autre calcul ou une équation ?`;
                 }
             }
-            // 12. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
             const isGeneralSubjectRequest = /\b(help me (with|in|study)|i need help (with|in)|let's study|teach me|talk about|discuss|what is|aide[- ]moi (en|avec|pour)|j'ai besoin d'aide (en|pour)|étudions|parlons de|qu'est[- ]ce que)\b/i.test(lower);
             if (isGeneralSubjectRequest && lower.split(/\s+/).length <= 8) {
                 for (const subj of JARVIS_DATABASE.academicGuides) {
@@ -1831,7 +2468,6 @@
                     }
                 }
             }
-            // 13. Dedicated English & French Teaching Lessons
             const asksTeachEn = /\b(teach me english|learn english|english lesson|apprends[- ]moi l'anglais|cours d'anglais)\b/i.test(lower);
             if (asksTeachEn) {
                 return lang === 'en-US'
@@ -2019,7 +2655,6 @@
         }
         async function searchWithReformulation(question, lang, signal) {
             const queries = buildReformulatedQueries(question);
-            console.info('[Jarvis] searching reformulated queries:', queries);
             const altLang = lang === 'en-US' ? 'fr-FR' : 'en-US';
             for (const q of queries) {
                 const wikiPrimary = await fetchWikipediaMatch(q, lang, signal);
@@ -2059,6 +2694,7 @@
             if (activeAbortController) activeAbortController.abort();
             activeAbortController = new AbortController();
             recordTurn('user', commandText);
+
             const attentiveReply = detectCarefulListeningCommand(commandText, lang);
             if (attentiveReply) {
                 recordTurn('jarvis', attentiveReply);
@@ -2066,14 +2702,29 @@
                 speakText(attentiveReply, lang);
                 return;
             }
+
             const lengthMode = resolveDesiredLength(commandText);
             const isTeaching = /\b(teach me|learn|explain|how does|how do|help me|study|solve|formula|theorem|math|physics|chemistry|chimistry|biology|apprends[- ]moi|explique|comment|aide[- ]moi|étudie|résous|formule|théorème|mathématiques|physique|chimie|biologie)\b/i.test(commandText);
             const isConversational = conversationHistory.length > 2 || /\b(what do you think|let's discuss|talk about|in your opinion|qu'en penses-tu|discutons|parlons de|à ton avis)\b/i.test(commandText);
 
-            // Check related ambient microphone memories
+            // 1. Check Trained Knowledge Base (Second Memory)
+            const trainedMatches = searchTrainingKnowledge(commandText, 2);
+            const trainedReply = formatTrainedAnswer(trainedMatches, lang, lengthMode);
+
+            // 2. Check Ambient Microphone Memory (First Memory)
             const relatedMemories = findRelatedAmbientMemories(commandText, 3);
             const ambientContextNote = buildAmbientContextReply(relatedMemories, lang);
 
+            if (trainedReply) {
+                lastTopicDiscussed = trainedMatches[0].title;
+                const finalTrained = ambientContextNote ? `${trainedReply}\n\n${ambientContextNote}` : trainedReply;
+                recordTurn('jarvis', finalTrained);
+                showSubtitle(finalTrained, 'J.A.R.V.I.S. · TRAINED MEMORY');
+                speakText(finalTrained, lang);
+                return;
+            }
+
+            // 3. Check Built-in Scholar Knowledge
             const instant = handleInstantKnowledge(commandText, lang, lengthMode);
             if (instant) {
                 const combinedInstant = ambientContextNote ? `${instant}\n\n${ambientContextNote}` : instant;
@@ -2082,6 +2733,8 @@
                 speakText(combinedInstant, lang);
                 return;
             }
+
+            // 4. Conversational Turns
             let convo = handleConversationalTurn(commandText, lang);
             if (convo && convo.startsWith('__CONTINUE__:')) {
                 const prevTopic = convo.slice('__CONTINUE__:'.length);
@@ -2095,8 +2748,7 @@
                 return;
             }
 
-            // If the question directly relates to saved ambient mic data, answer immediately from memory
-            // (and enrich with web lookup if it looks like an external factual query)
+            // 5. Personal / Ambient Mic Memory Direct Answer
             const isPersonalOrMemoryQuery = /\b(my|our|we|i|he|she|they|meeting|room|password|code|number|schedule|plan|today|tonight|tomorrow|bring|buy|call|said|heard|mentioned|mon|ma|mes|notre|nos|je|nous|il|elle|réunion|mot de passe|numéro|programme|aujourd'hui|demain|dit|entendu)\b/i.test(commandText);
             if (relatedMemories.length > 0 && isPersonalOrMemoryQuery) {
                 lastTopicDiscussed = relatedMemories[0].text;
@@ -2106,6 +2758,7 @@
                 return;
             }
 
+            // 6. Online Knowledge Lookup + Scholarly Reasoning Fallback
             setRobotState('thinking');
             try {
                 let searchQuery = commandText;
@@ -2137,7 +2790,6 @@
                 speakText(reply, lang);
             } catch (error) {
                 if (error.name === 'AbortError') return;
-                console.warn('[Jarvis] web lookup failed, using offline reasoning:', error.message || error);
                 const fallbackOffline = ambientContextNote || buildScholarlyReasoningFallback(commandText, lang);
                 recordTurn('jarvis', fallbackOffline);
                 showSubtitle(fallbackOffline);
