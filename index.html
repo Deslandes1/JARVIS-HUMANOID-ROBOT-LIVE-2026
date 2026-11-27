@@ -2796,6 +2796,52 @@
                 speakText(fallbackOffline, lang);
             }
         }
+        function pickBestVoice(targetLang) {
+            const voices = window.speechSynthesis.getVoices() || [];
+            const prefix = targetLang.split('-')[0].toLowerCase();
+            return (
+                voices.find(v => v.lang && v.lang.toLowerCase() === targetLang.toLowerCase() && !/compact|espeak/i.test(v.name)) ||
+                voices.find(v => v.lang && v.lang.toLowerCase() === targetLang.toLowerCase()) ||
+                voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix) && !/compact|espeak/i.test(v.name)) ||
+                voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix)) ||
+                null
+            );
+        }
+
+        function splitIntoLanguageSegments(text, defaultLang) {
+            const cleaned = String(text || '').trim();
+            if (!cleaned) return [];
+
+            // Match explicit EN: ... / FR: ... sections (including EN Example: / FR Example:)
+            const markerRegex = /\b(EN(?:\s+Example)?|FR(?:\s+Example)?)\s*:\s*/gi;
+            const matches = [...cleaned.matchAll(markerRegex)];
+
+            if (matches.length > 0) {
+                const segments = [];
+                for (let i = 0; i < matches.length; i++) {
+                    const match = matches[i];
+                    const label = match[1].toUpperCase();
+                    const startIdx = match.index + match[0].length;
+                    const endIdx = i + 1 < matches.length ? matches[i + 1].index : cleaned.length;
+                    const chunk = cleaned.slice(startIdx, endIdx).trim();
+                    if (!chunk) continue;
+                    const segLang = label.startsWith('FR') ? 'fr-FR' : 'en-US';
+                    segments.push({ text: chunk, lang: segLang });
+                }
+
+                // Order matching user language first so they hear their own language immediately
+                const primaryLang = defaultLang === 'fr-FR' ? 'fr-FR' : 'en-US';
+                segments.sort((a, b) => {
+                    const aPrimary = a.lang === primaryLang ? 0 : 1;
+                    const bPrimary = b.lang === primaryLang ? 0 : 1;
+                    return aPrimary - bPrimary;
+                });
+                return segments;
+            }
+
+            return [{ text: cleaned, lang: defaultLang === 'fr-FR' ? 'fr-FR' : 'en-US' }];
+        }
+
         function speakText(text, lang) {
             lastSpokenText = text;
             if (!('speechSynthesis' in window)) {
@@ -2804,28 +2850,27 @@
                 if (isMicArmed) startRecognizerSafely();
                 return;
             }
+
+            window.speechSynthesis.cancel();
             isSpeakingNow = true;
             if (isRecognizerRunning) {
                 try { recognition.abort(); } catch (_) {}
             }
-            const targetLang = lang === 'en-US' ? 'en-US' : 'fr-FR';
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = targetLang;
-            const voices = window.speechSynthesis.getVoices();
-            const prefix = targetLang.split('-')[0];
-            const bestVoice = voices.find(v => v.lang === targetLang) || voices.find(v => v.lang.startsWith(prefix));
-            if (bestVoice) utterance.voice = bestVoice;
-            utterance.rate = 1.03;
-            const charsPerSec = targetLang === 'en-US' ? 15 : 13;
-            const estimatedSeconds = text.length / charsPerSec;
-            const armCycleMs = Math.max(2000, Math.min(3800, estimatedSeconds * 1000 / 2));
+
+            const segments = splitIntoLanguageSegments(text, lang || currentLang);
+            if (!segments.length) {
+                isSpeakingNow = false;
+                setRobotState(isMicArmed ? 'listening' : 'idle');
+                return;
+            }
+
+            const totalChars = segments.reduce((sum, s) => sum + s.text.length, 0);
+            const estimatedSeconds = totalChars / 14;
+            const armCycleMs = Math.max(2000, Math.min(3800, (estimatedSeconds * 1000) / 2));
             robotBody.style.setProperty('--arm-speed-left', Math.round(armCycleMs) + 'ms');
             robotBody.style.setProperty('--arm-speed-right', Math.round(armCycleMs * 1.12) + 'ms');
-            utterance.onstart = () => {
-                isSpeakingNow = true;
-                setRobotState('speaking');
-            };
-            utterance.onend = () => {
+
+            const finishQueue = () => {
                 isSpeakingNow = false;
                 lastSpeechEndedAt = Date.now();
                 setRobotState(isMicArmed ? 'listening' : 'idle');
@@ -2834,16 +2879,31 @@
                     setTimeout(() => startRecognizerSafely(), 750);
                 }
             };
-            utterance.onerror = () => {
-                isSpeakingNow = false;
-                lastSpeechEndedAt = Date.now();
-                setRobotState(isMicArmed ? 'listening' : 'idle');
-                scheduleSubtitleHide(11000);
-                if (isMicArmed) {
-                    setTimeout(() => startRecognizerSafely(), 750);
-                }
-            };
-            window.speechSynthesis.speak(utterance);
+
+            segments.forEach((seg, idx) => {
+                const utterance = new SpeechSynthesisUtterance(seg.text);
+                utterance.lang = seg.lang;
+                const bestVoice = pickBestVoice(seg.lang);
+                if (bestVoice) utterance.voice = bestVoice;
+                utterance.rate = seg.lang === 'fr-FR' ? 1.0 : 1.03;
+
+                const isLast = idx === segments.length - 1;
+
+                utterance.onstart = () => {
+                    isSpeakingNow = true;
+                    setRobotState('speaking');
+                };
+
+                utterance.onend = () => {
+                    if (isLast) finishQueue();
+                };
+
+                utterance.onerror = () => {
+                    if (isLast) finishQueue();
+                };
+
+                window.speechSynthesis.speak(utterance);
+            });
         }
         function stopSpeaking(resumeMicIfArmed = true) {
             isSpeakingNow = false;
