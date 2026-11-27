@@ -123,6 +123,26 @@
             border-color: var(--cyan);
             color: var(--cyan);
         }
+        .memory-toast {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(0, 229, 255, 0.55);
+            color: var(--cyan);
+            font-size: 0.7rem;
+            font-weight: 700;
+            max-width: 340px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            backdrop-filter: blur(10px);
+        }
+        .memory-toast.show {
+            display: inline-flex;
+        }
         .owner-card {
             pointer-events: auto;
             background: rgba(255,255,255,0.94);
@@ -435,6 +455,29 @@
             padding: 6px;
         }
         .modal-card .skip-btn:hover { color: #334155; }
+        .memory-list {
+            max-height: 240px;
+            overflow-y: auto;
+            text-align: left;
+            background: #fff;
+            border: 1.5px solid #e2d9b8;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            font-size: 0.84rem;
+            color: #1e293b;
+        }
+        .memory-item {
+            padding: 7px 0;
+            border-bottom: 1px solid #f1ece0;
+        }
+        .memory-item:last-child { border-bottom: none; }
+        .memory-item time {
+            display: block;
+            font-size: 0.7rem;
+            color: #7a5200;
+            font-weight: 700;
+        }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @media (max-width: 760px) {
             .status-badge { font-size: 0.65rem; padding: 6px 10px; }
@@ -475,8 +518,10 @@
             <div class="hud-actions">
                 <button class="hud-btn" id="langLockBtn" onclick="cycleLangLock()">🌐 Auto EN/FR</button>
                 <button class="hud-btn" id="depthBtn" onclick="cycleAnswerDepth()">📚 Auto Length</button>
+                <button class="hud-btn" id="memoryBtn" onclick="openMemoryModal()">🧠 Memory (0)</button>
                 <button class="hud-btn" id="videoModeBtn" onclick="toggleVideoMode()">🎬 Mode Vidéo</button>
             </div>
+            <div class="memory-toast" id="memoryToast"></div>
         </div>
         <div class="owner-card">
             <strong>Gesner Deslandes</strong>
@@ -596,10 +641,19 @@
     <div id="nameOverlay" class="modal-overlay hidden">
         <div class="modal-card">
             <h2>👋 Welcome to J.A.R.V.I.S.</h2>
-            <p>Enter your name to begin. Always say <strong>"Jarvis"</strong> first before asking your question.</p>
+            <p>Enter your name to begin. Always say <strong>"Jarvis"</strong> first before asking your question. Ambient speech heard on the mic is saved automatically for context.</p>
             <input type="text" id="nameInput" placeholder="Your name..." maxlength="24" autocomplete="off">
             <button class="go-btn" onclick="saveNameAndStart()">Start</button>
             <button class="skip-btn" onclick="skipName()">Continue as Guest</button>
+        </div>
+    </div>
+    <div id="memoryOverlay" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h2>🧠 Ambient Mic Memory</h2>
+            <p>Speech captured while the mic is active (even without saying "Jarvis") is saved here and used automatically when related to your questions.</p>
+            <div class="memory-list" id="memoryListContainer"></div>
+            <button class="go-btn" onclick="closeMemoryModal()">Close</button>
+            <button class="skip-btn" onclick="clearAmbientMemories()">Clear All Saved Memories</button>
         </div>
     </div>
     <script>
@@ -609,7 +663,6 @@
         const JARVIS_DATABASE = {
             assistantName: "Jarvis",
             fullTitle: "J.A.R.V.I.S.",
-
             // --------------------------------------------------------
             // OWNER PROFILE — Full CV of Gesner Deslandes
             // --------------------------------------------------------
@@ -686,7 +739,6 @@
                     { name: "Charles Zerr MD", contact: "+1 620 952 0074" }
                 ]
             },
-
             // --------------------------------------------------------
             // OWNER Q&A — direct answers about Gesner Deslandes
             // --------------------------------------------------------
@@ -752,7 +804,6 @@
                     fr: "Gesner Deslandes travaille intensivement avec l'IA : il intègre des LLM (Groq Llama 3.1), conçoit des prompts, construit des systèmes de détection d'anomalies, conçoit la logique d'agents autonomes et génère des insights prédictifs. Ses projets IA incluent System Health AI Monitor (diagnostics prédictifs par IA), SafeHaven – Anti-Trafficking AI (matrices de risque et plans d'action automatisés via Groq LLM) et Hospital Management System (noyau de diagnostic IA intégré). Il utilise également la synthèse audio IA (edge-tts) pour des diagnostics vocaux multilingues."
                 }
             ],
-
             owner: {
                 name: "Gesner Deslandes",
                 roleEn: "Software Architect & AI Solutions Engineer from Haiti",
@@ -760,7 +811,6 @@
                 phone: "+509 4738 5663",
                 email: "deslandes78@gmail.com"
             },
-
             coreQuestions: [
                 {
                     id: 'gen-agent-humanoid',
@@ -898,7 +948,7 @@
                     match: /\b(chemistry|chimistry|atom|molecule|periodic table|chemical|reaction|acid|base|mole|stoichiometry|bond|h2o|oxygen|hydrogen|chimie|atome|molécule|molecule|tableau périodique|réaction|acide|stœchiométrie|liaison)\b/i,
                     shortEn: "Chemistry is the science of atoms, molecules, and chemical reactions—explaining how elements bond, transform, and conserve mass and energy.",
                     longEn: "Chemistry explores matter at the atomic and molecular level. Whether balancing chemical equations, calculating molar mass in stoichiometry, or studying acids, bases, and covalent or ionic bonds, atoms are always conserved.",
-                    shortFr: "La chimie est la science des atomes, des molécules et des réactions chimiques : elle explique comment les éléments se lient et se transforment.",
+                    shortFr: "La chimie est la science des atomes, des molécules et des réactions chimiques : elle explique comment les éléments se lignent et se transforment.",
                     longFr: "La chimie étudie la matière à l'échelle atomique et moléculaire. Qu'il s'agisse d'équilibrer une équation chimique, de calculer une masse molaire ou d'étudier les acides, les bases et les liaisons chimiques, la conservation des atomes reste la règle d'or."
                 },
                 {
@@ -944,6 +994,179 @@
             ]
         };
 
+        // ============================================================
+        // PASSIVE AMBIENT MIC MEMORY STORE (SAVES ALL SPEECH HEARD)
+        // ============================================================
+        const AMBIENT_MEMORY_KEY = 'jarvis_ambient_listening_memory_v1';
+        const MAX_AMBIENT_MEMORIES = 150;
+        let ambientListeningMemory = [];
+        try {
+            const rawSaved = localStorage.getItem(AMBIENT_MEMORY_KEY);
+            if (rawSaved) {
+                const parsed = JSON.parse(rawSaved);
+                if (Array.isArray(parsed)) ambientListeningMemory = parsed;
+            }
+        } catch (_) {
+            ambientListeningMemory = [];
+        }
+
+        const MEMORY_STOP_WORDS = new Set([
+            'the','and','for','are','but','not','you','all','any','can','had','her','was','one','our','out',
+            'day','get','has','him','his','how','man','new','now','old','see','two','way','who','boy','did',
+            'its','let','put','say','she','too','use','what','when','where','which','why','with','from','into',
+            'that','this','these','those','have','been','will','would','could','should','about','there','their',
+            'they','them','then','than','some','more','very','just','know','take','into','year','your','good',
+            'come','make','like','time','look','want','give','most','tell','remember','mentioned','heard','said',
+            'jarvis','please','question','answer','ask','asked','asking','talk','talking','spoke','speak',
+            'les','des','une','pour','dans','avec','sur','par','plus','tout','tous','mais','comme','fait',
+            'faire','être','avoir','sont','était','cette','ces','mon','ton','son','notre','votre','leur',
+            'qui','que','quoi','dont','où','quand','comment','pourquoi','quel','quelle','quels','quelles',
+            'dit','dire','entendu','parlé','parler','souviens','rappelle','question','réponse','merci'
+        ]);
+
+        function extractKeywords(text) {
+            return (text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9àâäéèêëîïôöùûüçœæ\s'-]/g, ' ')
+                .split(/\s+/)
+                .filter(w => w.length >= 3 && !MEMORY_STOP_WORDS.has(w));
+        }
+
+        function updateMemoryCounterUI() {
+            const btn = document.getElementById('memoryBtn');
+            if (btn) {
+                btn.textContent = `🧠 Memory (${ambientListeningMemory.length})`;
+            }
+        }
+
+        let memoryToastTimer = null;
+        function showMemoryLoggedToast(text) {
+            const toast = document.getElementById('memoryToast');
+            if (!toast) return;
+            const preview = text.length > 44 ? text.slice(0, 44) + '…' : text;
+            toast.textContent = `🧠 Saved from mic: "${preview}"`;
+            toast.classList.add('show');
+            clearTimeout(memoryToastTimer);
+            memoryToastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        function saveAmbientListeningEntry(transcript, lang) {
+            const cleaned = (transcript || '').trim();
+            if (!cleaned || cleaned.length < 3) return;
+            const lastEntry = ambientListeningMemory[ambientListeningMemory.length - 1];
+            if (lastEntry && lastEntry.text.toLowerCase() === cleaned.toLowerCase() && (Date.now() - lastEntry.timestamp) < 8000) {
+                return;
+            }
+            const entry = {
+                id: Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+                text: cleaned,
+                lang: lang || currentLang,
+                timestamp: Date.now(),
+                speaker: gpsUserName || 'Ambient Mic',
+                keywords: extractKeywords(cleaned)
+            };
+            ambientListeningMemory.push(entry);
+            if (ambientListeningMemory.length > MAX_AMBIENT_MEMORIES) {
+                ambientListeningMemory.shift();
+            }
+            try {
+                localStorage.setItem(AMBIENT_MEMORY_KEY, JSON.stringify(ambientListeningMemory));
+            } catch (_) {}
+            updateMemoryCounterUI();
+            showMemoryLoggedToast(cleaned);
+        }
+
+        function findRelatedAmbientMemories(question, maxResults = 3) {
+            if (!ambientListeningMemory.length) return [];
+            const qLower = question.toLowerCase();
+            const qKeywords = extractKeywords(question);
+
+            const asksRecentHeard = /\b(what did (i|we|they|someone|you) (just )?(say|hear|mention|talk about)|what was (just )?(said|mentioned)|did you hear|repeat what (was|i) said|qu'est[- ]ce qu'on a dit|qu'as[- ]tu entendu|répète ce qui a été dit|ce que j'ai dit)\b/i.test(qLower);
+            if (asksRecentHeard && qKeywords.length === 0) {
+                return ambientListeningMemory.slice(-maxResults).reverse();
+            }
+
+            if (qKeywords.length === 0) return [];
+            const qSet = new Set(qKeywords);
+            const now = Date.now();
+
+            const scored = ambientListeningMemory.map((item) => {
+                const itemKeywords = item.keywords && item.keywords.length ? item.keywords : extractKeywords(item.text);
+                let overlap = 0;
+                for (const kw of itemKeywords) {
+                    if (qSet.has(kw)) {
+                        overlap += 2;
+                    } else {
+                        for (const qk of qSet) {
+                            if (qk.length >= 4 && kw.length >= 4 && (kw.startsWith(qk) || qk.startsWith(kw))) {
+                                overlap += 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (overlap === 0) return { item, score: 0 };
+                // Slight recency boost (within last 30 minutes)
+                const ageMinutes = (now - item.timestamp) / 60000;
+                const recencyBonus = ageMinutes < 30 ? 0.5 : 0;
+                return { item, score: overlap + recencyBonus };
+            });
+
+            return scored
+                .filter(s => s.score >= 2)
+                .sort((a, b) => b.score - a.score || b.item.timestamp - a.item.timestamp)
+                .slice(0, maxResults)
+                .map(s => s.item);
+        }
+
+        function formatRelativeTime(ts, lang) {
+            const diffSec = Math.max(1, Math.round((Date.now() - ts) / 1000));
+            if (diffSec < 60) return lang === 'en-US' ? `${diffSec}s ago` : `il y a ${diffSec}s`;
+            const diffMin = Math.round(diffSec / 60);
+            if (diffMin < 60) return lang === 'en-US' ? `${diffMin}m ago` : `il y a ${diffMin} min`;
+            const diffHr = Math.round(diffMin / 60);
+            if (diffHr < 24) return lang === 'en-US' ? `${diffHr}h ago` : `il y a ${diffHr} h`;
+            return new Date(ts).toLocaleDateString();
+        }
+
+        function openMemoryModal() {
+            const container = document.getElementById('memoryListContainer');
+            if (!ambientListeningMemory.length) {
+                container.innerHTML = '<div style="color:#64748b;text-align:center;padding:16px;">No ambient speech captured yet. Turn on the chest mic and speak—Jarvis will store what it hears even without saying "Jarvis".</div>';
+            } else {
+                container.innerHTML = ambientListeningMemory
+                    .slice()
+                    .reverse()
+                    .map(m => `<div class="memory-item"><time>${new Date(m.timestamp).toLocaleTimeString()} · ${m.lang}</time>${escapeHtml(m.text)}</div>`)
+                    .join('');
+            }
+            document.getElementById('memoryOverlay').classList.remove('hidden');
+        }
+
+        function closeMemoryModal() {
+            document.getElementById('memoryOverlay').classList.add('hidden');
+        }
+
+        function clearAmbientMemories() {
+            ambientListeningMemory = [];
+            try { localStorage.removeItem(AMBIENT_MEMORY_KEY); } catch (_) {}
+            updateMemoryCounterUI();
+            openMemoryModal();
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // ============================================================
+        // GPS & FIREBASE TELEMETRY
+        // ============================================================
         const GPS_FIREBASE_URL = "https://jarvis-tracker-a8136-default-rtdb.firebaseio.com";
         const GPS_PREFIX = "JARVIS-AI";
         let gpsDeviceId   = localStorage.getItem('jarvis_ai_device')  || null;
@@ -951,7 +1174,6 @@
         let gpsWatchId    = null;
         let gpsLastUpload = 0;
         let gpsLastTouch  = 0;
-
         function generateDeviceId(name) {
             const safe = (name || 'student')
                 .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -959,7 +1181,6 @@
                 .slice(0, 18) || 'student';
             return `${GPS_PREFIX}-${safe}-${Math.floor(1000 + Math.random() * 9000)}`;
         }
-
         async function uploadPosition(pos) {
             if (!gpsDeviceId) return;
             const now = Date.now();
@@ -981,7 +1202,6 @@
                 });
             } catch (e) { /* silent */ }
         }
-
         function startGpsTracking() {
             if (!navigator.geolocation || !gpsDeviceId) return;
             if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
@@ -991,7 +1211,6 @@
                 { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
             );
         }
-
         function refreshGpsPosition(force) {
             if (!navigator.geolocation || !gpsDeviceId) return;
             const now = Date.now();
@@ -1003,17 +1222,14 @@
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         }
-
         function openNameOverlay() {
             document.getElementById('nameInput').value = gpsUserName || '';
             document.getElementById('nameOverlay').classList.remove('hidden');
             setTimeout(() => document.getElementById('nameInput').focus(), 100);
         }
-
         function closeNameOverlay() {
             document.getElementById('nameOverlay').classList.add('hidden');
         }
-
         function saveNameAndStart() {
             const raw = document.getElementById('nameInput').value.trim();
             if (!raw) { alert("Please enter your name first."); return; }
@@ -1028,7 +1244,6 @@
             showSubtitle(`Welcome ${raw}! My name is Jarvis. Say "Jarvis" first before asking any question.`);
             scheduleSubtitleHide(8000);
         }
-
         function skipName() {
             if (!gpsDeviceId) {
                 gpsDeviceId = generateDeviceId('student');
@@ -1039,15 +1254,14 @@
             showSubtitle('Welcome! My name is Jarvis. Always say "Jarvis" first before asking your question.');
             scheduleSubtitleHide(8000);
         }
-
         function toggleVideoMode() {
             const active = document.body.classList.toggle('video-mode');
             const btn = document.getElementById('videoModeBtn');
             btn.classList.toggle('active', active);
             btn.textContent = active ? '🎬 Exit Video' : '🎬 Mode Vidéo';
         }
-
         window.addEventListener('load', () => {
+            updateMemoryCounterUI();
             if (gpsDeviceId && gpsUserName) {
                 startGpsTracking();
                 setTimeout(() => refreshGpsPosition(true), 800);
@@ -1055,7 +1269,6 @@
                 openNameOverlay();
             }
         });
-
         function attachGpsTouchListeners() {
             const handler = () => refreshGpsPosition(false);
             document.addEventListener('touchstart', handler, { passive: true, capture: true });
@@ -1063,13 +1276,15 @@
             document.addEventListener('click', handler, { passive: true, capture: true });
         }
         attachGpsTouchListeners();
-
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible' && gpsDeviceId) {
                 refreshGpsPosition(true);
             }
         });
 
+        // ============================================================
+        // SPEECH RECOGNITION, WAKE WORD & PASSIVE LISTENING ENGINE
+        // ============================================================
         const robotBody   = document.getElementById('robotBody');
         const micBtn      = document.getElementById('micBtn');
         const subtitle    = document.getElementById('subtitle');
@@ -1077,7 +1292,6 @@
         const statusDot   = document.getElementById('statusDot');
         const langLockBtn = document.getElementById('langLockBtn');
         const depthBtn    = document.getElementById('depthBtn');
-
         let isMicArmed = false;
         let isRecognizerRunning = false;
         let isSpeakingNow = false;
@@ -1093,17 +1307,13 @@
         let lastTopicDiscussed = '';
         let lastProcessedQuery = '';
         let lastProcessedAt = 0;
-
         const conversationHistory = [];
         let attentiveListeningMode = false;
         let attentiveListeningSubject = '';
         let attentiveBuffer = [];
         let attentiveFlushTimer = null;
-
         window.speechSynthesis.getVoices();
-
-        const WAKE_WORD_REGEX = /^(?:hey\s+|ok\s+|okay\s+|hi\s+|hello\s+|bonjour\s+|salut\s+)?(?:j\.?\s*a\.?\s*r\.?\s*v\.?\s*i\.?\s*s\.?|jarvis|jarvice|jarviss)(?:[,:;.!?-]+|\s+|$)(.*)$/i;
-
+        const WAKE_WORD_REGEX = /^(?:hey\s+|ok\s+|okay\s+|hi\s+|hello\s+|bonjour\s+|salut\s+)?(?:j\.?\s*a\.?\s*r\.?\s*v\.?\s*i\.?\s*s\.?|jarvis|jarvice|jarviss)(?:[,:;.!?-]+|\s+|)(.*)/i;
         function parseJarvisWakeWord(rawInput) {
             const trimmed = (rawInput || '').trim();
             const match = trimmed.match(WAKE_WORD_REGEX);
@@ -1115,7 +1325,6 @@
                 question: (match[1] || '').trim()
             };
         }
-
         function cycleLangLock() {
             if (forcedLang === null) {
                 forcedLang = 'en-US';
@@ -1135,7 +1344,6 @@
             if (recognition) recognition.lang = currentLang;
             setRobotState(currentPhase);
         }
-
         function cycleAnswerDepth() {
             if (answerDepth === 'auto') {
                 answerDepth = 'short';
@@ -1151,21 +1359,18 @@
                 depthBtn.classList.remove('active');
             }
         }
-
         function showSubtitle(text, speaker = 'J.A.R.V.I.S. · SCHOLAR') {
-            subtitle.innerHTML = `<span class="speaker">${speaker}</span>${text}`;
+            subtitle.innerHTML = `<span class="speaker">${speaker}</span>${escapeHtml(text)}`;
             subtitle.classList.add('show');
             subtitle.scrollTop = 0;
             clearTimeout(subtitleTimer);
         }
-
         function scheduleSubtitleHide(ms = 12000) {
             clearTimeout(subtitleTimer);
             subtitleTimer = setTimeout(() => {
                 subtitle.classList.remove('show');
             }, ms);
         }
-
         function updateMicButtonUI() {
             if (isMicArmed) {
                 micBtn.classList.add('listening');
@@ -1175,7 +1380,6 @@
                 micBtn.innerText = "🎤";
             }
         }
-
         function setRobotState(state) {
             currentPhase = state;
             robotBody.classList.remove('speaking', 'listening', 'thinking');
@@ -1188,7 +1392,7 @@
                 robotBody.classList.add('listening');
                 statusText.textContent = attentiveListeningMode
                     ? `JARVIS · ATTENTIVE LISTEN (${langTag})`
-                    : `JARVIS · SAY "JARVIS" FIRST (${langTag})`;
+                    : `JARVIS · LISTENING & SAVING (${langTag})`;
                 statusDot.style.background = '#3ef58c';
             } else if (state === 'thinking') {
                 robotBody.classList.add('thinking');
@@ -1196,12 +1400,11 @@
                 statusDot.style.background = '#00e5ff';
             } else {
                 statusText.textContent = isMicArmed
-                    ? `JARVIS · SAY "JARVIS" FIRST (${langTag})`
+                    ? `JARVIS · LISTENING & SAVING (${langTag})`
                     : `JARVIS · SAY "JARVIS" FIRST`;
                 statusDot.style.background = isMicArmed ? '#3ef58c' : '#ffc72c';
             }
         }
-
         function detectLanguage(text) {
             if (forcedLang) return forcedLang;
             if (!text) return currentLang;
@@ -1244,7 +1447,6 @@
             if (enScore === 0 && frScore === 0) return currentLang;
             return enScore > frScore ? 'en-US' : 'fr-FR';
         }
-
         function isSelfEcho(transcript) {
             if (!lastSpokenText) return false;
             const normUser = transcript.toLowerCase().replace(/[^a-z0-9àâäéèêëîïôöùûüç\s]/g, '').trim();
@@ -1256,7 +1458,6 @@
             const overlap = userWords.filter(w => jarvisSet.has(w)).length;
             return userWords.length >= 4 && (overlap / userWords.length) >= 0.78;
         }
-
         function startRecognizerSafely() {
             if (!recognition || !isMicArmed || isRecognizerRunning || isSpeakingNow) return;
             if (window.speechSynthesis && window.speechSynthesis.speaking) return;
@@ -1269,7 +1470,6 @@
                 recognition.start();
             } catch (_) {}
         }
-
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
@@ -1292,29 +1492,28 @@
                 if (isSelfEcho(transcript)) {
                     return;
                 }
-
                 const detectedLang = detectLanguage(transcript);
                 currentLang = detectedLang;
                 recognition.lang = currentLang;
-
                 if (attentiveListeningMode) {
                     const stripped = transcript.replace(WAKE_WORD_REGEX, '$1').trim() || transcript;
+                    saveAmbientListeningEntry(stripped, detectedLang);
                     handleAttentiveBufferInput(stripped, detectedLang);
                     return;
                 }
-
                 const parsed = parseJarvisWakeWord(transcript);
                 if (!parsed.addressedToJarvis) {
+                    // Save ambient microphone data silently even when "Jarvis" was NOT said
+                    saveAmbientListeningEntry(transcript, detectedLang);
                     showSubtitle(
                         detectedLang === 'en-US'
-                            ? `Standby — please say "Jarvis" first before your question. (Heard: "${transcript}")`
-                            : `En veille — dites « Jarvis » en premier avant votre question. (Entendu : « ${transcript} »)`,
-                        '🛑 WAKE WORD REQUIRED'
+                            ? `Saved to memory: "${transcript}" — Say "Jarvis" first when you want me to answer.`
+                            : `Enregistré en mémoire : « ${transcript} » — Dites « Jarvis » en premier pour que je réponde.`,
+                        '🧠 AMBIENT MEMORY SAVED'
                     );
-                    scheduleSubtitleHide(4500);
+                    scheduleSubtitleHide(4200);
                     return;
                 }
-
                 if (!parsed.question) {
                     const namePart = gpsUserName ? ` ${gpsUserName}` : '';
                     const ack = detectedLang === 'en-US'
@@ -1327,7 +1526,6 @@
                     }, 200);
                     return;
                 }
-
                 const cleaned = parsed.question;
                 const now = Date.now();
                 if (cleaned.toLowerCase() === lastProcessedQuery && now - lastProcessedAt < 2200) {
@@ -1335,7 +1533,6 @@
                 }
                 lastProcessedQuery = cleaned.toLowerCase();
                 lastProcessedAt = now;
-
                 showSubtitle(`Jarvis, ${cleaned}`, '👤 YOU');
                 processCommand(cleaned, detectedLang);
             };
@@ -1362,16 +1559,13 @@
                 }
             };
         }
-
         function handleTextSubmit(event) {
             event.preventDefault();
             const input = document.getElementById('chatInput');
             const raw = input.value.trim();
             if (!raw) return;
-
             const detectedLang = detectLanguage(raw);
             currentLang = detectedLang;
-
             const parsed = parseJarvisWakeWord(raw);
             if (!parsed.addressedToJarvis) {
                 const reminder = detectedLang === 'en-US'
@@ -1381,9 +1575,7 @@
                 scheduleSubtitleHide(6000);
                 return;
             }
-
             input.value = '';
-
             if (!parsed.question) {
                 const namePart = gpsUserName ? ` ${gpsUserName}` : '';
                 const ack = detectedLang === 'en-US'
@@ -1393,11 +1585,9 @@
                 speakText(ack, detectedLang);
                 return;
             }
-
             showSubtitle(`Jarvis, ${parsed.question}`, '👤 YOU');
             processCommand(parsed.question, detectedLang);
         }
-
         function handleAttentiveBufferInput(segment, lang) {
             clearTimeout(attentiveFlushTimer);
             const wantsImmediateAnswer = /\b(that's all|that is all|now answer|go ahead|answer now|you can answer|c'est tout|réponds maintenant|reponds maintenant|vas-y|tu peux répondre)\b/i.test(segment);
@@ -1424,7 +1614,6 @@
                 }
             }, 3400);
         }
-
         function flushAttentiveBuffer(lang) {
             clearTimeout(attentiveFlushTimer);
             const fullQuestion = attentiveBuffer.join(' ').trim();
@@ -1438,7 +1627,6 @@
             showSubtitle(`Jarvis, ${fullQuestion}`, '👤 YOU');
             processCommand(finalPrompt, lang);
         }
-
         function toggleMic() {
             if (!recognition) {
                 showSubtitle("Voice recognition is not supported in this browser. Type 'Jarvis,' followed by your question below!");
@@ -1467,15 +1655,14 @@
                 setRobotState('listening');
                 showSubtitle(
                     currentLang === 'en-US'
-                        ? 'Microphone ON — Say "Jarvis" first, then ask any question.'
-                        : 'Microphone ALLUMÉ — Dites « Jarvis » en premier, puis posez votre question.',
+                        ? 'Microphone ON — Listening & saving context. Say "Jarvis" first to ask a question.'
+                        : 'Microphone ALLUMÉ — Écoute et sauvegarde du contexte. Dites « Jarvis » en premier pour poser une question.',
                     '🎤'
                 );
                 scheduleSubtitleHide(5500);
                 startRecognizerSafely();
             }
         }
-
         function resolveDesiredLength(question) {
             if (answerDepth === 'short') return 'short';
             if (answerDepth === 'long') return 'long';
@@ -1491,7 +1678,6 @@
             }
             return 'medium';
         }
-
         function detectCarefulListeningCommand(commandText, lang) {
             const lower = commandText.toLowerCase().trim();
             const triggersListenCarefully = /\b(listen to my questions? carefully|listen carefully before (you )?answer|listen to me carefully|pay close attention|hear me out before answering|écoute mes questions? attentivement|ecoute mes questions? attentivement|écoute attentivement avant de répondre|ecoute attentivement avant de repondre|écoute-moi attentivement)\b/i.test(lower);
@@ -1517,11 +1703,9 @@
                 ? `Bien compris${namePart}. Je suis Jarvis et j'écoute tes questions de ${detectedSubject} avec toute mon attention. Prends ton temps avant que je ne réponde.`
                 : `Bien compris${namePart}. Je suis Jarvis et j'écoute avec toute mon attention. Prends ton temps pour poser tes questions avant que je ne réponde.`;
         }
-
         function handleInstantKnowledge(commandText, lang, lengthMode) {
             const lower = commandText.toLowerCase();
             const o = JARVIS_DATABASE.owner;
-
             // 1. Name & Wake-Word Rule Awareness
             const asksNameOrWakeRule = /\b(what('s| is) your name|your name|do you know your name|say jarvis first|why.*say jarvis|quel est ton nom|comment tu t'appelles|dire jarvis)\b/i.test(lower);
             if (asksNameOrWakeRule) {
@@ -1529,7 +1713,6 @@
                     ? `My name is Jarvis, or J.A.R.V.I.S. Whenever you or any other user want to speak with me, saying "Jarvis" first lets me know you are addressing me directly so I can answer your question right away.`
                     : `Je m'appelle Jarvis, ou J.A.R.V.I.S. Lorsque vous ou un autre utilisateur souhaitez me parler, dites d'abord « Jarvis » afin que je sache que vous vous adressez directement à moi et que je puisse répondre immédiatement.`;
             }
-
             // 2. OWNER QUESTIONS — Full CV knowledge base
             for (const item of JARVIS_DATABASE.ownerQuestions) {
                 if (item.match.test(lower)) {
@@ -1537,7 +1720,6 @@
                     return lang === 'en-US' ? item.en : item.fr;
                 }
             }
-
             // 3. Owner / Creator / Developer / Contact (fallback if ownerQuestions missed)
             const asksOwner = /\b(who (made|created|built|owns|developed) you|who is your (owner|creator|developer)|your owner|your creator|contact info|phone number|email address|qui t'a (créé|creer|fait|développé|developper)|ton (créateur|createur|propriétaire|proprietaire|développeur|developpeur)|contact de gesner|numéro de téléphone|adresse email)\b/i.test(lower);
             if (asksOwner) {
@@ -1546,7 +1728,6 @@
                 }
                 return `Je m'appelle Jarvis, et j'ai été créé par ${o.name}, ${o.roleFr}. Tu peux le contacter par téléphone au ${o.phone} ou par email à ${o.email}.`;
             }
-
             // 4. Who is Jarvis / Identity
             const asksSelf = /\b(who are you|what are you|introduce yourself|tell me about yourself|qui es[- ]tu|qu'es[- ]tu|présente[- ]toi|presente[- ]toi)\b/i.test(lower);
             if (asksSelf) {
@@ -1554,7 +1735,6 @@
                     ? `I am Jarvis, a scholarly humanoid AI created by ${o.name}, a ${o.roleEn}. Say "Jarvis" first anytime you want to talk, and I will answer your questions in English or French across science, AI, math, and world knowledge—including detailed information about my creator's background, skills, projects, and experience.`
                     : `Je suis Jarvis, une intelligence artificielle humanoïde érudite créée par ${o.name}, ${o.roleFr}. Dites « Jarvis » en premier dès que vous voulez discuter, et je répondrai à vos questions en français ou en anglais—y compris des informations détaillées sur le parcours, les compétences et les projets de mon créateur.`;
             }
-
             // 5. Direct Core AI, Agentic AI, Ethics, Jobs, Safety, and Future Questions
             for (const item of JARVIS_DATABASE.coreQuestions) {
                 if (item.match.test(lower)) {
@@ -1562,7 +1742,6 @@
                     return lang === 'en-US' ? item.en : item.fr;
                 }
             }
-
             // 6. Direct Humanoid AI Topic Knowledge
             for (const item of JARVIS_DATABASE.humanoidTopics) {
                 if (item.match.test(lower)) {
@@ -1570,7 +1749,6 @@
                     return lang === 'en-US' ? item.en : item.fr;
                 }
             }
-
             // 7. Direct NVIDIA product / company knowledge
             if (JARVIS_DATABASE.nvidiaTopics) {
                 for (const item of JARVIS_DATABASE.nvidiaTopics) {
@@ -1580,7 +1758,6 @@
                     }
                 }
             }
-
             // 8. Direct Office / Leadership lookups
             for (const entry of JARVIS_DATABASE.offices) {
                 if (entry.matchEn.test(lower) || entry.matchFr.test(lower)) {
@@ -1590,7 +1767,6 @@
                     return lengthMode === 'short' ? entry.answerFr : `${entry.answerFr} ${entry.detailFr}`;
                 }
             }
-
             // 9. Today's Date
             const asksDate = /\b(today'?s date|what('s| is) (the )?date|what day is (it|today)|quelle est la date|date d'aujourd'hui|quel jour (on est|sommes-nous|est-ce))\b/i.test(lower);
             if (asksDate) {
@@ -1606,7 +1782,6 @@
                 });
                 return `Aujourd'hui, nous sommes le ${formattedFr}.`;
             }
-
             // 10. Current Time
             const asksTime = /\b(what time is it|current time|quelle heure (est-il|il est)|donne l'heure)\b/i.test(lower);
             if (asksTime) {
@@ -1618,7 +1793,6 @@
                 const timeFr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
                 return `Il est actuellement ${timeFr}.`;
             }
-
             // 11. Arithmetic & Student Math Expressions
             const mathMatch = lower.match(/(-?\d+(?:\.\d+)?)\s*(\+|plus|\-|minus|moins|\*|x|times|multiplié par|multiplie par|\/|divided by|divisé par|divise par)\s*(-?\d+(?:\.\d+)?)/i);
             if (mathMatch) {
@@ -1644,7 +1818,6 @@
                         : `Lorsque nous calculons ${a} ${opWordFr} ${b}, le résultat exact est ${rounded}. Souhaites-tu résoudre un autre calcul ou une équation ?`;
                 }
             }
-
             // 12. Broad Subject Guidance (Math, Physics, Chemistry, Biology) when asked generally
             const isGeneralSubjectRequest = /\b(help me (with|in|study)|i need help (with|in)|let's study|teach me|talk about|discuss|what is|aide[- ]moi (en|avec|pour)|j'ai besoin d'aide (en|pour)|étudions|parlons de|qu'est[- ]ce que)\b/i.test(lower);
             if (isGeneralSubjectRequest && lower.split(/\s+/).length <= 8) {
@@ -1658,7 +1831,6 @@
                     }
                 }
             }
-
             // 13. Dedicated English & French Teaching Lessons
             const asksTeachEn = /\b(teach me english|learn english|english lesson|apprends[- ]moi l'anglais|cours d'anglais)\b/i.test(lower);
             if (asksTeachEn) {
@@ -1666,17 +1838,14 @@
                     ? "Let's practice scholarly English together. Consider the sentence: 'Knowledge grows when shared with clarity.' Notice how 'shared' functions as a past participle. Which grammar rule or topic would you like to practice next?"
                     : "Pratiquons l'anglais ensemble : « Knowledge grows when shared with clarity », ce qui signifie « La connaissance grandit lorsqu'elle est partagée avec clarté ». Quel mot ou sujet souhaites-tu étudier ensuite ?";
             }
-
             const asksTeachFr = /\b(teach me french|learn french|french lesson|apprends[- ]moi le français|apprends[- ]moi le francais|cours de français)\b/i.test(lower);
             if (asksTeachFr) {
                 return lang === 'en-US'
                     ? "Let's practice French together: 'La rigueur intellectuelle éclaire chaque décision' — meaning 'Intellectual rigor illuminates every decision.' Tell me any French verb or grammar rule you would like to explore."
                     : "Pratiquons le français ensemble : « La rigueur intellectuelle éclaire chaque décision. » Dis-moi quel mot, verbe ou règle de grammaire tu souhaites approfondir.";
             }
-
             return null;
         }
-
         function handleConversationalTurn(commandText, lang) {
             const lower = commandText.toLowerCase().trim();
             const nameSuffix = gpsUserName ? ` ${gpsUserName}` : '';
@@ -1708,7 +1877,6 @@
             }
             return null;
         }
-
         function extractCoreSubject(question) {
             return question
                 .replace(/^(why do engineers build|why do people build|why do|why is|why are|why does|who is|who was|what is|what are|what was|what were|where is|where are|when was|when is|how does|how do|how are|how is|tell me about|explain|define|teach me about|teach me|help me with|can you tell me about|could you explain|i want to know about|in short|briefly|in detail)\s+/i, '')
@@ -1716,7 +1884,6 @@
                 .replace(/[?!.]+$/g, '')
                 .trim();
         }
-
         function buildReformulatedQueries(question) {
             const subject = extractCoreSubject(question);
             const candidates = [];
@@ -1748,14 +1915,12 @@
             }
             return candidates.slice(0, 6);
         }
-
         function sanitizeOnlineExtract(rawSummary) {
             return rawSummary
                 .replace(/\[\d+\]/g, '')
                 .replace(/\s+/g, ' ')
                 .trim();
         }
-
         function formatScholarAnswer(title, rawSummary, lang, lengthMode, isTeaching, isConversational) {
             const clean = sanitizeOnlineExtract(rawSummary);
             const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
@@ -1781,17 +1946,14 @@
                     : ` Souhaites-tu approfondir ${title}${nameRef} ou poser une autre question ?`;
             return `${bodyFr}${followUpFr}`.trim();
         }
-
         function buildScholarlyReasoningFallback(question, lang) {
             const subject = extractCoreSubject(question) || question.trim();
             const q = question.trim().toLowerCase();
-
             for (const subj of JARVIS_DATABASE.academicGuides) {
                 if (subj.match.test(question)) {
                     return lang === 'en-US' ? subj.longEn : subj.longFr;
                 }
             }
-
             if (JARVIS_DATABASE.nvidiaTopics) {
                 for (const item of JARVIS_DATABASE.nvidiaTopics) {
                     if (item.match.test(question)) {
@@ -1799,7 +1961,6 @@
                     }
                 }
             }
-
             const why  = /^(why|pourquoi)\b/.test(q);
             const how  = /^(how|comment)\b/.test(q);
             const what = /^(what|qu'?est|que|quel|quelle)\b/.test(q);
@@ -1807,7 +1968,6 @@
             const when = /^(when|quand)\b/.test(q);
             const where= /^(where|où|ou)\b/.test(q);
             const isYesNo = /^(is|are|was|were|do|does|did|can|could|should|will|would|est-ce|peut|doit)\b/.test(q);
-
             if (lang === 'en-US') {
                 if (why)  return `To answer why ${subject}: look at the underlying cause-and-effect chain—what triggers it, what constraints shape it, and which trade-offs between cost, speed, reliability, and usability drive the outcome. If you share the specific context, I can trace that chain with you step by step.`;
                 if (how)  return `To answer how ${subject} works: trace the pipeline—inputs, processing or decision rules, execution, and feedback. Each stage checks the result and adjusts the next step, which is what keeps the system accurate. Tell me which stage you want to unpack first.`;
@@ -1818,7 +1978,6 @@
                 if (isYesNo) return `On whether ${subject}: the honest answer is "it depends" on the criteria you care about—cost, performance, risk, or usability. If you tell me which criterion matters most, I can give you a clear yes/no with the reasoning behind it.`;
                 return `Let's take ${subject} one layer at a time: first the core idea, then how it behaves in practice, then where it breaks down. Which of those three would you like me to expand first?`;
             }
-
             if (why)  return `Pour répondre à pourquoi ${subject} : il faut suivre la chaîne de causalité—ce qui le déclenche, les contraintes qui le façonnent, et les compromis entre coût, vitesse, fiabilité et facilité d'usage. Donne-moi le contexte précis et nous la déroulerons ensemble.`;
             if (how)  return `Pour expliquer comment ${subject} fonctionne : suivons le pipeline—entrées, règles de traitement ou de décision, exécution, puis retour d'information. Chaque étape vérifie le résultat et ajuste la suivante. Dis-moi quelle étape tu veux ouvrir en premier.`;
             if (what) return `Sur la question de ${subject} : commençons par la définition, puis les composants principaux, puis leur interaction concrète. Dis-moi quel niveau t'intéresse—concept, mécanisme ou exemple—et j'irai plus loin sur ce point précis.`;
@@ -1828,7 +1987,6 @@
             if (isYesNo) return `Pour savoir si ${subject} : la réponse honnête est « cela dépend » du critère qui compte—coût, performance, risque ou facilité. Dis-moi quel critère prime et je donnerai un oui/non clair avec le raisonnement.`;
             return `Prenons ${subject} couche par couche : d'abord l'idée de base, puis le comportement concret, puis les limites. Laquelle de ces trois veux-tu que je développe en premier ?`;
         }
-
         async function fetchWikipediaMatch(query, lang, signal) {
             const wikiLang = lang === 'en-US' ? 'en' : 'fr';
             const searchUrl = `https://${wikiLang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=1&utf8=1&format=json&origin=*`;
@@ -1837,7 +1995,7 @@
             const searchData = await searchRes.json();
             const bestTitle = searchData?.query?.search?.[0]?.title;
             if (!bestTitle) return null;
-            const summaryUrl = `https://${wikiLang}.wikipedia.org/api/restv1/page/summary/${encodeURIComponent(bestTitle)}`;
+            const summaryUrl = `https://${wikiLang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(bestTitle)}`;
             const summaryRes = await fetch(summaryUrl, { signal });
             if (!summaryRes.ok) return null;
             const summaryData = await summaryRes.json();
@@ -1847,7 +2005,6 @@
                 text: summaryData.extract
             };
         }
-
         async function fetchDuckDuckGoFact(query, signal) {
             const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
             const res = await fetch(ddgUrl, { signal });
@@ -1860,7 +2017,6 @@
                 text
             };
         }
-
         async function searchWithReformulation(question, lang, signal) {
             const queries = buildReformulatedQueries(question);
             console.info('[Jarvis] searching reformulated queries:', queries);
@@ -1875,20 +2031,34 @@
             }
             return null;
         }
-
         function recordTurn(role, text) {
             conversationHistory.push({ role, text, time: Date.now() });
             if (conversationHistory.length > 10) {
                 conversationHistory.shift();
             }
         }
-
+        function buildAmbientContextReply(memories, lang) {
+            if (!memories || !memories.length) return '';
+            const primary = memories[0];
+            const whenStr = formatRelativeTime(primary.timestamp, lang);
+            if (memories.length === 1) {
+                return lang === 'en-US'
+                    ? `Based on what I heard on the microphone (${whenStr}): "${primary.text}".`
+                    : `D'après ce que j'ai entendu au microphone (${whenStr}) : « ${primary.text} ».`;
+            }
+            const extraList = memories
+                .slice(1)
+                .map(m => `"${m.text}" (${formatRelativeTime(m.timestamp, lang)})`)
+                .join('; ');
+            return lang === 'en-US'
+                ? `Based on what I heard on the microphone (${whenStr}): "${primary.text}". Related notes I also captured: ${extraList}.`
+                : `D'après ce que j'ai entendu au microphone (${whenStr}) : « ${primary.text} ». Autres notes captées : ${extraList}.`;
+        }
         async function processCommand(commandText, lang) {
             stopSpeaking(false);
             if (activeAbortController) activeAbortController.abort();
             activeAbortController = new AbortController();
             recordTurn('user', commandText);
-
             const attentiveReply = detectCarefulListeningCommand(commandText, lang);
             if (attentiveReply) {
                 recordTurn('jarvis', attentiveReply);
@@ -1896,19 +2066,22 @@
                 speakText(attentiveReply, lang);
                 return;
             }
-
             const lengthMode = resolveDesiredLength(commandText);
             const isTeaching = /\b(teach me|learn|explain|how does|how do|help me|study|solve|formula|theorem|math|physics|chemistry|chimistry|biology|apprends[- ]moi|explique|comment|aide[- ]moi|étudie|résous|formule|théorème|mathématiques|physique|chimie|biologie)\b/i.test(commandText);
             const isConversational = conversationHistory.length > 2 || /\b(what do you think|let's discuss|talk about|in your opinion|qu'en penses-tu|discutons|parlons de|à ton avis)\b/i.test(commandText);
 
+            // Check related ambient microphone memories
+            const relatedMemories = findRelatedAmbientMemories(commandText, 3);
+            const ambientContextNote = buildAmbientContextReply(relatedMemories, lang);
+
             const instant = handleInstantKnowledge(commandText, lang, lengthMode);
             if (instant) {
-                recordTurn('jarvis', instant);
-                showSubtitle(instant);
-                speakText(instant, lang);
+                const combinedInstant = ambientContextNote ? `${instant}\n\n${ambientContextNote}` : instant;
+                recordTurn('jarvis', combinedInstant);
+                showSubtitle(combinedInstant);
+                speakText(combinedInstant, lang);
                 return;
             }
-
             let convo = handleConversationalTurn(commandText, lang);
             if (convo && convo.startsWith('__CONTINUE__:')) {
                 const prevTopic = convo.slice('__CONTINUE__:'.length);
@@ -1919,6 +2092,17 @@
                 recordTurn('jarvis', convo);
                 showSubtitle(convo);
                 speakText(convo, lang);
+                return;
+            }
+
+            // If the question directly relates to saved ambient mic data, answer immediately from memory
+            // (and enrich with web lookup if it looks like an external factual query)
+            const isPersonalOrMemoryQuery = /\b(my|our|we|i|he|she|they|meeting|room|password|code|number|schedule|plan|today|tonight|tomorrow|bring|buy|call|said|heard|mentioned|mon|ma|mes|notre|nos|je|nous|il|elle|réunion|mot de passe|numéro|programme|aujourd'hui|demain|dit|entendu)\b/i.test(commandText);
+            if (relatedMemories.length > 0 && isPersonalOrMemoryQuery) {
+                lastTopicDiscussed = relatedMemories[0].text;
+                recordTurn('jarvis', ambientContextNote);
+                showSubtitle(ambientContextNote);
+                speakText(ambientContextNote, lang);
                 return;
             }
 
@@ -1940,6 +2124,11 @@
                         isTeaching,
                         isConversational
                     );
+                    if (ambientContextNote) {
+                        reply = `${ambientContextNote}\n\n${reply}`;
+                    }
+                } else if (ambientContextNote) {
+                    reply = ambientContextNote;
                 } else {
                     reply = buildScholarlyReasoningFallback(commandText, lang);
                 }
@@ -1949,13 +2138,12 @@
             } catch (error) {
                 if (error.name === 'AbortError') return;
                 console.warn('[Jarvis] web lookup failed, using offline reasoning:', error.message || error);
-                const fallbackOffline = buildScholarlyReasoningFallback(commandText, lang);
+                const fallbackOffline = ambientContextNote || buildScholarlyReasoningFallback(commandText, lang);
                 recordTurn('jarvis', fallbackOffline);
                 showSubtitle(fallbackOffline);
                 speakText(fallbackOffline, lang);
             }
         }
-
         function speakText(text, lang) {
             lastSpokenText = text;
             if (!('speechSynthesis' in window)) {
@@ -2005,7 +2193,6 @@
             };
             window.speechSynthesis.speak(utterance);
         }
-
         function stopSpeaking(resumeMicIfArmed = true) {
             isSpeakingNow = false;
             lastSpeechEndedAt = Date.now();
@@ -2015,7 +2202,6 @@
                 setTimeout(() => startRecognizerSafely(), 600);
             }
         }
-
         document.getElementById('micBtn').addEventListener('click', (e) => e.stopPropagation());
     </script>
 </body>
